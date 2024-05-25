@@ -11,7 +11,11 @@ const TaskCard = ({ task, route }) => {
             {task.title}
           </h2>
         </Link>
-        <p className={checkPriority(task.priority)}>
+        <p
+          className={`${checkPriority(
+            task.priority
+          )} text-white p-2 px-4 text-sm rounded-full font-bold`}
+        >
           <span>{task.priority}</span> PRIORITY
         </p>
       </div>

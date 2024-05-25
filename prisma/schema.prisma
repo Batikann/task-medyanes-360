@@ -35,6 +35,8 @@ model Comment {
   status    CommentStatus @default(STARTED)
   task      Task          @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    String        @db.ObjectId
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String        @db.ObjectId
 }
 
 model User {
@@ -44,6 +46,7 @@ model User {
   password String
   role     UserRole     @default(USER)
   tasks    UserOnTask[]
+  comments Comment[]
 }
 
 model UserOnTask {
