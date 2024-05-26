@@ -1,8 +1,45 @@
+'use client'
+
 import checkPriority from '../../../../lib/utils/checkPriority'
 import { formatDate } from '../../../../lib/utils/formatter'
 import Button from '../../../../components/Buttons/Button'
+import { useState } from 'react'
+import { postAPI } from '../../../../services/fetchAPI'
 
-const TaskDetail = ({ taskDetail, setPage, page }) => {
+const TaskDetail = ({
+  taskDetail,
+  setPage,
+  page,
+  setRefreshPage,
+  refreshPage,
+}) => {
+  const [subtasks, setSubtasks] = useState(taskDetail.subtasks)
+
+  const handleStatusToggle = async (subtaskId, currentStatus) => {
+    const newStatus = !currentStatus
+    const data = { subtaskId, status: newStatus }
+    try {
+      const res = await postAPI('/tasks/subtask/update-subtask-status', data)
+
+      if (res.status === 'success') {
+        setSubtasks((prevSubtasks) =>
+          prevSubtasks.map((subtask) =>
+            subtask.id === subtaskId
+              ? { ...subtask, status: newStatus }
+              : subtask
+          )
+        )
+        setRefreshPage(!refreshPage)
+      } else {
+        console.error('Failed to update subtask status')
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+    }
+  }
+
+  const completedSubtasks = subtasks.filter((subtask) => subtask.status).length
+  const totalSubtasks = subtasks.length
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-5 items-center">
@@ -70,7 +107,12 @@ const TaskDetail = ({ taskDetail, setPage, page }) => {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold uppercase">Sub-Tasks</h2>
+        <div className="flex items-center gap-4">
+          <h2 className="text-2xl font-bold uppercase">Sub-Tasks</h2>
+          <span className="text-xl font-bold">
+            {completedSubtasks}/{totalSubtasks}
+          </span>
+        </div>
         <div className="flex flex-col gap-2">
           {taskDetail.subtasks.map((subtask) => (
             <div
@@ -79,16 +121,23 @@ const TaskDetail = ({ taskDetail, setPage, page }) => {
             >
               <div className="flex items-center gap-4">
                 <p>Last Date: {formatDate(subtask.createdAt)}</p>
-                <p className="bg-orange-300 p-1 px-2 text-sm font-semibold text-white rounded-lg  ">
+                <p
+                  className={` p-1 px-2 text-sm font-semibold text-white rounded-lg ${
+                    subtask.status ? 'bg-green-400' : 'bg-orange-300'
+                  }`}
+                >
                   {subtask.status ? 'done' : 'in progress'}
                 </p>
               </div>
               <p>{subtask.title}</p>
               <Button
-                title={'SubTask as done'}
-                className={
-                  'bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600 hover:bg-green-400 hover:text-white'
+                title={
+                  subtask.status ? 'Subtask as not done' : 'Subtask as done'
                 }
+                className={`bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600  hover:text-white ${
+                  subtask.status ? 'hover:bg-red-400' : 'hover:bg-green-400'
+                }`}
+                onClick={() => handleStatusToggle(subtask.id, subtask.status)}
               />
             </div>
           ))}

@@ -123,6 +123,7 @@ const getStatusIcon = (status) => {
 
 const Comments = ({ taskId, refreshPage, setEditComment }) => {
   const [comments, setComments] = useState([])
+  const [loading, setLoading] = useState(true)
   const user = getUser()
   const today = formatDate(new Date().toISOString())
 
@@ -133,11 +134,16 @@ const Comments = ({ taskId, refreshPage, setEditComment }) => {
       if (res.status === 'success') {
         setComments(res.comments)
       }
+      setLoading(false)
     }
     getCommentForTask()
   }, [refreshPage])
-  if (comments.length <= 0) {
+  if (loading) {
     return <Loading />
+  }
+
+  if (comments.length === 0) {
+    return <p>Not found Comment</p>
   }
 
   return (

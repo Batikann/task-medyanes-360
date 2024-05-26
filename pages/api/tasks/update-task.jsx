@@ -3,7 +3,7 @@ import {
   updateDataByAny,
 } from '../../../services/servicesOperations'
 
-async function updateTask(req, res) {
+async function handler(req, res) {
   if (!req || !req.body) {
     return res.status(400).json({ status: 'error', message: 'Invalid request' })
   }
@@ -56,4 +56,4 @@ async function updateTask(req, res) {
   }
 }
 
-export default updateTask
+export default handler

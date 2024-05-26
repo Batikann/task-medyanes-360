@@ -19,13 +19,21 @@ const TaskDetailPage = ({ params }) => {
     }
 
     getTaskDetail()
-  }, [])
+  }, [refreshPage])
 
   if (taskDetail.length <= 0) {
     return <Loading />
   }
   if (page === 'Task Detail') {
-    return <TaskDetail setPage={setPage} page={page} taskDetail={taskDetail} />
+    return (
+      <TaskDetail
+        setPage={setPage}
+        page={page}
+        taskDetail={taskDetail}
+        setRefreshPage={setRefreshPage}
+        refreshPage={refreshPage}
+      />
+    )
   } else {
     return (
       <div className="flex flex-col gap-4">
