@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { getAPI } from '../../../../services/fetchAPI'
 import Loading from '../../../../components/loading'
 import { formatDate } from '../../../../lib/utils/formatter'
+import getUser from '../../../../lib/utils/getUser'
 
 const getStatusIcon = (status) => {
   switch (status) {
@@ -120,8 +121,11 @@ const getStatusIcon = (status) => {
   }
 }
 
-const Comments = ({ taskId, refreshPage }) => {
+const Comments = ({ taskId, refreshPage, setEditComment }) => {
   const [comments, setComments] = useState([])
+  const user = getUser()
+  const today = formatDate(new Date().toISOString())
+
   useEffect(() => {
     const getCommentForTask = async () => {
       const res = await getAPI(`/comment/${taskId}/get-comments-user`)
@@ -135,11 +139,12 @@ const Comments = ({ taskId, refreshPage }) => {
   if (comments.length <= 0) {
     return <Loading />
   }
+
   return (
     <div className="flex flex-col gap-4 border w-full p-4">
       <h2 className="text-xl font-semibold text-gray-500">Activities</h2>
       {comments.map((comment) => (
-        <div key={comment.id} className="flex gap-4 border-b pb-3 ">
+        <div key={comment.id} className="flex gap-4 border-b pb-3 relative ">
           {getStatusIcon(comment.status)}
           <div>
             <h3 className="font-semibold text-lg text-gray-600">
@@ -150,6 +155,15 @@ const Comments = ({ taskId, refreshPage }) => {
               <p className="text-sm">{formatDate(comment.createdAt)}</p>
             </div>
             <p className="text-lg">{comment.content}</p>
+            {comment.userId === user.id &&
+              formatDate(comment.createdAt) === today && (
+                <button
+                  className="absolute right-0 top-0 bg-yellow-400 hover:bg-yellow-300 text-white font-semibold px-2 py-1 rounded"
+                  onClick={() => setEditComment(comment)}
+                >
+                  Güncelle
+                </button>
+              )}
           </div>
         </div>
       ))}

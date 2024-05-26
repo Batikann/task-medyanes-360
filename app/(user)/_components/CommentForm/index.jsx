@@ -5,19 +5,42 @@ import commentSchemaValidation from './commentSchemaValidation'
 import { checkboxValues } from '../../../../lib/constants/commentFormValues.js'
 import getUser from '../../../../lib/utils/getUser'
 import { postAPI } from '../../../../services/fetchAPI'
-import { useRef } from 'react' // useRef ekledik
+import { useEffect, useRef } from 'react' // useRef ekledik
 
-const CommentForm = ({ taskID, setRefreshPage, refreshPage }) => {
+const CommentForm = ({
+  taskID,
+  setRefreshPage,
+  refreshPage,
+  editComment,
+  setEditComment,
+}) => {
   const user = getUser()
 
   const formRef = useRef(null) // useRef ile form referansı oluşturduk
 
+  useEffect(() => {
+    if (editComment && formRef.current) {
+      formRef.current.setValues({
+        content: editComment.content,
+        status: editComment.status,
+      })
+    }
+  }, [editComment])
+
   const formHandler = async (values, { setSubmitting }) => {
     const newVal = { ...values, taskId: taskID, userId: user.id }
-    const res = await postAPI('/comment/add-comment', newVal)
+
+    let res
+    if (editComment) {
+      res = await postAPI(`/comment/${editComment.id}/update-comment`, newVal)
+    } else {
+      res = await postAPI('/comment/add-comment', newVal)
+    }
+
     if (res.status === 'success') {
       setRefreshPage(!refreshPage)
-      formRef.current.resetForm() // Formu sıfırladık
+      formRef.current.resetForm()
+      setEditComment(null)
     }
     setSubmitting(false)
   }
@@ -25,7 +48,7 @@ const CommentForm = ({ taskID, setRefreshPage, refreshPage }) => {
   return (
     <div>
       <h1 className="text-xl font-bold border-b pb-2 uppercase">
-        Submit a Comment
+        {editComment ? 'Update Comment' : 'Submit a Comment'}
       </h1>
       <Formik
         innerRef={formRef} // ref'i Formik bileşenine ekledik
@@ -79,7 +102,7 @@ const CommentForm = ({ taskID, setRefreshPage, refreshPage }) => {
               disabled={isSubmitting}
               className="flex items-center justify-center bg-blue-600 text-white p-3 text-lg font-semibold rounded-lg hover:bg-blue-500 cursor-pointer"
             >
-              Submit
+              {editComment ? 'Update' : 'Submit'}
             </button>
           </Form>
         )}

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { getAPI } from '../../../services/fetchAPI'
 import getUser from '../../../lib/utils/getUser.js'
 import TaskCard from '../../../components/TaskCard'
+import Loading from '../../../components/loading'
 
 const UserDashboard = () => {
   const [tasks, setTasks] = useState([])
@@ -17,6 +18,10 @@ const UserDashboard = () => {
 
     getTaskForUser()
   }, [])
+
+  if (tasks.length <= 0) {
+    return <Loading />
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

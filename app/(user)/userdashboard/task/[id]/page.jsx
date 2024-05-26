@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { getAPI } from '../../../../../services/fetchAPI'
 import Loading from '../../../../../components/loading'
@@ -11,6 +10,7 @@ const TaskDetailPage = ({ params }) => {
   const [taskDetail, setTaskDetail] = useState([])
   const [page, setPage] = useState('Task Detail')
   const [refreshPage, setRefreshPage] = useState(false)
+  const [editComment, setEditComment] = useState(null)
 
   useEffect(() => {
     const getTaskDetail = async () => {
@@ -52,11 +52,17 @@ const TaskDetailPage = ({ params }) => {
           </button>
         </div>
         <div className="flex  justify-between gap-12">
-          <Comments taskId={taskDetail.id} refreshPage={refreshPage} />
+          <Comments
+            taskId={taskDetail.id}
+            refreshPage={refreshPage}
+            setEditComment={setEditComment}
+          />
           <CommentForm
             taskID={taskDetail.id}
             setRefreshPage={setRefreshPage}
             refreshPage={refreshPage}
+            editComment={editComment}
+            setEditComment={setEditComment}
           />
         </div>
       </div>
