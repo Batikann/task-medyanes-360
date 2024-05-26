@@ -62,6 +62,18 @@ export async function getDataByUniqueRelitionalTable(
   }
 }
 
+export async function getDataByManyRelitionalTable(tableName, where, include) {
+  try {
+    const data = await prisma[tableName].findMany({
+      where,
+      include,
+    })
+    return data
+  } catch (error) {
+    return { error: error.message }
+  }
+}
+
 // GET BY UNIQUE MANY VALUE
 export async function getDataByMany(tableName, where) {
   try {
@@ -132,4 +144,6 @@ export default {
   deleteDataAll,
 
   getDataByUniqueRelitionalTable,
+
+  getDataByManyRelitionalTable,
 }

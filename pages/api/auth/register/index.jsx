@@ -15,13 +15,6 @@ const handler = async (req, res) => {
     const { email, password, username } = req.body
 
     try {
-      const existingUser = await getDataByUnique('User', email)
-      if (existingUser) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'Bu e-posta adresi ile kayıtlı biri vardır!',
-        })
-      }
       // Parolayı hashle
       const hashedPassword = await bcrypt.hash(password, 10)
 

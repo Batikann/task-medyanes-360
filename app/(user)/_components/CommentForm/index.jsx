@@ -5,22 +5,21 @@ import commentSchemaValidation from './commentSchemaValidation'
 import { checkboxValues } from '../../../../lib/constants/commentFormValues.js'
 import getUser from '../../../../lib/utils/getUser'
 import { postAPI } from '../../../../services/fetchAPI'
-import { useRouter } from 'next/navigation'
 import { useRef } from 'react' // useRef ekledik
 
-const CommentForm = ({ taskID }) => {
+const CommentForm = ({ taskID, setRefreshPage, refreshPage }) => {
   const user = getUser()
-  const router = useRouter()
+
   const formRef = useRef(null) // useRef ile form referansı oluşturduk
 
   const formHandler = async (values, { setSubmitting }) => {
     const newVal = { ...values, taskId: taskID, userId: user.id }
     const res = await postAPI('/comment/add-comment', newVal)
     if (res.status === 'success') {
-      router.refresh()
+      setRefreshPage(!refreshPage)
       formRef.current.resetForm() // Formu sıfırladık
     }
-    setSubmitting(false) // setSubmitting'i false yapmayı unutmayın
+    setSubmitting(false)
   }
 
   return (
