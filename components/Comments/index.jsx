@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getAPI } from '../../../../services/fetchAPI'
-import Loading from '../../../../components/loading'
-import { formatDate } from '../../../../lib/utils/formatter'
-import getUser from '../../../../lib/utils/getUser'
+import { getAPI } from '../../services/fetchAPI'
+import Loading from '../loading'
+import { formatDate } from '../../lib/utils/formatter'
+import getUser from '../../lib/utils/getUser'
 
+//Gelen yorumunun tipine göre yanında ki icon belirleniyor.
 const getStatusIcon = (status) => {
   switch (status) {
     case 'STARTED':
@@ -129,6 +130,7 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
 
   useEffect(() => {
     const getCommentForTask = async () => {
+      //taskId il eşleşen o taska ait commentsleri getiriyoruz.
       const res = await getAPI(`/comment/${taskId}/get-comments-user`)
 
       if (res.status === 'success') {
@@ -142,6 +144,7 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
     return <Loading />
   }
 
+  //Geçerli taskın hiç yorumu yok ise bu kısım çalışıyor.
   if (comments.length === 0) {
     return <p>Not found Comment</p>
   }
@@ -161,6 +164,7 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
               <p className="text-sm">{formatDate(comment.createdAt)}</p>
             </div>
             <p className="text-lg">{comment.content}</p>
+            {/* Kullanıcı sadece kendi yorumunu yazdığı gün içinde güncelleyebilir */}
             {comment.userId === user.id &&
               formatDate(comment.createdAt) === today && (
                 <button

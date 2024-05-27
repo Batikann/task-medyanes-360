@@ -1,10 +1,11 @@
 'use client'
 
-import checkPriority from '../../../../lib/utils/checkPriority'
-import { formatDate } from '../../../../lib/utils/formatter'
-import Button from '../../../../components/Buttons/Button'
+import checkPriority from '../../lib/utils/checkPriority'
+import { formatDate } from '../../lib/utils/formatter'
+import Button from '../Buttons/Button'
 import { useState } from 'react'
-import { postAPI } from '../../../../services/fetchAPI'
+import { postAPI } from '../../services/fetchAPI'
+import Tab from '../Tab'
 
 const TaskDetail = ({
   taskDetail,
@@ -12,9 +13,13 @@ const TaskDetail = ({
   page,
   setRefreshPage,
   refreshPage,
+  role,
+  updateTaskHandler,
+  deleteTaskHandler,
 }) => {
   const [subtasks, setSubtasks] = useState(taskDetail.subtasks)
 
+  //subtaskimizin durumunu değiştirmek için kullandığımız fonksiyonumuz
   const handleStatusToggle = async (subtaskId, currentStatus) => {
     const newStatus = !currentStatus
     const data = { subtaskId, status: newStatus }
@@ -38,36 +43,16 @@ const TaskDetail = ({
     }
   }
 
+  //Kullanıcı tarafında göstermek için tamamlanan ve tüm subtasklerin sayısını aldığımız yer
   const completedSubtasks = subtasks.filter((subtask) => subtask.status).length
   const totalSubtasks = subtasks.length
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-5 items-center">
-        <button
-          className={`bg-gray-200 py-2 px-3 rounded-t-md hover:text-blue-600 ${
-            page === 'Task Detail'
-              ? 'text-blue-600 border-b-blue-600 border-b-2'
-              : ''
-          }`}
-          onClick={() => setPage('Task Detail')}
-        >
-          Task Detail
-        </button>
-        <button
-          className={`bg-gray-200 py-2 px-3 rounded-t-md hover:text-blue-600 ${
-            page === 'Activities/Timeline'
-              ? 'text-blue-600 border-b-blue-600 border-b-2'
-              : ''
-          }`}
-          onClick={() => setPage('Activities/Timeline')}
-        >
-          Activities/Timeline
-        </button>
-      </div>
+      <Tab page={page} setPage={setPage} />
       <div className="border-b flex flex-col gap-4 pb-4">
-        <div className="flex items-center gap-4 justify-between">
-          <div className="flex items-center gap-4 ">
-            <h1 className="text-4xl font-bold">{taskDetail.title}</h1>
+        <div className="flex md:items-center flex-col md:flex-row gap-4 md:justify-between">
+          <div className="flex md:items-center gap-4 flex-col md:flex-row">
+            <h1 className="text-4xl font-bold mt-4">{taskDetail.title}</h1>
             <p
               className={`${checkPriority(
                 taskDetail.priority
@@ -76,8 +61,28 @@ const TaskDetail = ({
               {taskDetail.priority} <span>PRIORITY</span>
             </p>
           </div>
+          {/* Kullanıcının role değeri admin ise bu alana erişebilir */}
+          {role === 'ADMIN' && (
+            <div className="flex gap-4">
+              <Button
+                title={'Update'}
+                className={
+                  'bg-blue-500 text-white p-2 px-4 text-sm rounded-lg hover:bg-blue-400 font-semibold'
+                }
+                onClick={updateTaskHandler}
+              />
+
+              <Button
+                title={'Delete'}
+                className={
+                  'bg-red-500 text-white p-2 px-4 text-sm rounded-lg hover:bg-red-400 font-semibold'
+                }
+                onClick={deleteTaskHandler}
+              />
+            </div>
+          )}
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex md:flex-row flex-col md:items-center gap-4 ">
           <p>Created Date : {formatDate(taskDetail.createdAt)}</p>
           <p className="font-bold ">
             Status:
@@ -130,15 +135,18 @@ const TaskDetail = ({
                 </p>
               </div>
               <p>{subtask.title}</p>
-              <Button
-                title={
-                  subtask.status ? 'Subtask as not done' : 'Subtask as done'
-                }
-                className={`bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600  hover:text-white ${
-                  subtask.status ? 'hover:bg-red-400' : 'hover:bg-green-400'
-                }`}
-                onClick={() => handleStatusToggle(subtask.id, subtask.status)}
-              />
+              {/* Kullanıcının role değeri user ise bu alana erişelbilir burada subtasklerimizin durumunu güncelleyebilir user */}
+              {role === 'USER' && (
+                <Button
+                  title={
+                    subtask.status ? 'Subtask as not done' : 'Subtask as done'
+                  }
+                  className={`bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600  hover:text-white ${
+                    subtask.status ? 'hover:bg-red-400' : 'hover:bg-green-400'
+                  }`}
+                  onClick={() => handleStatusToggle(subtask.id, subtask.status)}
+                />
+              )}
             </div>
           ))}
         </div>

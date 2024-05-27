@@ -14,7 +14,7 @@ const handler = async (req, res) => {
             username: true,
             id: true,
           },
-        }, // Comment ile ilişkilendirilmiş User bilgilerini de içe aktar
+        }, // Comment ile ilişkilendirilmiş User bilgilerini de comment ile beraber getiriyor.
       }
 
       const comments = await getDataByManyRelitionalTable(
