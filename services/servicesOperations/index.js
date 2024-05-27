@@ -49,14 +49,12 @@ export async function getDataByUnique(tableName, where) {
 export async function getDataByUniqueRelitionalTable(
   tableName,
   where,
-  include,
-  orderBy
+  include
 ) {
   try {
     const data = await prisma[tableName].findUnique({
       where,
       include,
-      orderBy,
     })
     return data
   } catch (error) {

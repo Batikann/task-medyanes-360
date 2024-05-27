@@ -25,8 +25,7 @@ const handler = async (req, res) => {
       const task = await getDataByUniqueRelitionalTable(
         'Task',
         { id: taskId }, // Task verisini çekmek için where koşulu.
-        include, // İlişkili tabloları da dahil eder.
-        orderBy
+        include // İlişkili tabloları da dahil eder.
       )
 
       // Başarılı olursa 200 durum kodu ve task verisini döner.
