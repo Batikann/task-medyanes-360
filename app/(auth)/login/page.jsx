@@ -7,149 +7,115 @@ import { useState } from 'react'
 
 import { loginValidationSchema } from './loginValidationSchema'
 import { useRoleRedirect } from '../../../lib/utils/useRoleRedirect'
+import Loading from '../../../components/loading'
+import Input from '../_components/Input'
+import Button from '../_components/Button'
+import Link from 'next/link'
 
 const LoginPage = () => {
   const router = useRouter()
   const [error, setError] = useState('')
   const loading = useRoleRedirect([''], '/userdashboard')
 
+  //kullanıcı bilgisi yüklenene kadar kullanıcı gittiği sayfayı göremesin diye bir loading gösteriyoruz.
   if (loading) {
-    return <p>loading...</p>
+    return <Loading />
   }
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Sign in to your account
-        </h2>
-      </div>
-
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <Formik
-          validateOnMount={true}
-          initialValues={{ email: '', password: '' }}
-          validationSchema={loginValidationSchema}
-          onSubmit={async (values, { setSubmitting }) => {
-            try {
-              const res = await postAPI('/auth/login', values)
-              if (res && res.status == 'success') {
-                const userData = {
-                  role: res.data.role,
-                  username: res.data.user.username,
-                  email: res.data.user.email,
-                  id: res.data.user.id,
-                }
-
-                // Kullanıcı verilerini localStorage'e kaydet
-                localStorage.setItem('currentUser', JSON.stringify(userData))
-                if (res.data.role === 'USER') {
-                  setTimeout(() => {
-                    router.push('/userdashboard')
-                  }, 3000)
-                } else if (res.data.role === 'ADMIN') {
-                  setTimeout(() => {
-                    router.push('/admindashboard')
-                  }, 3000)
-                }
-              } else {
-                // Giriş başarısız olduğunda kullanıcıya bildirim gösterilebilir
-                setError(res.message)
+    <>
+      <h2 className="text-2xl font-semibold mb-4">Login</h2>
+      <Formik
+        validateOnMount={true}
+        initialValues={{ email: '', password: '' }}
+        validationSchema={loginValidationSchema}
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            //kullanıcının göndermiş olduğu bilgilere göre veritabanına istek atıyoruz ve geri dönen responsa göre belirli işlemler yapıyoruz.
+            const res = await postAPI('/auth/login', values)
+            if (res && res.status == 'success') {
+              const userData = {
+                role: res.data.role,
+                username: res.data.user.username,
+                email: res.data.user.email,
+                id: res.data.user.id,
               }
-            } catch (error) {
-              console.error('API request failed:', error)
+
+              // Kullanıcı verilerini localStorage'e kaydettik ve rolüne göre gerekli dashboard sayfasına yönlendirdik.
+              localStorage.setItem('currentUser', JSON.stringify(userData))
+              if (res.data.role === 'USER') {
+                setTimeout(() => {
+                  router.push('/userdashboard')
+                }, 3000)
+              } else if (res.data.role === 'ADMIN') {
+                setTimeout(() => {
+                  router.push('/admindashboard')
+                }, 3000)
+              }
+            } else {
+              // Giriş başarısız olduğunda kullanıcıya gösterilmek üzere hata mesajı kaydedilir.
+              setError(res.message)
             }
-            setSubmitting(false)
-          }}
-        >
-          {(props) => (
-            <Form onSubmit={props.handleSubmit}>
-              <div>
+          } catch (error) {
+            console.error('API request failed:', error)
+          }
+          setSubmitting(false)
+        }}
+      >
+        {(props) => (
+          <Form onSubmit={props.handleSubmit}>
+            <div className="my-4">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Email address
+              </label>
+              <div className="mt-2">
+                <Input name={'email'} type={'email'} props={props} />
+                {props.errors.email && props.touched.email && (
+                  <div className="text-red-600 text-sm mt-1">
+                    {props.errors.email}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between">
                 <label
-                  htmlFor="email"
+                  htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Email address
+                  Password
                 </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={props.handleChange}
-                    onBlur={props.handleBlur}
-                    value={props.values.email}
-                  />
-                  {props.errors.email && props.touched.email && (
-                    <div className="text-red-600 text-sm mt-1">
-                      {props.errors.email}
-                    </div>
-                  )}
-                </div>
               </div>
-
-              <div>
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Password
-                  </label>
-                  <div className="text-sm">
-                    <a
-                      href="#"
-                      className="font-semibold text-indigo-600 hover:text-indigo-500"
-                    >
-                      Forgot password?
-                    </a>
+              <div className="mt-2">
+                <Input name={'password'} type={'password'} props={props} />
+                {props.errors.password && props.touched.password && (
+                  <div className="text-red-600 text-sm mt-1">
+                    {props.errors.password}
                   </div>
-                </div>
-                <div className="mt-2">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={props.handleChange}
-                    onBlur={props.handleBlur}
-                    value={props.values.password}
-                  />
-                  {props.errors.password && props.touched.password && (
-                    <div className="text-red-600 text-sm mt-1">
-                      {props.errors.password}
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
+            </div>
+            {/* Bir hata varsa kullancıya hata mesajı gösterilir.   */}
+            {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
 
-              {error && (
-                <p className="text-red-600 mt-4 text-center">{error}</p>
-              )}
-
-              <div className="mt-6">
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  disabled={props.isSubmitting}
-                >
-                  Sign in
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
+            <div className="mt-6">
+              <Button props={props} title={'Login'} />
+            </div>
+          </Form>
+        )}
+      </Formik>
+      <div className="mt-4">
+        <Link
+          href={'/register'}
+          className="text-blue-400 text-base hover:underline-offset-2 hover:underline"
+        >
+          Sign up Here!
+        </Link>
       </div>
-    </div>
+    </>
   )
 }
 

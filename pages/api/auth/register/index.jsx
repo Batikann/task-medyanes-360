@@ -13,8 +13,15 @@ const handler = async (req, res) => {
 
   if (req.method === 'POST' && req.body) {
     const { email, password, username } = req.body
-
     try {
+      //Kullanıcının register olurken kullandıpı email adresi daha önce sisteme kayıtlı ise bir hata mesajı döndür.
+      const existingUser = await getDataByUnique('User', { email: email })
+      if (existingUser) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Bu email adresi zaten kayıtlı!',
+        })
+      }
       // Parolayı hashle
       const hashedPassword = await bcrypt.hash(password, 10)
 

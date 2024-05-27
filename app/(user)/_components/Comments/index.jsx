@@ -121,7 +121,7 @@ const getStatusIcon = (status) => {
   }
 }
 
-const Comments = ({ taskId, refreshPage, setEditComment }) => {
+const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
   const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
   const user = getUser()
