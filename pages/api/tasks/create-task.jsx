@@ -22,25 +22,26 @@ const handler = async (req, res) => {
       title,
       description,
       priority,
-      createdAt: new Date(createdAt),
+      createdAt: new Date(createdAt), // createdAt alanını Date nesnesine çevirir.
       status,
       subtasks: {
         create: subtasks.map((subtask) => ({
           id: subtask.id,
           title: subtask.title,
-          createdAt: new Date(subtask.createdAt),
+          createdAt: new Date(subtask.createdAt), // subtask için createdAt alanını Date nesnesine çevirir.
           status: subtask.status,
         })),
       },
       assignedUsers: {
         create: assignedUsers.map((userId) => ({
-          userId: userId,
+          userId: userId, // assignedUsers alanını oluşturur.
         })),
       },
-      comments: { create: [] },
+      comments: { create: [] }, // comments alanını boş olarak oluşturur.
     }
 
     try {
+      // createNewData fonksiyonunu kullanarak Task tablosuna yeni veri ekler.
       const result = await createNewData('Task', newData)
 
       return res.status(200).json({ status: 'success', data: result })

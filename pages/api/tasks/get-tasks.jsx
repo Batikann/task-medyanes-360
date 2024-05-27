@@ -3,9 +3,13 @@ import { getAllData } from '../../../services/servicesOperations'
 const handler = async (req, res) => {
   if (req.method === 'GET') {
     const tasks = await getAllData('Task')
+
+    // 'COMPLETED_CHECK_PENDING' (Tamamlanan)  durumundaki görevlerin sayısını hesaplar.
     const completedCheckPendingCount = tasks.filter(
       (task) => task.status === 'COMPLETED_CHECK_PENDING'
     ).length
+
+    // 'IN_PROGRESS' (Devam Etmekte) durumundaki görevlerin sayısını hesaplar.
     const inProgressCount = tasks.filter(
       (task) => task.status === 'IN_PROGRESS'
     ).length
@@ -13,9 +17,9 @@ const handler = async (req, res) => {
       status: 'success',
       data: {
         tasks: tasks,
-        completedTaskCount: completedCheckPendingCount,
-        inProgressTaskCount: inProgressCount,
-        allTaskCount: tasks.length,
+        completedTaskCount: completedCheckPendingCount, // Tamamlanan task sayısını döner.
+        inProgressTaskCount: inProgressCount, // Devam etmekte olan task sayısını döner.
+        allTaskCount: tasks.length, // Toplam task sayısını döner.,
       },
     })
   }

@@ -49,12 +49,14 @@ export async function getDataByUnique(tableName, where) {
 export async function getDataByUniqueRelitionalTable(
   tableName,
   where,
-  include
+  include,
+  orderBy
 ) {
   try {
     const data = await prisma[tableName].findUnique({
-      where: where,
-      include: include,
+      where,
+      include,
+      orderBy,
     })
     return data
   } catch (error) {
@@ -62,11 +64,17 @@ export async function getDataByUniqueRelitionalTable(
   }
 }
 
-export async function getDataByManyRelitionalTable(tableName, where, include) {
+export async function getDataByManyRelitionalTable(
+  tableName,
+  where,
+  include,
+  orderBy
+) {
   try {
     const data = await prisma[tableName].findMany({
       where,
       include,
+      orderBy,
     })
     return data
   } catch (error) {

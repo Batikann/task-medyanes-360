@@ -10,19 +10,22 @@ const handler = async (req, res) => {
   if (req.method === 'POST' && req.body) {
     const { content, status, taskId, userId } = req.body
 
+    // Oluşturulacak comment objesi hazırlarnır.
     const data = {
       content,
       status,
       taskId,
       userId,
-      createdAt: new Date(),
     }
 
     try {
+      // createNewData fonksiyonunu kullanarak Comment tablosuna yeni veri ekler.
       const result = await createNewData('Comment', data)
 
+      // Başarılı olursa 200 durum kodu ve oluşturulan veriyi döner.
       return res.status(200).json({ status: 'success', data: result })
     } catch (error) {
+      // Hata olursa 500 durum kodu ve hata mesajını döner.
       return res.status(500).json({ status: 'error', message: error.message })
     }
   } else {
