@@ -18,7 +18,6 @@ const Navbar = ({ title, navLinks, route }) => {
     localStorage.removeItem('currentUser')
     router.push('/login')
   }
-
   useEffect(() => {
     // Eğer tıklanan element userNav bileşeninin içinde değilse ve userNav açıksa,
     // userNavı kapat.
@@ -38,7 +37,7 @@ const Navbar = ({ title, navLinks, route }) => {
   }, [userMenu, setUserMenu])
 
   return (
-    <div className="  flex justify-between items-center border-b shadow-md p-7 overflow-x-hidden">
+    <div className="  flex justify-between items-center border-b shadow-md p-7">
       <h1 className="text-xl font-semibold">
         <Link href={route} className="flex items-center gap-2">
           <div>
