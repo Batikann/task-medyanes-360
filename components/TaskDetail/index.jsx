@@ -51,12 +51,12 @@ const TaskDetail = ({
       <Tab page={page} setPage={setPage} />
       <div className="border-b flex flex-col gap-4 pb-4">
         <div className="flex md:items-center flex-col md:flex-row gap-4 md:justify-between">
-          <div className="flex md:items-center gap-4 flex-col md:flex-row">
+          <div className="flex md:items-center gap-4 flex-col md:flex-row items-start">
             <h1 className="text-4xl font-bold mt-4">{taskDetail.title}</h1>
             <p
               className={`${checkPriority(
                 taskDetail.priority
-              )} text-white p-2 px-4 text-sm rounded-full font-bold`}
+              )} text-white p-2 px-4 text-sm rounded-full font-bold  `}
             >
               {taskDetail.priority} <span>PRIORITY</span>
             </p>
