@@ -8,6 +8,8 @@ import TextInput from '../../../../../../components/Inputs/TextInput'
 import SelectInput from '../../../../../../components/Inputs/SelectInput'
 import DateInput from '../../../../../../components/Inputs/DateInput'
 import Loading from '../../../../../../components/loading'
+import TrashIcon from '/public/trash.svg'
+import Image from 'next/image'
 
 const UpdateTaskPage = ({ params }) => {
   const [task, setTask] = useState(null)
@@ -156,7 +158,10 @@ const UpdateTaskPage = ({ params }) => {
                   {(arrayHelpers) => (
                     <div className="flex flex-col gap-3">
                       {formikProps.values.subtasks.map((subtask, index) => (
-                        <div key={index} className="flex gap-4">
+                        <div
+                          key={index}
+                          className="flex gap-4 w-full items-center "
+                        >
                           <div className="flex-1">
                             <TextInput
                               label="Subtask Title"
@@ -176,12 +181,21 @@ const UpdateTaskPage = ({ params }) => {
                               )
                             }
                           />
-                          <button
-                            type="button"
-                            onClick={() => arrayHelpers.remove(index)}
-                          >
-                            Remove
-                          </button>
+                          <div className="!flex !justify-center !items-center">
+                            <button
+                              type="button"
+                              onClick={() => arrayHelpers.remove(index)}
+                              className="!flex !items-center !justify-center w-full h-full"
+                            >
+                              <Image
+                                src={TrashIcon}
+                                width={20}
+                                height={20}
+                                alt="trash-icon"
+                                className="hover:text-red-600"
+                              />
+                            </button>
+                          </div>
                         </div>
                       ))}
                       <button
@@ -189,7 +203,7 @@ const UpdateTaskPage = ({ params }) => {
                         onClick={() =>
                           arrayHelpers.push({ title: '', createdAt: '' })
                         }
-                        className="border p-2 hover:bg-slate-300 hover:text-white"
+                        className="border p-2 hover:bg-blue-300 hover:text-white"
                       >
                         Add Subtask
                       </button>

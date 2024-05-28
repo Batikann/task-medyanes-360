@@ -18,23 +18,6 @@ const Navbar = ({ title, navLinks, route }) => {
     localStorage.removeItem('currentUser')
     router.push('/login')
   }
-  useEffect(() => {
-    // Eğer tıklanan element userNav bileşeninin içinde değilse ve userNav açıksa,
-    // userNavı kapat.
-    const handleOutsideClick = (event) => {
-      if (!event.target.closest('.absolute.top-0') && userMenu) {
-        setUserMenu(false)
-      }
-    }
-
-    // Dışarı tıklandığında olay dinleyiciyi etkinleştir.
-    document.addEventListener('mousedown', handleOutsideClick)
-
-    // Temizlik işlevi: bileşen kaldırıldığında olay dinleyicisini kaldır.
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick)
-    }
-  }, [userMenu, setUserMenu])
 
   return (
     <div className="  flex justify-between items-center border-b shadow-md p-7">
@@ -55,8 +38,11 @@ const Navbar = ({ title, navLinks, route }) => {
             {user.username}
           </p>
           {userMenu && (
-            <div className="absolute bg-white shadow-md w-28 p-4 right-5 top-10  z-50">
-              <button onClick={handleLogout} className="hover:text-blue-500">
+            <div className="absolute bg-white shadow-md w-28 p-4 right-5 top-10  z-40">
+              <button
+                onClick={handleLogout}
+                className="hover:text-blue-500 z-50 relative"
+              >
                 Logout
               </button>
             </div>

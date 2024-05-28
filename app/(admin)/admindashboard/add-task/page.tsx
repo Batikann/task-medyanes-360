@@ -10,6 +10,8 @@ import SelectInput from '../../../../components/Inputs/SelectInput.jsx'
 import DateInput from '../../../../components/Inputs/DateInput.jsx'
 import { useRouter } from 'next/navigation'
 import Loading from '../../../../components/loading/index.jsx'
+import TrashIcon from '/public/trash.svg'
+import Image from 'next/image'
 
 const AddTaskPage = () => {
   const [users, setUsers] = useState([{ id: '', username: '' }])
@@ -136,9 +138,14 @@ const AddTaskPage = () => {
                           <button
                             type="button"
                             onClick={() => remove(index)}
-                            className=""
+                            className="flex justify-center items-center text-center"
                           >
-                            Remove
+                            <Image
+                              src={TrashIcon}
+                              width={20}
+                              height={20}
+                              alt="trash-icon"
+                            />
                           </button>
                         </div>
                       </div>

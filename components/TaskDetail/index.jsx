@@ -3,7 +3,7 @@
 import checkPriority from '../../lib/utils/checkPriority'
 import { formatDate } from '../../lib/utils/formatter'
 import Button from '../Buttons/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { postAPI } from '../../services/fetchAPI'
 import Tab from '../Tab'
 
@@ -42,6 +42,16 @@ const TaskDetail = ({
       console.error('An error occurred:', error)
     }
   }
+
+  useEffect(() => {
+    const today = new Date()
+    const showUpdateButton = subtasks.some(
+      (subtask) => new Date(subtask.createdAt) > today && role === 'USER'
+    )
+    setUpdateButtonVisible(showUpdateButton)
+  }, [subtasks, role])
+
+  const [updateButtonVisible, setUpdateButtonVisible] = useState(false)
 
   //Kullanıcı tarafında göstermek için tamamlanan ve tüm subtasklerin sayısını aldığımız yer
   const completedSubtasks = subtasks.filter((subtask) => subtask.status).length
@@ -135,8 +145,8 @@ const TaskDetail = ({
                 </p>
               </div>
               <p>{subtask.title}</p>
-              {/* Kullanıcının role değeri user ise bu alana erişelbilir burada subtasklerimizin durumunu güncelleyebilir user */}
-              {role === 'USER' && (
+              {/* Kullanıcının rolü 'USER' ise ve son tarih geçmediyse göster */}
+              {updateButtonVisible && (
                 <Button
                   title={
                     subtask.status ? 'Subtask as not done' : 'Subtask as done'

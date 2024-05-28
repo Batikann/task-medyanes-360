@@ -18,9 +18,7 @@ const AdminLayout = ({ children }) => {
         title={'Admin Dashboard'}
         navLinks={adminNavLinks}
       />
-      <div className="p-7 flex-1 max-w-screen-2xl mx-auto w-full">
-        {children}
-      </div>
+      <div className="p-7 flex-1  w-full">{children}</div>
       <Footer />
     </div>
   )
