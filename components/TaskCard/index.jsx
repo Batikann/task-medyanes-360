@@ -32,7 +32,7 @@ const TaskCard = ({ task, route }) => {
         </p>
       </div>
       <div>
-        <p className="text-lg">{task.description}</p>
+        <p className="text-lg line-clamp-3">{task.description}</p>
       </div>
       <p>
         <span className="font-bold ">Status:</span> {task.status}

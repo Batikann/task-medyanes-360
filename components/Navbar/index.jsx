@@ -3,13 +3,13 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import getUser from '../../lib/utils/getUser'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MobileNav from '../MobileNav'
 import BurgerMenu from '/public/burger-menu.svg'
 import Image from 'next/image'
 
 const Navbar = ({ title, navLinks, route }) => {
-  const [userMenu, setUserMenu] = useState()
+  const [userMenu, setUserMenu] = useState(false)
   const [toggleMobileMenu, setToggleMobileMenu] = useState(false)
   const user = getUser()
   const router = useRouter()
@@ -18,6 +18,24 @@ const Navbar = ({ title, navLinks, route }) => {
     localStorage.removeItem('currentUser')
     router.push('/login')
   }
+
+  useEffect(() => {
+    // Eğer tıklanan element userNav bileşeninin içinde değilse ve userNav açıksa,
+    // userNavı kapat.
+    const handleOutsideClick = (event) => {
+      if (!event.target.closest('.absolute.top-0') && userMenu) {
+        setUserMenu(false)
+      }
+    }
+
+    // Dışarı tıklandığında olay dinleyiciyi etkinleştir.
+    document.addEventListener('mousedown', handleOutsideClick)
+
+    // Temizlik işlevi: bileşen kaldırıldığında olay dinleyicisini kaldır.
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick)
+    }
+  }, [userMenu, setUserMenu])
 
   return (
     <div className="  flex justify-between items-center border-b shadow-md p-7">
