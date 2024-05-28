@@ -12,7 +12,7 @@ const UserLayout = ({ children }) => {
     return <Loading />
   }
   return (
-    <div>
+    <div className="h-screen w-screen flex flex-col">
       <Navbar
         route={'/userdashboard'}
         title={'User Dashboard'}
