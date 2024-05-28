@@ -81,7 +81,7 @@ const Navbar = ({ title, navLinks, route }) => {
               className="cursor-pointer"
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
-              <Image src={BurgerMenu} className="w-6 h-6" />
+              <Image src={BurgerMenu} className="w-6 h-6" alt="menu-icon" />
             </button>
             <MobileNav
               navLinks={navLinks}

@@ -18,7 +18,12 @@ const Footer = () => {
                 className="hover:text-gray-400 relative"
                 key={link.id}
               >
-                <Image src={link.icon} width={32} height={32} />
+                <Image
+                  src={link.icon}
+                  width={32}
+                  height={32}
+                  alt={link.route}
+                />
               </Link>
             ))}
           </div>

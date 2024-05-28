@@ -29,8 +29,8 @@ const MobileNav = ({ navLinks, toggleMobileMenu, setToggleMobileMenu }) => {
   }
   return (
     <div
-      className={`absolute top-0  bg-white h-screen w-[300px] shadow-md p-4 duration-500 z-50   ${
-        toggleMobileMenu ? 'right-0 ' : '-right-80 '
+      className={`absolute top-0  bg-white h-screen w-[300px] shadow-md p-4 duration-500 z-50 overflow-x-hidden   ${
+        toggleMobileMenu ? 'right-0 ' : '-right-80 hidden '
       }`}
     >
       <div className="mt-5 relative">
