@@ -38,7 +38,7 @@ const Navbar = ({ title, navLinks, route }) => {
   }, [userMenu, setUserMenu])
 
   return (
-    <div className="  flex justify-between items-center border-b shadow-md p-7">
+    <div className="  flex justify-between items-center border-b shadow-md p-7 overflow-x-hidden">
       <h1 className="text-xl font-semibold">
         <Link href={route} className="flex items-center gap-2">
           <div>
