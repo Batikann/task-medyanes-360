@@ -1,17 +1,52 @@
+'use client'
+
 import { Formik, FieldArray, Form, Field } from 'formik'
 import TextInput from '../Inputs/TextInput.jsx'
 import SelectInput from '../Inputs/SelectInput.jsx'
 import DateInput from '../Inputs/DateInput.jsx'
 import TrashIcon from '/public/trash.svg'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import Loading from '../loading/index.jsx'
+import { getDateNow } from '../../lib/utils/dateUtils.js'
+import { getAPI } from '../../services/fetchAPI/index.js'
 
-const TaskForm = ({
-  initialValues,
-  validationSchema,
-  onSubmit,
-  users,
-  minDate,
-}) => {
+const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
+  const [users, setUsers] = useState([{ id: '', username: '' }])
+  const [minDate, setMinDate] = useState('')
+  useEffect(() => {
+    const getUsers = async () => {
+      const usersData = await getAPI('/user/get-users')
+      setUsers(usersData.data.users)
+    }
+
+    getUsers()
+    setMinDate(getDateNow())
+  }, [])
+
+  if (users.length <= 1) {
+    return <Loading />
+  }
+
+  const initialValues = {
+    id: task ? task.id : '',
+    title: task ? task.title : '',
+    description: task ? task.description : '',
+    priority: task ? task.priority : 'LOW',
+    createdAt: task ? new Date(task.createdAt).toISOString().slice(0, 10) : '',
+    status: task ? task.status : 'IN_PROGRESS',
+    assignedUsers: task
+      ? task.assignedUsers.map((assignedUser) => assignedUser.userId)
+      : [],
+    subtasks: task
+      ? task.subtasks.map((subtask) => ({
+          title: subtask.title,
+          createdAt: new Date(subtask.createdAt).toISOString().slice(0, 10),
+          status: subtask.status,
+        }))
+      : [],
+  }
+
   return (
     <Formik
       initialValues={initialValues}
@@ -20,6 +55,9 @@ const TaskForm = ({
     >
       {(formikProps) => {
         const minSubtaskDate = formikProps.values.createdAt || minDate
+        const isUpdate = !!task
+        const minCreatedAtDate = isUpdate ? initialValues.createdAt : minDate
+
         return (
           <Form className="flex flex-col gap-5 max-w-xl mx-auto">
             <TextInput label="Title" name="title" type="text" required />
@@ -49,7 +87,11 @@ const TaskForm = ({
                 {formikProps.errors.priority}
               </div>
             )}
-            <DateInput label="Created At" name="createdAt" min={minDate} />
+            <DateInput
+              label="Created At"
+              name="createdAt"
+              min={minCreatedAtDate}
+            />
             {formikProps.errors.createdAt && formikProps.touched.createdAt && (
               <div className="text-red-600 text-sm mt-1">
                 {formikProps.errors.createdAt}

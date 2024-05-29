@@ -8,16 +8,26 @@ import Loading from '../../../../components/loading'
 
 const TasksPage = () => {
   const [tasks, setTasks] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  //
   useEffect(() => {
     const getTasks = async () => {
       const taskData = await getAPI('/tasks/get-tasks')
       setTasks(taskData.data.tasks)
+      setLoading(false)
     }
     getTasks()
   }, [])
 
-  if (tasks.length <= 0) {
+  //Tasklerimiz gelene kadar kullancıyı göstermek üzere bir loading efekti
+  if (loading) {
     return <Loading />
+  }
+
+  //Eğer Veritabanında hiç task yoksa kullanıcıyı bu konuda bilgilendiririz.
+  if (tasks.length <= 0) {
+    return <p>No valid task found</p>
   }
 
   return (

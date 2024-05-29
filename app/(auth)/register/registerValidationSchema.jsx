@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 
-// Yup doğrulama şeması
+// Register işlemi için gerekli olan validasyon işlemimiz
 export const registerValidationSchema = Yup.object({
   username: Yup.string()
     .min(5, 'Kullanıcı adı en az 5 karakter olmak zorundadır!')

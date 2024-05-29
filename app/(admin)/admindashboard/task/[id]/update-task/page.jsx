@@ -9,23 +9,15 @@ import { updateTaskValidationSchema } from './updateTaskValidationSchema'
 
 const UpdateTaskPage = ({ params }) => {
   const [task, setTask] = useState(null)
-  const [users, setUsers] = useState([])
-  const [minDate, setMinDate] = useState('')
+
   const router = useRouter()
 
+  //Kullanıcı sayfaya girerken gelen id ye göre geçerli taskı getiriyoruz.
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const taskPromise = getAPI(`/tasks/${params.id}/get-task`)
-        const usersPromise = getAPI('/user/get-users')
-
-        const [taskRes, usersRes] = await Promise.all([
-          taskPromise,
-          usersPromise,
-        ])
-
+        const taskRes = await getAPI(`/tasks/${params.id}/get-task`)
         setTask(taskRes.task)
-        setUsers(usersRes.data.users)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -34,25 +26,7 @@ const UpdateTaskPage = ({ params }) => {
     fetchData()
   }, [params.id])
 
-  const initialValues = {
-    id: task ? task.id : '',
-    title: task ? task.title : '',
-    description: task ? task.description : '',
-    priority: task ? task.priority : 'LOW',
-    createdAt: task ? new Date(task.createdAt).toISOString().slice(0, 10) : '',
-    status: task ? task.status : 'IN_PROGRESS',
-    assignedUsers: task
-      ? task.assignedUsers.map((assignedUser) => assignedUser.userId)
-      : [],
-    subtasks: task
-      ? task.subtasks.map((subtask) => ({
-          title: subtask.title,
-          createdAt: new Date(subtask.createdAt).toISOString().slice(0, 10),
-          status: subtask.status,
-        }))
-      : [],
-  }
-
+  //Task güncelleme fonksiyonumuz
   const handleSubmit = async (values) => {
     const newData = { ...values, id: params.id }
     try {
@@ -67,17 +41,16 @@ const UpdateTaskPage = ({ params }) => {
     }
   }
 
+  //Task yüklenene kadar kullanıcı deneyimi için bir loading gösteriyoruz.
   if (!task) {
     return <Loading />
   }
 
   return (
     <TaskForm
-      initialValues={initialValues}
       onSubmit={handleSubmit}
-      users={users}
-      minDate={minDate}
       validationSchema={updateTaskValidationSchema}
+      task={task}
     />
   )
 }

@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 
+//Task Validasyon işlemlerimiz
 export const updateTaskValidationSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
   description: Yup.string().required('Description is required'),

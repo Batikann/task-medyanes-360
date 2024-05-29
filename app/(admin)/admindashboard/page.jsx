@@ -11,6 +11,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    //Veritabanından tüm tasklerin geçerli durumlara göre sayısını getiren fonksiyon
     const fetchTaskCounts = async () => {
       try {
         const taskData = await getAPI('/tasks/get-tasks')
@@ -22,11 +23,11 @@ const AdminDashboard = () => {
           setAllTaskCount(allTaskCount)
           setLoading(false)
         } else {
-          // Handle error case
+          // Hata varsa console ekranında göstericek
           console.error('Failed to fetch task counts')
         }
       } catch (error) {
-        // Handle network or other errors
+        // Ağ hatasını kontrol etmek için
         console.error('Error while fetching task counts:', error)
       }
     }

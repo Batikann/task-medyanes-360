@@ -1,5 +1,3 @@
-import Loading from '../loading'
-
 const DashboardCard = ({ title, count }) => {
   return (
     <div className="border p-4 rounded-md flex flex-col gap-4">

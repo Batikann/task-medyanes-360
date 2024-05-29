@@ -14,6 +14,8 @@ const Navbar = ({ title, navLinks, route }) => {
   const user = getUser()
   const router = useRouter()
   const pathName = usePathname()
+
+  //Logout işlemini gerçekleştiriyoru kullanıcıyı localstorage den siliyor
   const handleLogout = () => {
     localStorage.removeItem('currentUser')
     router.push('/login')
@@ -50,6 +52,7 @@ const Navbar = ({ title, navLinks, route }) => {
         </div>
         <ul className=" gap-4 items-center hidden md:flex">
           {navLinks.map((navLink) => (
+            // Hangi sayfadaysak geçerli sayfanın li etiketi rengi değişiyor bu sayede hangi sayfa da olduğumuz anlıyoruz.
             <li
               key={navLink.id}
               className={` hover:text-blue-500  ${

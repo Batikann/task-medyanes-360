@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { formatDate } from '../../lib/utils/formatter.js'
 
+//Taskimiziz önem derecesine göre önem alanının arka plan rengini değiştiriyoruz
 const checkPriority = (priority) => {
   switch (priority) {
     case 'LOW':
