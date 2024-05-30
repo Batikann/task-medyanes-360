@@ -33,6 +33,8 @@ const handler = async (req, res) => {
       }
       // Veriyi veritabanına kaydet
       const savedData = await createNewData('User', newData)
+
+      //Kayıt edilirken herhangi bir hata olduysa hata mesajı döndür
       if (savedData.error) {
         return res.status(500).json({
           status: 'error',

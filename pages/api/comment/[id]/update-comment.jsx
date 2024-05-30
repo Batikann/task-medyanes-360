@@ -26,6 +26,16 @@ const handler = async (req, res) => {
         { id: req.query.id }, // Güncelleme için where koşulu
         data // Güncellenecek veri
       )
+
+      // güncelleme işlemi yaparken herhangi bir hata alırsak bunu döndür.
+      if (result.error) {
+        return res.status(500).json({
+          status: 'error',
+          message: 'Veritabanın da bir hata oluştu!',
+          error: result.error,
+        })
+      }
+
       // Başarılı olursa 200 durum kodu ve güncellenmiş veriyi döner.
       return res.status(200).json({ status: 'success', data: result })
     } catch (error) {

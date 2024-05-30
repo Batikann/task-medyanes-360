@@ -28,6 +28,15 @@ const handler = async (req, res) => {
         include // İlişkili tabloları da dahil eder.
       )
 
+      // veritabanından getirme işlemi yaparken herhangi bir hata alırsak bunu döndür.
+      if (task.error) {
+        return res.status(500).json({
+          status: 'error',
+          message: 'Veritabanında bir hata oluştu!',
+          error: task.error,
+        })
+      }
+
       // Başarılı olursa 200 durum kodu ve task verisini döner.
       return res.status(200).json({ status: 'success', task })
     } catch (error) {

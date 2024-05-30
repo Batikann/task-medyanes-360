@@ -53,6 +53,15 @@ async function handler(req, res) {
 
     const result = await updateDataByAny('Task', { id }, newData)
 
+    // güncelleme işlemi yaparken herhangi bir hata alırsak bunu döndür.
+    if (result.error) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Veritabanında bir hata oluştu!',
+        error: result.error,
+      })
+    }
+
     // Başarılı olursa 200 durum kodu ve güncellenmiş veriyi döner.
     return res.status(200).json({ status: 'success', data: result })
   } catch (error) {

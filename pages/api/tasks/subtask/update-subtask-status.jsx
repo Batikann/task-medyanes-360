@@ -20,7 +20,20 @@ export default async function handler(req, res) {
 
   try {
     // updateDataByAny fonksiyonunu kullanarak Subtask tablosunda id ile eşleşen kaydı günceller.
-    await updateDataByAny('Subtask', { id: subtaskId }, { status })
+    const result = await updateDataByAny(
+      'Subtask',
+      { id: subtaskId },
+      { status }
+    )
+
+    // güncelleşme işlemi yaparken herhangi bir hata alırsak bunu döndür.
+    if (result.error) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Veritabanında bir hata oluştu!',
+        error: result.error,
+      })
+    }
     // Başarılı olursa 200 durum kodu ve başarı mesajı döner.
     return res.status(200).json({ status: 'success' })
   } catch (error) {

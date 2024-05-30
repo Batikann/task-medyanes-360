@@ -17,6 +17,15 @@ const handler = async (req, res) => {
         // 'Task' tablosundan bu Task id'lerine ait görevleri al
         const tasks = await getDataByMany('Task', { id: { in: taskIds } })
 
+        // veritabanından getirme işlemi yaparken herhangi bir hata alırsak bunu döndür.
+        if (tasks.error) {
+          return res.status(500).json({
+            status: 'error',
+            message: 'Veritabanında bir hata oluştu!',
+            error: tasks.error,
+          })
+        }
+
         // İşlem başarılı ise taskları response ile gönder.
         return res.status(200).json({ status: 'success', tasks })
       }

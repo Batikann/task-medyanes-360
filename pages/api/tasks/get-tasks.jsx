@@ -4,6 +4,15 @@ const handler = async (req, res) => {
   if (req.method === 'GET') {
     const tasks = await getAllData('Task')
 
+    //veritabanından get isteği  yaparken herhangi bir hata alırsak bunu döndür.
+    if (tasks.error) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Veritabanında bir hata oluştu!',
+        error: tasks.error,
+      })
+    }
+
     // 'COMPLETED_CHECK_PENDING' (Tamamlanan)  durumundaki görevlerin sayısını hesaplar.
     const completedCheckPendingCount = tasks.filter(
       (task) => task.status === 'COMPLETED_CHECK_PENDING'

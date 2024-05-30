@@ -29,6 +29,16 @@ const handler = async (req, res) => {
         include,
         orderBy
       )
+
+      // veritabanından yorumları getirirken herhangi bir hata alırsak bunu döndür.
+      if (comments.error) {
+        return res.status(500).json({
+          status: 'error',
+          message: 'Veritabanın da bir hata oluştu!',
+          error: comments.error,
+        })
+      }
+
       // Başarılı olursa 200 durum kodu ve yorumları döner.
       return res.status(200).json({ status: 'success', comments })
     } catch (error) {

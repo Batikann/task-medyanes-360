@@ -11,6 +11,15 @@ const handler = async (req, res) => {
         }))
       }
     )
+
+    // get isteği  yaparken herhangi bir hata alırsak bunu döndür.
+    if (users.error) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Veritabanında bir hata oluştu!',
+        error: result.error,
+      })
+    }
     return res.status(200).json({ status: 'success', data: { users } })
   }
   return res

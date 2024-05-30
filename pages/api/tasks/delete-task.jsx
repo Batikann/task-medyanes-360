@@ -21,6 +21,14 @@ const handler = async (req, res) => {
       // Belirtilen id'ye göre veriyi sil
       const deleteRes = await deleteDataByAny('Task', { id })
 
+      // silme işlemi yaparken herhangi bir hata alırsak bunu döndür.
+      if (deleteRes.error) {
+        return res.status(500).json({
+          status: 'error',
+          message: 'Veritabanında bir hata oluştu!',
+          error: deleteRes.error,
+        })
+      }
       // Hata kontrolü
       if (deleteRes.error) {
         return res.status(404).json({ status: 'error', res: deleteRes.error })

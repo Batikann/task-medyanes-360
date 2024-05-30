@@ -44,6 +44,14 @@ const handler = async (req, res) => {
       // createNewData fonksiyonunu kullanarak Task tablosuna yeni veri ekler.
       const result = await createNewData('Task', newData)
 
+      // veritabanına ekleme işlemi yaparken herhangi bir hata alırsak bunu döndür.
+      if (result.error) {
+        return res.status(500).json({
+          status: 'error',
+          message: 'Veritabanına kaydedilirken bir hata oluştu!',
+          error: result.error,
+        })
+      }
       return res.status(200).json({ status: 'success', data: result })
     } catch (error) {
       return res.status(500).json({ status: 'error', message: error.message })
