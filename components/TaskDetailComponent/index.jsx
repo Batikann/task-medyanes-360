@@ -10,6 +10,7 @@ import Comments from '../Comments/'
 import CommentForm from '../CommentForm'
 import Tab from '../Tab'
 import { useRouter } from 'next/navigation'
+import { useNotification } from '../../context/NotificationContext '
 
 const TaskDetailsContent = ({ role, taskID }) => {
   const router = useRouter()
@@ -18,6 +19,7 @@ const TaskDetailsContent = ({ role, taskID }) => {
   const [page, setPage] = useState('Task Detail')
   const [refreshPage, setRefreshPage] = useState(false)
   const [editComment, setEditComment] = useState(null)
+  const { showNotification } = useNotification()
   const user = getUser()
 
   useEffect(() => {
@@ -41,6 +43,7 @@ const TaskDetailsContent = ({ role, taskID }) => {
     const res = await postAPI(`/tasks/delete-task`, { id })
     if (res.status === 'success') {
       router.push('/admindashboard/task')
+      showNotification('Deleting a task was successful.')
     }
   }
 

@@ -11,11 +11,13 @@ import Loading from '../../../components/loading'
 import Input from '../_components/Input'
 import Button from '../_components/Button'
 import Link from 'next/link'
+import { useNotification } from '../../../context/NotificationContext '
 
 const LoginPage = () => {
   const router = useRouter()
   const [error, setError] = useState('')
   const loading = useRoleRedirect([''], '/userdashboard')
+  const { showNotification } = useNotification()
 
   //kullanıcı bilgisi yüklenene kadar kullanıcı gittiği sayfayı göremesin diye bir loading gösteriyoruz.
   if (loading) {
@@ -45,10 +47,12 @@ const LoginPage = () => {
               if (res.data.role === 'USER') {
                 setTimeout(() => {
                   router.push('/userdashboard')
+                  showNotification(`Welcome to ${res.data.user.username}`)
                 }, 3000)
               } else if (res.data.role === 'ADMIN') {
                 setTimeout(() => {
                   router.push('/admindashboard')
+                  showNotification(`Welcome to ${res.data.user.username}`)
                 }, 3000)
               }
             } else {

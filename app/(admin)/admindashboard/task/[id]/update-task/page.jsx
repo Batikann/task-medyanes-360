@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation'
 import Loading from '../../../../../../components/loading'
 import TaskForm from '../../../../../../components/TaskForm'
 import { updateTaskValidationSchema } from './updateTaskValidationSchema'
-
+import { useNotification } from '../../../../../../context/NotificationContext '
 const UpdateTaskPage = ({ params }) => {
   const [task, setTask] = useState(null)
-
+  const { showNotification } = useNotification()
   const router = useRouter()
 
   //Kullanıcı sayfaya girerken gelen id ye göre geçerli taskı getiriyoruz.
@@ -33,6 +33,7 @@ const UpdateTaskPage = ({ params }) => {
       const res = await postAPI(`/tasks/update-task`, newData)
       if (res.status === 'success') {
         router.push('/admindashboard/task')
+        showNotification('Task was successfully updated.')
       } else {
         console.log(res.message)
       }
