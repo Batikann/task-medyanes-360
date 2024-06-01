@@ -47,12 +47,12 @@ const LoginPage = () => {
               if (res.data.role === 'USER') {
                 setTimeout(() => {
                   router.push('/userdashboard')
-                  showNotification(`Welcome to ${res.data.user.username}`)
+                  showNotification(`Welcome  ${res.data.user.username}`)
                 }, 3000)
               } else if (res.data.role === 'ADMIN') {
                 setTimeout(() => {
                   router.push('/admindashboard')
-                  showNotification(`Welcome to ${res.data.user.username}`)
+                  showNotification(`Welcome  ${res.data.user.username}`)
                 }, 3000)
               }
             } else {
