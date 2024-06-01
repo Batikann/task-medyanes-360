@@ -39,7 +39,7 @@ const Navbar = ({ title, navLinks, route }) => {
           onClick={() => setUserMenu(!userMenu)}
         >
           <Image src={userMenu ? UpArrow : DownArrow} width={15} height={15} />
-          <p className="font-bold text-gray-500 text-lg  ">{user.username}</p>
+          <p className="font-bold text-gray-500 text-lg  ">{user?.username}</p>
           {userMenu && (
             <div className="absolute bg-white shadow-md w-28 p-4 right-5 top-10  z-40">
               <button

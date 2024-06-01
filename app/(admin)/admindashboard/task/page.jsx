@@ -28,12 +28,12 @@ const TasksPage = () => {
       const filteredTasks = queryParam
         ? allTasks.filter(
             (task) =>
-              normalizeInput(task.title)
+              normalizeInput(task?.title)
                 .toLowerCase()
                 .includes(queryParam.toLowerCase()) || // Başlıkta arama yapar
               task.assignedUsers.some(
                 (user) =>
-                  normalizeInput(user.user.username)
+                  normalizeInput(user.user?.username)
                     .toLowerCase()
                     .includes(queryParam.toLowerCase()) // Kullanıcı adında arama yapar
               )
