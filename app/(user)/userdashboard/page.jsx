@@ -3,13 +3,14 @@
 import { useEffect, useState } from 'react'
 import { getAPI } from '../../../services/fetchAPI'
 import getUser from '../../../lib/utils/getUser.js'
-import TaskCard from '../../../components/TaskCard'
-import Loading from '../../../components/loading'
+import TaskList from '../../../components/TaskList'
+import Dropdown from '../../../components/Dropdown'
+import { taskStatus } from '../../../lib/constants/taskStatus'
 
 const UserDashboard = () => {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
-
+  const [selectedStatus, setSelectedStatus] = useState(taskStatus[0].name)
   //Giriş yapan kullanıcının bilgilerini getiren fonksiyonumuz
   const user = getUser()
 
@@ -17,7 +18,9 @@ const UserDashboard = () => {
     //Gelen kullanıcı bilgilerine göre o kullanıcının görev aldığı taskleri getiren fonksiyonumuz
     const getTaskForUser = async () => {
       try {
-        const res = await getAPI(`/tasks/${user.id}/get-tasks-user`)
+        const res = await getAPI(
+          `/tasks/${user.id}/get-tasks-user?status=${selectedStatus}`
+        )
 
         if (res.status === 'success') {
           setTasks(res.tasks)
@@ -32,14 +35,10 @@ const UserDashboard = () => {
     }
 
     getTaskForUser()
-  }, [])
-
-  if (loading) {
-    return <Loading />
-  }
+  }, [selectedStatus])
 
   //Eğer kullanıcının görev aldığı bir task yok ise böyle bir mesaj gösterilir
-  if (tasks.length <= 0) {
+  if (tasks.length <= 0 && !loading) {
     return (
       <p className="h-screen w-screen flex justify-center  mt-5 font-semibold text-2xl">
         Task not found assigned to you !
@@ -48,14 +47,15 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {tasks.map((task) => (
-        <TaskCard
-          key={task.id}
-          task={task}
-          route={`/userdashboard/task/${task.id}`}
+    <div className="flex flex-col gap-7">
+      <div className="flex justify-end">
+        <Dropdown
+          selectedStatus={selectedStatus}
+          setSelectedStatus={setSelectedStatus}
+          taskStatus={taskStatus}
         />
-      ))}
+      </div>
+      <TaskList tasks={tasks} dashboard={'userdashboard'} loading={loading} />
     </div>
   )
 }

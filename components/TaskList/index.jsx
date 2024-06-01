@@ -1,7 +1,7 @@
 import TaskCard from '../TaskCard/index'
 import Loading from '../loading'
 
-const TaskList = ({ tasks, loading }) => {
+const TaskList = ({ tasks, loading, dashboard }) => {
   // Tasklerimiz gelene kadar kullanıcıyı göstermek üzere bir loading efekti
   if (loading) {
     return <Loading />
@@ -12,7 +12,7 @@ const TaskList = ({ tasks, loading }) => {
         <TaskCard
           key={task.id}
           task={task}
-          route={`/admindashboard/task/${task.id}`}
+          route={`/${dashboard}/task/${task.id}`}
         />
       ))}
     </div>

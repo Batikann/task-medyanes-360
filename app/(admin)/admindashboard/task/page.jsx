@@ -82,7 +82,7 @@ const TasksPage = () => {
     <div className="flex flex-col gap-5">
       <SearchBar inputValue={inputValue} setInputValue={setInputValue} />
       {/* TaskList bileşenini render ediyoruz */}
-      <TaskList tasks={tasks} loading={loading} />
+      <TaskList tasks={tasks} loading={loading} dashboard={'admindashboard'} />
     </div>
   )
 }
