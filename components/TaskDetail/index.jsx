@@ -108,7 +108,7 @@ const TaskDetail = ({
             <p
               className={`${checkPriority(
                 taskDetail.priority
-              )} text-white p-2 px-4 text-sm rounded-full font-bold  `}
+              )}  p-2 px-4 text-sm rounded-full font-bold  `}
             >
               {priorityLocalization(taskDetail.priority)} <span>ÖNCELİK</span>
             </p>

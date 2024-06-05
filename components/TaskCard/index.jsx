@@ -68,7 +68,7 @@ const TaskCard = ({ task, route }) => {
         <p
           className={`${checkPriority(
             task.priority
-          )} text-white p-[7px] px-3 text-sm rounded-full font-bold`}
+          )}  p-[7px] px-3 text-sm rounded-full font-bold`}
         >
           <span>{priorityLocalization(task.priority)}</span> ÖNCELİK
         </p>
