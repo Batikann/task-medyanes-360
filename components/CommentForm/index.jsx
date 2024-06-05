@@ -102,7 +102,7 @@ const CommentForm = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center justify-center bg-blue-600 text-white p-3 text-lg font-semibold rounded-lg hover:bg-blue-500 cursor-pointer"
+              className="flex items-center justify-center bg-blue-600 text-white p-3 text-lg font-semibold rounded-lg hover:bg-blue-500 cursor-pointer transition-all ease-in-out duration-500 transform"
             >
               {editComment ? 'Güncelle' : 'Ekle'}
             </button>

@@ -1,15 +1,17 @@
 import Link from 'next/link'
 import { formatDate, priorityLocalization } from '../../lib/utils/formatter.js'
-
+import { FaCalendar } from 'react-icons/fa'
+import { GrAttachment } from 'react-icons/gr'
+import { BiSolidComment } from 'react-icons/bi'
 //Taskimiziz önem derecesine göre önem alanının arka plan rengini değiştiriyoruz
 const checkPriority = (priority) => {
   switch (priority) {
     case 'LOW':
-      return ' bg-green-500 '
+      return ' bg-[#CDFAD5] text-[#799351]  '
     case 'MEDIUM':
-      return ' bg-orange-600 '
+      return ' bg-[#FFCF96] text-[#FF9A00]'
     case 'HIGH':
-      return ' bg-red-600 '
+      return ' bg-[#EF9595] text-[#FF0000] '
     default:
       return ''
   }
@@ -60,24 +62,38 @@ const TaskCard = ({ task, route }) => {
   return (
     <Link
       href={route}
-      className="border p-4 flex flex-col gap-3 hover:shadow-md cursor-pointer rounded-md hover:scale-105 items-start md:items-stretch"
+      className="border p-4 flex flex-col gap-3 hover:shadow-md cursor-pointer rounded-md hover:scale-105 items-start md:items-stretch transition-all ease-in-out duration-500 transform"
     >
-      <div className="flex lg:items-center lg:justify-between lg:flex-row flex-col  gap-3 items-start flex-wrap">
-        <h2 className="text-2xl font-bold hover:text-blue-600">{task.title}</h2>
-
+      <div className="flex   flex-col  gap-3 items-start flex-wrap">
         <p
           className={`${checkPriority(
             task.priority
-          )} text-white p-2 px-4 text-sm rounded-full font-bold`}
+          )} text-white p-[7px] px-3 text-sm rounded-full font-bold`}
         >
           <span>{priorityLocalization(task.priority)}</span> ÖNCELİK
         </p>
+        <h2 className="text-2xl font-bold hover:text-blue-600 transition-all ease-in-out duration-500 transform">
+          {task.title}
+        </h2>
       </div>
       <div>
         <p className="text-lg line-clamp-3">{task.description}</p>
       </div>
       <p>{taskStatusLocalization(task.status)}</p>
-      <p>{formatDate(task.createdAt)}</p>
+      <div className="flex gap-4 items-center">
+        <div className="flex items-center gap-2 text-gray-500">
+          <FaCalendar />
+          <p>{formatDate(task.createdAt)}</p>
+        </div>
+        <div className="flex items-center gap-2 text-gray-500">
+          <GrAttachment />
+          <p>{task.subtasks.length ?? 0}</p>
+        </div>
+        <div className="flex items-center gap-2 text-gray-500">
+          <BiSolidComment />
+          <p>{task.comments.length ?? 0}</p>
+        </div>
+      </div>
     </Link>
   )
 }

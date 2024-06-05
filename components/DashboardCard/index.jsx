@@ -16,7 +16,7 @@ const DashboardCard = ({ title, count, status }) => {
   )
   return (
     <div className="border p-4 rounded-md flex flex-col gap-4">
-      <h3 className="text-2xl font-semibold uppercase  hover:text-blue-500">
+      <h3 className="text-2xl font-semibold uppercase  hover:text-blue-500 transition-all ease-in-out duration-500 transform">
         <Link
           href={`${pathname}/task` + '?' + createQueryString('task', status)}
         >

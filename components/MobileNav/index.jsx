@@ -38,7 +38,7 @@ const MobileNav = ({ navLinks, toggleMobileMenu, setToggleMobileMenu }) => {
           {navLinks.map((navLink) => (
             <li
               key={navLink.id}
-              className={`text-lg font-bold hover:text-blue-500  ${
+              className={`text-lg font-bold hover:text-blue-500 transition-all ease-in-out duration-500 transform  ${
                 pathName === navLink.route ? 'text-blue-500' : ''
               }`}
             >

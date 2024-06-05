@@ -1,12 +1,11 @@
-import {
-  getDataByMany,
-  getDataByManyRelitionalTable,
-} from '../../../../services/servicesOperations'
+import { getDataByManyRelitionalTable } from '../../../../services/servicesOperations'
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
     const { id } = req.query
     const include = {
+      subtasks: true,
+      comments: true,
       // Task ile ilişkilendirilmiş comments verisini getirir.
       assignedUsers: {
         // assignedUsers ile ilişkilendirilmiş user verisini getirir.

@@ -101,7 +101,7 @@ const RegisterPage = () => {
       <div className="mt-4">
         <Link
           href={'/login'}
-          className="text-blue-400 text-base hover:underline-offset-2 hover:underline"
+          className="text-blue-400 text-base hover:underline-offset-2 hover:underline transition-all ease-in-out duration-500 transform"
         >
           Buradan Giriş Yap!
         </Link>

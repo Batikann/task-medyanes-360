@@ -15,7 +15,7 @@ const Footer = () => {
               <Link
                 href={link.route}
                 target="_blank"
-                className="hover:text-gray-400 relative"
+                className="hover:text-gray-400 relative transition-all ease-in-out duration-500 transform"
                 key={link.id}
               >
                 <Image

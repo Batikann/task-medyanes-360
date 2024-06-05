@@ -47,7 +47,7 @@ const Dropdown = ({ selectedStatus, setSelectedStatus, taskStatus }) => {
   return (
     <div>
       <select
-        className="py-4 px-6 text-sm font-semibold"
+        className="py-4 px-6 text-sm font-semibold rounded-md"
         onChange={handleChange}
       >
         {taskStatus.map((task) => (

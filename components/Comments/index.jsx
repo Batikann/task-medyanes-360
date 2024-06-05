@@ -173,7 +173,7 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
             {comment.userId === user.id &&
               formatDate(comment.createdAt) === today && (
                 <button
-                  className="absolute right-0 top-0 bg-yellow-400 hover:bg-yellow-300 text-white font-semibold px-2 py-1 rounded"
+                  className="absolute right-0 top-0 bg-yellow-400 hover:bg-yellow-300 text-white font-semibold px-2 py-1 rounded transition-all ease-in-out duration-500 transform"
                   onClick={() => setEditComment(comment)}
                 >
                   Güncelle

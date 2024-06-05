@@ -119,7 +119,7 @@ const TaskDetail = ({
               <Button
                 title={'Güncelle'}
                 className={
-                  'bg-blue-500 text-white p-2 px-4 text-sm rounded-lg hover:bg-blue-400 font-semibold'
+                  'bg-blue-500 text-white p-2 px-4 text-sm rounded-lg hover:bg-blue-400 font-semibold transition-all ease-in-out duration-500 transform'
                 }
                 onClick={updateTaskHandler}
               />
@@ -127,7 +127,7 @@ const TaskDetail = ({
               <Button
                 title={'Sil'}
                 className={
-                  'bg-red-500 text-white p-2 px-4 text-sm rounded-lg hover:bg-red-400 font-semibold'
+                  'bg-red-500 text-white p-2 px-4 text-sm rounded-lg hover:bg-red-400 font-semibold transition-all ease-in-out duration-500 transform'
                 }
                 onClick={deleteTaskHandler}
               />
@@ -193,8 +193,8 @@ const TaskDetail = ({
                       ? 'Alt başlık tamamlanmadı'
                       : 'Alt başlık tamamlandı'
                   }
-                  className={`bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600  hover:text-white ${
-                    subtask.status ? 'hover:bg-red-400' : 'hover:bg-green-400'
+                  className={`bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600  hover:text-white transition-all ease-in-out duration-500 transform ${
+                    subtask.status ? 'hover:bg-red-400 ' : 'hover:bg-green-400'
                   }`}
                   onClick={() => handleStatusToggle(subtask.id, subtask.status)}
                 />

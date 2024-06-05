@@ -9,6 +9,7 @@ import BurgerMenu from '/public/burger-menu.svg'
 import Image from 'next/image'
 import DownArrow from '../../public/down-arrow.svg'
 import UpArrow from '../../public/up-arrow.svg'
+import { IoIosLogOut } from 'react-icons/io'
 
 const Navbar = ({ title, navLinks, route }) => {
   const [userMenu, setUserMenu] = useState(false)
@@ -34,24 +35,7 @@ const Navbar = ({ title, navLinks, route }) => {
         </Link>
       </h1>
       <div className="flex items-center gap-3">
-        <div
-          className="relative flex flex-row-reverse gap-2 items-center cursor-pointer"
-          onClick={() => setUserMenu(!userMenu)}
-        >
-          <Image src={userMenu ? UpArrow : DownArrow} width={15} height={15} />
-          <p className="font-bold text-gray-500 text-lg  ">{user?.username}</p>
-          {userMenu && (
-            <div className="absolute bg-white shadow-md w-28 p-4 right-5 top-10  z-40">
-              <button
-                onClick={handleLogout}
-                className="hover:text-blue-500 z-50 relative"
-              >
-                Çıkış Yap
-              </button>
-            </div>
-          )}
-        </div>
-        <ul className=" gap-4 items-center hidden md:flex">
+        <ul className=" gap-6 items-center hidden md:flex font-medium text-gray-600">
           {navLinks.map((navLink) => (
             // Hangi sayfadaysak geçerli sayfanın li etiketi rengi değişiyor bu sayede hangi sayfa da olduğumuz anlıyoruz.
             <li
@@ -60,10 +44,33 @@ const Navbar = ({ title, navLinks, route }) => {
                 pathName === navLink.route ? 'text-blue-500' : ''
               }`}
             >
-              <Link href={navLink.route}>{navLink.title}</Link>
+              <Link href={navLink.route} className="flex items-center gap-2">
+                {navLink.title}
+                <navLink.icon size={15} />
+              </Link>
             </li>
           ))}
         </ul>
+        <div
+          className="relative flex flex-row-reverse gap-2 items-center cursor-pointer "
+          onClick={() => setUserMenu(!userMenu)}
+        >
+          <Image src={userMenu ? UpArrow : DownArrow} width={15} height={15} />
+          <p className="flex items-center gap-2 font-medium text-gray-600 ml-2">
+            {user?.username}
+          </p>
+          {userMenu && (
+            <div className="absolute bg-white shadow-xl w-36 p-4 right-5 top-10 border  z-40">
+              <button
+                onClick={handleLogout}
+                className="hover:text-blue-500 z-50 relative flex gap-2 items-center text-sm"
+              >
+                <IoIosLogOut size={20} className="text-gray-600 font-medium" />
+                <span className="font-medium text-gray-600">Çıkış Yap</span>
+              </button>
+            </div>
+          )}
+        </div>
         {navLinks.length > 0 && (
           <div className="md:hidden flex items-center gap-4">
             <button
