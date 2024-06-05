@@ -23,7 +23,7 @@ const handler = async (req, res) => {
     //Hiçbir hata yoksa status success döndür ve gelen response da login olan kullanıcı bilgilerini de getir.
     return res.status(200).json({
       status: 'success',
-      message: 'Login successful',
+      message: 'Giriş İşlemi Başarılı',
       data: { user, role: user.role },
     })
   } else {

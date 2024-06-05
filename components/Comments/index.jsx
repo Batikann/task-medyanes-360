@@ -3,7 +3,10 @@
 import { useEffect, useState } from 'react'
 import { getAPI } from '../../services/fetchAPI'
 import Loading from '../loading'
-import { formatDate } from '../../lib/utils/formatter'
+import {
+  commentStatusLocalization,
+  formatDate,
+} from '../../lib/utils/formatter'
 import getUser from '../../lib/utils/getUser'
 
 //Gelen yorumunun tipine göre yanında ki icon belirleniyor.
@@ -146,12 +149,12 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
 
   //Geçerli taskın hiç yorumu yok ise bu kısım çalışıyor.
   if (comments.length === 0) {
-    return <p>Not found Comment</p>
+    return <p>Yorum Bulunamadı</p>
   }
 
   return (
     <div className="flex flex-col gap-4 border w-full p-4">
-      <h2 className="text-xl font-semibold text-gray-500">Activities</h2>
+      <h2 className="text-xl font-semibold text-gray-500">Faaliyetler</h2>
       {comments.map((comment) => (
         <div key={comment.id} className="flex gap-4 border-b pb-3 relative ">
           {getStatusIcon(comment.status)}
@@ -160,7 +163,9 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
               {comment.user.username}
             </h3>
             <div className="flex gap-4 items-center my-1">
-              <span className="text-gray-500 text-sm">{comment.status}</span>
+              <span className="text-gray-500 text-sm">
+                {commentStatusLocalization(comment.status)}
+              </span>
               <p className="text-sm">{formatDate(comment.createdAt)}</p>
             </div>
             <p className="text-lg">{comment.content}</p>

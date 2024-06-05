@@ -25,6 +25,25 @@ const Dropdown = ({ selectedStatus, setSelectedStatus, taskStatus }) => {
     [searchParams]
   )
 
+  function localizationForDropdown(status) {
+    switch (status) {
+      case 'ALL':
+        return 'Hepsi'
+      case 'COMPLETED_CHECK_PENDING':
+        return 'Tamamlanmış - Kontrol Bekliyor'
+      case 'IN_PROGRESS':
+        return 'Devam Ediyor'
+      case 'UPDATE_PENDING':
+        return 'Güncelleme Bekliyor'
+      case 'INFO_REQUEST_PENDING':
+        return 'Bilgi Talebi Bekliyor'
+      case 'CUSTOMER_WAITING':
+        return 'Müşteri Bekliyor'
+      default:
+        return 'Bilinmeyen Durum'
+    }
+  }
+
   return (
     <div>
       <select
@@ -43,7 +62,7 @@ const Dropdown = ({ selectedStatus, setSelectedStatus, taskStatus }) => {
             key={task.id}
             value={task.id}
           >
-            {task.name}
+            {localizationForDropdown(task.name)}
           </option>
         ))}
       </select>

@@ -75,7 +75,7 @@ const handler = async (req, res) => {
         default:
           return res.status(400).json({
             status: 'error',
-            message: 'Invalid query parameter',
+            message: 'Geçersiz Arama Parametresi',
           })
       }
     } catch (error) {

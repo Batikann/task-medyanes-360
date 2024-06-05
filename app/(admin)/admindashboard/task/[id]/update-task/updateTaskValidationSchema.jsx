@@ -1,13 +1,13 @@
 import * as Yup from 'yup'
 
-//Task Validasyon işlemlerimiz
+//Task Eklerkenki validasyon işlemleri için geçerli validasyon kurallarımız
 export const updateTaskValidationSchema = Yup.object().shape({
-  title: Yup.string().required('Title is required'),
-  description: Yup.string().required('Description is required'),
+  title: Yup.string().required('Başlık gereklidir'),
+  description: Yup.string().required('Açıklama gereklidir'),
   priority: Yup.mixed()
     .oneOf(['LOW', 'MEDIUM', 'HIGH'])
-    .required('Priority is required'),
-  createdAt: Yup.date().required('Created date is required'),
+    .required('Öncelik gereklidir'),
+  createdAt: Yup.date().required('Oluşturulma tarihi gereklidir'),
   status: Yup.mixed()
     .oneOf([
       'COMPLETED_CHECK_PENDING',
@@ -16,11 +16,11 @@ export const updateTaskValidationSchema = Yup.object().shape({
       'INFO_REQUEST_PENDING',
       'CUSTOMER_WAITING',
     ])
-    .required('Status is required'),
+    .required('Durum gereklidir'),
   assignedUsers: Yup.array().of(Yup.string()),
   subtasks: Yup.array().of(
     Yup.object().shape({
-      title: Yup.string().required('Subtask title is required'),
+      title: Yup.string().required('Alt görev başlığı gereklidir'),
       status: Yup.boolean(),
     })
   ),

@@ -1,11 +1,52 @@
 'use client'
 
 import checkPriority from '../../lib/utils/checkPriority'
-import { formatDate } from '../../lib/utils/formatter'
+import { formatDate, priorityLocalization } from '../../lib/utils/formatter'
 import Button from '../Buttons/Button'
 import { useEffect, useState } from 'react'
 import { postAPI } from '../../services/fetchAPI'
 import Tab from '../Tab'
+
+const taskStatusLocalization = (status) => {
+  switch (status) {
+    case 'COMPLETED_CHECK_PENDING':
+      return (
+        <p>
+          <span className="mr-2 font-bold">Durum:</span>Proje bitti kontrol
+          bekliyor
+        </p>
+      )
+    case 'IN_PROGRESS':
+      return (
+        <p>
+          <span className="mr-2 font-bold">Durum:</span>Çalışma devam ediyor
+        </p>
+      )
+    case 'UPDATE_PENDING':
+      return (
+        <p>
+          <span className="mr-2 font-bold">Durum:</span>Güncelleme için bilgi
+          bekliyor
+        </p>
+      )
+    case 'INFO_REQUEST_PENDING':
+      return (
+        <p>
+          <span className="font-bold mr-2">Durum:</span>Eksik bilgi olabilir
+          bilgi
+        </p>
+      )
+    case 'CUSTOMER_WAITING':
+      return (
+        <p>
+          <span className="font-bold mr-2">Durum:</span>Müşteri kontrolü
+          bekliyor
+        </p>
+      )
+    default:
+      return 'Bilinmeyen durum'
+  }
+}
 
 const TaskDetail = ({
   taskDetail,
@@ -69,14 +110,14 @@ const TaskDetail = ({
                 taskDetail.priority
               )} text-white p-2 px-4 text-sm rounded-full font-bold  `}
             >
-              {taskDetail.priority} <span>PRIORITY</span>
+              {priorityLocalization(taskDetail.priority)} <span>ÖNCELİK</span>
             </p>
           </div>
           {/* Kullanıcının role değeri admin ise bu alana erişebilir */}
           {role === 'ADMIN' && (
             <div className="flex gap-4">
               <Button
-                title={'Update'}
+                title={'Güncelle'}
                 className={
                   'bg-blue-500 text-white p-2 px-4 text-sm rounded-lg hover:bg-blue-400 font-semibold'
                 }
@@ -84,7 +125,7 @@ const TaskDetail = ({
               />
 
               <Button
-                title={'Delete'}
+                title={'Sil'}
                 className={
                   'bg-red-500 text-white p-2 px-4 text-sm rounded-lg hover:bg-red-400 font-semibold'
                 }
@@ -94,18 +135,16 @@ const TaskDetail = ({
           )}
         </div>
         <div className="flex md:flex-row flex-col md:items-center gap-4 ">
-          <p>Created Date : {formatDate(taskDetail.createdAt)}</p>
-          <p className="font-bold ">
-            Status:
-            <span className="text-lg font-medium ml-2">
-              {taskDetail.status}
-            </span>
+          <p>
+            <span className="mr-2 font-bold">Oluşturma Tarihi :</span>{' '}
+            {formatDate(taskDetail.createdAt)}
           </p>
+          <p>{taskStatusLocalization(taskDetail.status)}</p>
         </div>
         <p className="text-lg">{taskDetail.description}</p>
       </div>
       <div className="flex flex-col gap-4 border-b pb-4">
-        <h2 className="uppercase text-2xl font-semibold">Team</h2>
+        <h2 className="uppercase text-2xl font-semibold">Takım</h2>
         <div className="flex flex-col gap-3">
           {taskDetail.assignedUsers.map((teamMember) => (
             <div className="flex items-center gap-3" key={teamMember.user.id}>
@@ -124,7 +163,7 @@ const TaskDetail = ({
       </div>
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-bold uppercase">Sub-Tasks</h2>
+          <h2 className="text-2xl font-bold uppercase">Alt Başlıklar</h2>
           <span className="text-xl font-bold">
             {completedSubtasks}/{totalSubtasks}
           </span>
@@ -136,13 +175,13 @@ const TaskDetail = ({
               className="flex flex-col gap-2 items-start border-b pb-4"
             >
               <div className="flex items-center gap-4">
-                <p>Last Date: {formatDate(subtask.createdAt)}</p>
+                <p>Son Tarih: {formatDate(subtask.createdAt)}</p>
                 <p
                   className={` p-1 px-2 text-sm font-semibold text-white rounded-lg ${
                     subtask.status ? 'bg-green-400' : 'bg-orange-300'
                   }`}
                 >
-                  {subtask.status ? 'done' : 'in progress'}
+                  {subtask.status ? 'Bitti' : 'Devam Etmekte'}
                 </p>
               </div>
               <p>{subtask.title}</p>
@@ -150,7 +189,9 @@ const TaskDetail = ({
               {updateButtonVisible && (
                 <Button
                   title={
-                    subtask.status ? 'Subtask as not done' : 'Subtask as done'
+                    subtask.status
+                      ? 'Alt başlık tamamlanmadı'
+                      : 'Alt başlık tamamlandı'
                   }
                   className={`bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600  hover:text-white ${
                     subtask.status ? 'hover:bg-red-400' : 'hover:bg-green-400'

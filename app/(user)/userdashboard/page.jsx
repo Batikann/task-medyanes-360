@@ -6,20 +6,23 @@ import getUser from '../../../lib/utils/getUser.js'
 import TaskList from '../../../components/TaskList'
 import Dropdown from '../../../components/Dropdown'
 import { taskStatus } from '../../../lib/constants/taskStatus'
+import { useSearchParams } from 'next/navigation'
 
 const UserDashboard = () => {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedStatus, setSelectedStatus] = useState(taskStatus[0].name)
+  const searchParams = useSearchParams()
   //Giriş yapan kullanıcının bilgilerini getiren fonksiyonumuz
   const user = getUser()
+  const search = searchParams.get('taskStatus')
 
   useEffect(() => {
     //Gelen kullanıcı bilgilerine göre o kullanıcının görev aldığı taskleri getiren fonksiyonumuz
     const getTaskForUser = async () => {
       try {
         const res = await getAPI(
-          `/tasks/${user.id}/get-tasks-user?status=${selectedStatus}`
+          `/tasks/${user.id}/get-tasks-user?status=${selectedStatus ?? 'all'}`
         )
 
         if (res.status === 'success') {
@@ -35,14 +38,23 @@ const UserDashboard = () => {
     }
 
     getTaskForUser()
-  }, [selectedStatus])
+  }, [selectedStatus, search])
 
   //Eğer kullanıcının görev aldığı bir task yok ise böyle bir mesaj gösterilir
   if (tasks.length <= 0 && !loading) {
     return (
-      <p className="h-screen w-screen flex justify-center  mt-5 font-semibold text-2xl">
-        Task not found assigned to you !
-      </p>
+      <div>
+        <div className="flex justify-end">
+          <Dropdown
+            selectedStatus={selectedStatus}
+            setSelectedStatus={setSelectedStatus}
+            taskStatus={taskStatus}
+          />
+        </div>
+        <p className="h-screen w-screen flex justify-center  mt-5 font-semibold text-2xl">
+          Herhangi bir göreviniz yok!
+        </p>
+      </div>
     )
   }
 

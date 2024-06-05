@@ -60,13 +60,13 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
 
         return (
           <Form className="flex flex-col gap-5 max-w-xl mx-auto">
-            <TextInput label="Title" name="title" type="text" required />
+            <TextInput label="Başlık" name="title" type="text" required />
             {formikProps.errors.title && formikProps.touched.title && (
               <div className="text-red-600 text-sm mt-1">
                 {formikProps.errors.title}
               </div>
             )}
-            <TextInput label="Description" name="description" as="textarea" />
+            <TextInput label="Açıklama" name="description" as="textarea" />
             {formikProps.errors.description &&
               formikProps.touched.description && (
                 <div className="text-red-600 text-sm mt-1">
@@ -74,7 +74,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                 </div>
               )}
             <SelectInput
-              label="Priority"
+              label="Öncelik"
               name="priority"
               options={[
                 { value: 'LOW', label: 'Low' },
@@ -88,7 +88,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               </div>
             )}
             <DateInput
-              label="Created At"
+              label="Oluşturma Tarihi"
               name="createdAt"
               min={minCreatedAtDate}
             />
@@ -98,7 +98,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               </div>
             )}
             <SelectInput
-              label="Status"
+              label="Durum"
               name="status"
               options={[
                 {
@@ -119,22 +119,24 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                 {formikProps.errors.status}
               </div>
             )}
-            <div>
-              <label>Assigned Users</label>
-              {users.map((user) => (
-                <div key={user.id}>
-                  <Field
-                    id={`assignedUsers-${user.id}`}
-                    name={`assignedUsers`}
-                    type="checkbox"
-                    value={user.id}
-                    className="mr-2"
-                  />
-                  <label htmlFor={`assignedUsers-${user.id}`}>
-                    {user.username}
-                  </label>
-                </div>
-              ))}
+            <div className="flex flex-col gap-4">
+              <label>Atanan Kullanıcılar</label>
+              <div className="flex flex-col gap-2">
+                {users.map((user) => (
+                  <div key={user.id}>
+                    <Field
+                      id={`assignedUsers-${user.id}`}
+                      name={`assignedUsers`}
+                      type="checkbox"
+                      value={user.id}
+                      className="mr-2"
+                    />
+                    <label htmlFor={`assignedUsers-${user.id}`}>
+                      {user.username}
+                    </label>
+                  </div>
+                ))}
+              </div>
               {formikProps.errors.assignedUsers &&
                 formikProps.touched.assignedUsers && (
                   <div className="text-red-600 text-sm mt-1">
@@ -143,7 +145,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                 )}
             </div>
             <div className="flex flex-col gap-2">
-              <label>Subtasks</label>
+              <label>Alt Başlıklar</label>
               <FieldArray name="subtasks">
                 {({ push, remove }) => (
                   <div className="flex flex-col gap-3">
@@ -204,7 +206,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                         push({ title: '', createdAt: '', status: false })
                       }
                     >
-                      Add Subtask
+                      Alt Başlık Ekle
                     </button>
                   </div>
                 )}
@@ -214,7 +216,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               className="bg-blue-600 text-white p-3 rounded-md hover:bg-blue-500 font-semibold"
               type="submit"
             >
-              {initialValues.id ? 'Update Task' : 'Add Task'}
+              {initialValues.id ? 'Görev Güncelle' : 'Görev Ekle'}
             </button>
           </Form>
         )

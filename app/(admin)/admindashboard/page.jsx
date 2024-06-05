@@ -38,14 +38,18 @@ const AdminDashboard = () => {
   }, [])
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <DashboardCard title={'Total Task'} count={allTaskCount} status={'all'} />
       <DashboardCard
-        title={'Completed Task'}
+        title={'Toplam Görev'}
+        count={allTaskCount}
+        status={'all'}
+      />
+      <DashboardCard
+        title={'Tamamlanan Görev'}
         count={completedTaskCount}
         status={'completed_task'}
       />
       <DashboardCard
-        title={'TASK IN PROGRESS'}
+        title={'Devam Eden Görev'}
         count={inProgressTaskCount}
         status={'in_progress'}
       />

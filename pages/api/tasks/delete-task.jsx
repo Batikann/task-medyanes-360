@@ -15,7 +15,7 @@ const handler = async (req, res) => {
       if (!id) {
         return res
           .status(400)
-          .json({ status: 'error', message: 'ID is required' })
+          .json({ status: 'error', message: 'ID alanı gerekli!' })
       }
 
       // Belirtilen id'ye göre veriyi sil

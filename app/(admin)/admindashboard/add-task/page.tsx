@@ -18,7 +18,7 @@ const AddTaskPage = () => {
       if (res.status === 'success') {
         setTimeout(() => {
           router.push('/admindashboard/task')
-          showNotification('Adding a new task was successful')
+          showNotification('Gröev Başarıyla Eklendi')
         }, 3000)
       } else {
         console.log(res.message)

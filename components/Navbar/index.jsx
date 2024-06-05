@@ -46,7 +46,7 @@ const Navbar = ({ title, navLinks, route }) => {
                 onClick={handleLogout}
                 className="hover:text-blue-500 z-50 relative"
               >
-                Logout
+                Çıkış Yap
               </button>
             </div>
           )}

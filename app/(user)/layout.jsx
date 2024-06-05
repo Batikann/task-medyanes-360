@@ -14,8 +14,8 @@ const UserLayout = ({ children }) => {
   return (
     <div className="h-screen w-screen flex flex-col">
       <Navbar
-        route={'/userdashboard'}
-        title={'User Dashboard'}
+        route={'/userdashboard?taskStatus=all'}
+        title={'Kullanıcı Paneli '}
         navLinks={userNavLinks}
       />
       <div className=" p-7 flex-1  w-full">{children}</div>

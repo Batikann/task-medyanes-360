@@ -9,7 +9,7 @@ const Tab = ({ page, setPage }) => {
         }`}
         onClick={() => setPage('Task Detail')}
       >
-        Task Detail
+        Görev Detay
       </button>
       <button
         className={`bg-gray-200 py-2 px-3 rounded-t-md hover:text-blue-600 ${
@@ -19,7 +19,7 @@ const Tab = ({ page, setPage }) => {
         }`}
         onClick={() => setPage('Activities/Timeline')}
       >
-        Activities/Timeline
+        Faaliyetler/Zaman Çizelgesi
       </button>
     </div>
   )

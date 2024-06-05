@@ -14,7 +14,7 @@ const RegisterPage = () => {
   const [errorMessage, setErrorMessage] = useState('')
   return (
     <>
-      <h2 className="text-2xl font-semibold mb-4">Register</h2>
+      <h2 className="text-2xl font-semibold mb-4">Üye Ol</h2>
       <Formik
         validateOnMount={true}
         initialValues={{ username: '', email: '', password: '' }}
@@ -43,7 +43,7 @@ const RegisterPage = () => {
                 htmlFor="username"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Username
+                Ad Soyad
               </label>
               <div className="mt-2">
                 <Input type={'text'} name={'username'} props={props} />
@@ -59,7 +59,7 @@ const RegisterPage = () => {
                 htmlFor="email"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Email address
+                Email Adresi
               </label>
               <div className="mt-2">
                 <Input name={'email'} type={'email'} props={props} />
@@ -77,7 +77,7 @@ const RegisterPage = () => {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Password
+                  Şifre
                 </label>
                 <Input type={'password'} name={'password'} props={props} />
                 {props.errors.password && props.touched.password && (
@@ -93,7 +93,7 @@ const RegisterPage = () => {
               <p className="text-red-600 mt-4 text-center">{errorMessage}</p>
             )}
             <div className="mt-6">
-              <Button title={'Register'} props={props} />
+              <Button title={'Üye Ol'} props={props} />
             </div>
           </Form>
         )}
@@ -103,7 +103,7 @@ const RegisterPage = () => {
           href={'/login'}
           className="text-blue-400 text-base hover:underline-offset-2 hover:underline"
         >
-          Sign in Here!
+          Buradan Giriş Yap!
         </Link>
       </div>
     </>

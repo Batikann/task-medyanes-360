@@ -6,6 +6,7 @@ import { checkboxValues } from '../../lib/constants/commentFormValues'
 import getUser from '../../lib/utils/getUser'
 import { postAPI } from '../../services/fetchAPI'
 import { useEffect, useRef } from 'react'
+import { commentStatusLocalization } from '../../lib/utils/formatter'
 
 const CommentForm = ({
   taskID,
@@ -49,7 +50,7 @@ const CommentForm = ({
   return (
     <div>
       <h1 className="text-xl font-bold border-b pb-2 uppercase">
-        {editComment ? 'Update Comment' : 'Submit a Comment'}
+        {editComment ? 'Yorum Güncelle' : 'Yorum Ekle'}
       </h1>
       <Formik
         innerRef={formRef} // ref'i Formik bileşenine ekledik
@@ -63,7 +64,7 @@ const CommentForm = ({
         {({ isSubmitting }) => (
           <Form className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 mt-4">
-              <label className="text-lg font-semibold">Status</label>
+              <label className="text-lg font-semibold">Durum</label>
               <div
                 role="group"
                 aria-labelledby="status"
@@ -72,7 +73,7 @@ const CommentForm = ({
                 {checkboxValues.map((val) => (
                   <label key={val.id}>
                     <Field type="radio" name="status" value={val.name} />
-                    {val.name}
+                    {commentStatusLocalization(val.name)}
                   </label>
                 ))}
               </div>
@@ -80,7 +81,7 @@ const CommentForm = ({
             </div>
             <div className="flex flex-col gap-4">
               <label className="text-lg font-semibold" htmlFor="content">
-                Content
+                İçerik
               </label>
               <Field
                 as="textarea"
@@ -103,7 +104,7 @@ const CommentForm = ({
               disabled={isSubmitting}
               className="flex items-center justify-center bg-blue-600 text-white p-3 text-lg font-semibold rounded-lg hover:bg-blue-500 cursor-pointer"
             >
-              {editComment ? 'Update' : 'Submit'}
+              {editComment ? 'Güncelle' : 'Ekle'}
             </button>
           </Form>
         )}

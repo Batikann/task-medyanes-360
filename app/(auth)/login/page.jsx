@@ -25,7 +25,7 @@ const LoginPage = () => {
   }
   return (
     <>
-      <h2 className="text-2xl font-semibold mb-4">Login</h2>
+      <h2 className="text-2xl font-semibold mb-4">Giriş Yap</h2>
       <Formik
         validateOnMount={true}
         initialValues={{ email: '', password: '' }}
@@ -46,13 +46,13 @@ const LoginPage = () => {
               localStorage.setItem('currentUser', JSON.stringify(userData))
               if (res.data.role === 'USER') {
                 setTimeout(() => {
-                  router.push('/userdashboard')
-                  showNotification(`Welcome  ${res.data.user?.username}`)
+                  router.push('/userdashboard?taskStatus=all')
+                  showNotification(`Hoşgeldiniz  ${res.data.user?.username}`)
                 }, 3000)
               } else if (res.data.role === 'ADMIN') {
                 setTimeout(() => {
                   router.push('/admindashboard')
-                  showNotification(`Welcome  ${res.data.user?.username}`)
+                  showNotification(`Hoşgeldiniz  ${res.data.user?.username}`)
                 }, 3000)
               }
             } else {
@@ -72,7 +72,7 @@ const LoginPage = () => {
                 htmlFor="email"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Email address
+                Email Adresi
               </label>
               <div className="mt-2">
                 <Input name={'email'} type={'email'} props={props} />
@@ -90,7 +90,7 @@ const LoginPage = () => {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Password
+                  Şifre
                 </label>
               </div>
               <div className="mt-2">
@@ -106,7 +106,7 @@ const LoginPage = () => {
             {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
 
             <div className="mt-6">
-              <Button props={props} title={'Login'} />
+              <Button props={props} title={'Giriş Yap'} />
             </div>
           </Form>
         )}
@@ -116,7 +116,7 @@ const LoginPage = () => {
           href={'/register'}
           className="text-blue-400 text-base hover:underline-offset-2 hover:underline"
         >
-          Sign up Here!
+          Buradan Kaydolun!
         </Link>
       </div>
     </>
