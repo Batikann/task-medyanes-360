@@ -18,7 +18,9 @@ const AdminLayout = ({ children }) => {
         title={'Admin Paneli'}
         navLinks={adminNavLinks}
       />
-      <div className="p-7 flex-1  w-full">{children}</div>
+      <div className="pt-7 flex-1  w-full max-w-[1540px] mx-auto p-5">
+        {children}
+      </div>
       <Footer />
     </div>
   )

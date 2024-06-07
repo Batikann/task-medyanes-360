@@ -7,7 +7,7 @@ const TaskList = ({ tasks, loading, dashboard }) => {
     return <Loading />
   }
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-[1540px] mx-auto">
       {tasks.map((task) => (
         <TaskCard
           key={task.id}

@@ -1,10 +1,14 @@
 import Link from 'next/link'
-import { formatDate, priorityLocalization } from '../../lib/utils/formatter.js'
+import { formatDate } from '../../lib/utils/formatter.js'
 import { FaCalendar } from 'react-icons/fa'
 import { GrAttachment } from 'react-icons/gr'
 import { BiSolidComment } from 'react-icons/bi'
+import {
+  priorityLocalization,
+  taskStatusLocalization,
+} from '../../lib/utils/localizationText.js'
 //Taskimiziz önem derecesine göre önem alanının arka plan rengini değiştiriyoruz
-const checkPriority = (priority) => {
+export const checkPriority = (priority) => {
   switch (priority) {
     case 'LOW':
       return ' bg-[#CDFAD5] text-[#799351]  '
@@ -17,54 +21,13 @@ const checkPriority = (priority) => {
   }
 }
 
-const taskStatusLocalization = (status) => {
-  switch (status) {
-    case 'COMPLETED_CHECK_PENDING':
-      return (
-        <p>
-          <span className="mr-2 font-bold">Durum:</span>Proje bitti kontrol
-          bekliyor
-        </p>
-      )
-    case 'IN_PROGRESS':
-      return (
-        <p>
-          <span className="mr-2 font-bold">Durum:</span>Çalışma devam ediyor
-        </p>
-      )
-    case 'UPDATE_PENDING':
-      return (
-        <p>
-          <span className="mr-2 font-bold">Durum:</span>Güncelleme için bilgi
-          bekliyor
-        </p>
-      )
-    case 'INFO_REQUEST_PENDING':
-      return (
-        <p>
-          <span className="font-bold mr-2">Durum:</span>Eksik bilgi olabilir
-          bilgi
-        </p>
-      )
-    case 'CUSTOMER_WAITING':
-      return (
-        <p>
-          <span className="font-bold mr-2">Durum:</span>Müşteri kontrolü
-          bekliyor
-        </p>
-      )
-    default:
-      return 'Bilinmeyen durum'
-  }
-}
-
 const TaskCard = ({ task, route }) => {
   return (
     <Link
       href={route}
-      className="border p-4 flex flex-col gap-3 hover:shadow-md cursor-pointer rounded-md hover:scale-105 items-start md:items-stretch transition-all ease-in-out duration-500 transform"
+      className="border p-4 hover:border-blue-600 flex flex-col gap-3 shadow-lg cursor-pointer rounded-xl hover:scale-105 items-start md:items-stretch transition-all ease-in-out duration-500 transform"
     >
-      <div className="flex   flex-col  gap-3 items-start flex-wrap">
+      <div className="flex   flex-col  gap-3 items-start flex-wrap justify-between">
         <p
           className={`${checkPriority(
             task.priority
@@ -79,7 +42,10 @@ const TaskCard = ({ task, route }) => {
       <div>
         <p className="text-lg line-clamp-3">{task.description}</p>
       </div>
-      <p>{taskStatusLocalization(task.status)}</p>
+      <p className="flex items-center">
+        <span className="font-bold mr-2">Durum:</span>
+        {taskStatusLocalization(task.status)}
+      </p>
       <div className="flex gap-4 items-center">
         <div className="flex items-center gap-2 text-gray-500">
           <FaCalendar />

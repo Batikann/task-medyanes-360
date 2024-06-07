@@ -6,7 +6,7 @@ import { checkboxValues } from '../../lib/constants/commentFormValues'
 import getUser from '../../lib/utils/getUser'
 import { postAPI } from '../../services/fetchAPI'
 import { useEffect, useRef } from 'react'
-import { commentStatusLocalization } from '../../lib/utils/formatter'
+import { commentStatusLocalization } from '../../lib/utils/localizationText'
 
 const CommentForm = ({
   taskID,

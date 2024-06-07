@@ -3,11 +3,9 @@
 import { useEffect, useState } from 'react'
 import { getAPI } from '../../services/fetchAPI'
 import Loading from '../loading'
-import {
-  commentStatusLocalization,
-  formatDate,
-} from '../../lib/utils/formatter'
+import { formatDate } from '../../lib/utils/formatter'
 import getUser from '../../lib/utils/getUser'
+import { commentStatusLocalization } from '../../lib/utils/localizationText'
 
 //Gelen yorumunun tipine göre yanında ki icon belirleniyor.
 const getStatusIcon = (status) => {

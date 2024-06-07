@@ -21,7 +21,7 @@ const handler = async (req, res) => {
     }
     try {
       switch (id) {
-        case 'COMPLETED_TASK':
+        case 'COMPLETED_CHECK_PENDING':
           const completedTask = await getDataByManyRelitionalTable(
             'Task',
             {
@@ -49,25 +49,61 @@ const handler = async (req, res) => {
             status: 'success',
             data: {
               tasks: inProgressTask,
-              inProgressTaskCount: inProgressTask.length,
+            },
+          })
+
+        case 'UPDATE_PENDING':
+          const updatePendingTask = await getDataByManyRelitionalTable(
+            'Task',
+            {
+              status: 'UPDATE_PENDING',
+            },
+            include
+          )
+          return res.status(200).json({
+            status: 'success',
+            data: {
+              tasks: updatePendingTask,
+            },
+          })
+
+        case 'INFO_REQUEST_PENDING':
+          const infoRequestPendingTask = await getDataByManyRelitionalTable(
+            'Task',
+            {
+              status: 'INFO_REQUEST_PENDING',
+            },
+            include
+          )
+          return res.status(200).json({
+            status: 'success',
+            data: {
+              tasks: infoRequestPendingTask,
+            },
+          })
+
+        case 'CUSTOMER_WAITING':
+          const customerWaitingTask = await getDataByManyRelitionalTable(
+            'Task',
+            {
+              status: 'CUSTOMER_WAITING',
+            },
+            include
+          )
+          return res.status(200).json({
+            status: 'success',
+            data: {
+              tasks: customerWaitingTask,
             },
           })
 
         case 'ALL':
           const tasks = await getDataByManyRelitionalTable('Task', {}, include)
-          const completedCheckPendingCount = tasks.filter(
-            (task) => task.status === 'COMPLETED_CHECK_PENDING'
-          ).length
-          const inProgressCount = tasks.filter(
-            (task) => task.status === 'IN_PROGRESS'
-          ).length
+
           return res.status(200).json({
             status: 'success',
             data: {
               tasks: tasks,
-              completedTaskCount: completedCheckPendingCount,
-              inProgressTaskCount: inProgressCount,
-              allTaskCount: tasks.length,
             },
           })
 

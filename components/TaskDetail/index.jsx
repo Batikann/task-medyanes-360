@@ -1,11 +1,12 @@
 'use client'
 
 import checkPriority from '../../lib/utils/checkPriority'
-import { formatDate, priorityLocalization } from '../../lib/utils/formatter'
+import { formatDate } from '../../lib/utils/formatter'
 import Button from '../Buttons/Button'
 import { useEffect, useState } from 'react'
 import { postAPI } from '../../services/fetchAPI'
 import Tab from '../Tab'
+import { priorityLocalization } from '../../lib/utils/localizationText'
 
 const taskStatusLocalization = (status) => {
   switch (status) {

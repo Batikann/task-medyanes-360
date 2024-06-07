@@ -8,14 +8,14 @@ const Footer = () => {
   return (
     <footer className=" text-slate-200 py-8 border-t shadow-md">
       <div className="container mx-auto px-4">
-        <div className="flex md:justify-between items-center md:flex-row flex-col gap-4 ">
+        <div className="flex md:justify-between items-center md:flex-row-reverse flex-col-reverse gap-4 ">
           {/* Social Media Links */}
           <div className="flex space-x-6">
             {socialMediaLinks.map((link) => (
               <Link
                 href={link.route}
                 target="_blank"
-                className="hover:text-gray-400 relative transition-all ease-in-out duration-500 transform"
+                className="hover:text-gray-400 relative transition-all ease-in-out duration-500 transform hover:scale-125"
                 key={link.id}
               >
                 <Image

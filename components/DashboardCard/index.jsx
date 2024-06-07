@@ -1,29 +1,10 @@
-import Link from 'next/link'
-import { usePathname, useSearchParams } from 'next/navigation'
-import { useCallback } from 'react'
-
-const DashboardCard = ({ title, count, status }) => {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const createQueryString = useCallback(
-    (name, value) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
-
-      return params.toString()
-    },
-    [searchParams]
-  )
+const DashboardCard = ({ title, count, bgColor, textColor }) => {
   return (
-    <div className="border p-4 rounded-md flex flex-col gap-4">
-      <h3 className="text-2xl font-semibold uppercase  hover:text-blue-500 transition-all ease-in-out duration-500 transform">
-        <Link
-          href={`${pathname}/task` + '?' + createQueryString('task', status)}
-        >
-          {title}
-        </Link>
+    <div className={`border p-4 rounded-lg flex flex-col gap-4 ${bgColor} `}>
+      <h3 className="text-xl mt-3 font-semibold uppercase  text-black transition-all ease-in-out duration-500 transform">
+        {title}
       </h3>
-      <p className="text-3xl">{count}</p>
+      <p className={`text-3xl  font-bold ${textColor}`}>{count}</p>
     </div>
   )
 }
