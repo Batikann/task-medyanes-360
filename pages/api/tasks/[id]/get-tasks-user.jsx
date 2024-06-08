@@ -39,11 +39,6 @@ const handler = async (req, res) => {
       // taskFilter objesini başlat
       let taskFilter = { id: { in: taskIds } }
 
-      // Status kontrolü
-      if (status && status !== 'ALL') {
-        taskFilter.status = status
-      }
-
       // Görevleri al
       const tasks = await getDataByManyRelitionalTable(
         'Task',
@@ -59,7 +54,21 @@ const handler = async (req, res) => {
         })
       }
 
-      return res.status(200).json({ status: 'success', tasks })
+      // Görevleri önceliklerine göre grupla
+      const lowPriorityTasks = tasks.filter((task) => task.priority === 'LOW')
+      const mediumPriorityTasks = tasks.filter(
+        (task) => task.priority === 'MEDIUM'
+      )
+      const highPriorityTasks = tasks.filter((task) => task.priority === 'HIGH')
+
+      return res.status(200).json({
+        status: 'success',
+        tasks: {
+          lowPriorityTasks: lowPriorityTasks,
+          mediumPriorityTasks: mediumPriorityTasks,
+          highPriorityTasks: highPriorityTasks,
+        },
+      })
     } catch (error) {
       return res.status(500).json({ status: 'error', message: error.message })
     }

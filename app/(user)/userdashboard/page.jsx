@@ -3,28 +3,34 @@
 import { useEffect, useState } from 'react'
 import { getAPI } from '../../../services/fetchAPI'
 import getUser from '../../../lib/utils/getUser.js'
-import TaskList from '../../../components/TaskList'
-import Dropdown from '../../../components/Dropdown'
-import { taskStatus } from '../../../lib/constants/taskStatus'
-import { useSearchParams } from 'next/navigation'
+import { priorityTabForUser } from '../../../lib/constants/tabsValues'
+import TaskColumn from '../../../components/TaskColumn'
+
+function getTasksByPriority(allTasks, priority) {
+  switch (priority) {
+    case 'LOW':
+      return allTasks.lowPriorityTasks
+    case 'MEDIUM':
+      return allTasks.mediumPriorityTasks
+    case 'HIGH':
+      return allTasks.highPriorityTasks
+    default:
+      return []
+  }
+}
 
 const UserDashboard = () => {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
-  const [selectedStatus, setSelectedStatus] = useState(taskStatus[0].name)
-  const searchParams = useSearchParams()
+
   //Giriş yapan kullanıcının bilgilerini getiren fonksiyonumuz
   const user = getUser()
-  const search = searchParams.get('taskStatus')
 
   useEffect(() => {
     //Gelen kullanıcı bilgilerine göre o kullanıcının görev aldığı taskleri getiren fonksiyonumuz
     const getTaskForUser = async () => {
       try {
-        const res = await getAPI(
-          `/tasks/${user.id}/get-tasks-user?status=${selectedStatus ?? 'all'}`
-        )
-
+        const res = await getAPI(`/tasks/${user.id}/get-tasks-user`)
         if (res.status === 'success') {
           setTasks(res.tasks)
         } else {
@@ -38,19 +44,12 @@ const UserDashboard = () => {
     }
 
     getTaskForUser()
-  }, [selectedStatus, search])
+  }, [])
 
   //Eğer kullanıcının görev aldığı bir task yok ise böyle bir mesaj gösterilir
   if (tasks.length <= 0 && !loading) {
     return (
       <div>
-        <div className="flex justify-end">
-          <Dropdown
-            selectedStatus={selectedStatus}
-            setSelectedStatus={setSelectedStatus}
-            taskStatus={taskStatus}
-          />
-        </div>
         <p className="h-screen w-screen flex justify-center  mt-5 font-semibold text-2xl">
           Herhangi bir göreviniz yok!
         </p>
@@ -59,15 +58,14 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className="flex flex-col gap-7">
-      <div className="flex justify-end">
-        <Dropdown
-          selectedStatus={selectedStatus}
-          setSelectedStatus={setSelectedStatus}
-          taskStatus={taskStatus}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-8">
+      {priorityTabForUser.map((priority) => (
+        <TaskColumn
+          priority={priority}
+          tasks={getTasksByPriority(tasks, priority.priority)}
+          loading={loading}
         />
-      </div>
-      <TaskList tasks={tasks} dashboard={'userdashboard'} loading={loading} />
+      ))}
     </div>
   )
 }

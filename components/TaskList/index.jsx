@@ -2,19 +2,17 @@ import TaskCard from '../TaskCard/index'
 import Loading from '../loading'
 
 const TaskList = ({ tasks, loading, dashboard }) => {
-  // Tasklerimiz gelene kadar kullanıcıyı göstermek üzere bir loading efekti
-  if (loading) {
-    return <Loading />
-  }
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-[1540px] mx-auto">
-      {tasks.map((task) => (
-        <TaskCard
-          key={task.id}
-          task={task}
-          route={`/${dashboard}/task/${task.id}`}
-        />
-      ))}
+    <div className="grid grid-cols-1 gap-6">
+      <div className="flex flex-col gap-5">
+        {tasks?.map((task) => (
+          <TaskCard
+            key={task.id}
+            task={task}
+            route={`/${dashboard}/task/${task.id}`}
+          />
+        ))}
+      </div>
     </div>
   )
 }
