@@ -13,7 +13,7 @@ const handler = async (req, res) => {
           user: {
             select: {
               email: true,
-              username: true,
+              name: true,
             },
           },
         },

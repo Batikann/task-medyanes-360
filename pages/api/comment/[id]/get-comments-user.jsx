@@ -12,7 +12,7 @@ const handler = async (req, res) => {
         user: {
           select: {
             email: true,
-            username: true,
+            name: true,
             id: true,
           },
         }, // Yorumlarla ilişkilendirilmiş kullanıcı bilgilerini de (email, username, id) getirir.

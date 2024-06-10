@@ -20,6 +20,7 @@ export const useRoleRedirect = (expectedRole, redirectPath) => {
       const res = await checkRole()
       if (res.role !== expectedRole) {
         router.push(redirectPath)
+        setLoading(false)
       } else {
         setLoading(false)
       }

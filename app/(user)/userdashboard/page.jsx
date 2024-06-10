@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { getAPI } from '../../../services/fetchAPI'
-import getUser from '../../../lib/utils/getUser.js'
 import { priorityTabForUser } from '../../../lib/constants/tabsValues'
 import TaskColumn from '../../../components/TaskColumn'
+import { useSession } from 'next-auth/react'
 
 function getTasksByPriority(allTasks, priority) {
   switch (priority) {
@@ -22,37 +22,33 @@ function getTasksByPriority(allTasks, priority) {
 const UserDashboard = () => {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
-
-  //Giriş yapan kullanıcının bilgilerini getiren fonksiyonumuz
-  const user = getUser()
+  const { data: session, status } = useSession()
 
   useEffect(() => {
     //Gelen kullanıcı bilgilerine göre o kullanıcının görev aldığı taskleri getiren fonksiyonumuz
     const getTaskForUser = async () => {
       try {
-        const res = await getAPI(`/tasks/${user.id}/get-tasks-user`)
+        const res = await getAPI(`/tasks/${session.user.id}/get-tasks-user`)
+
         if (res.status === 'success') {
           setTasks(res.tasks)
+          setLoading(false)
         } else {
           throw new Error(res.message)
         }
       } catch (error) {
         console.error(error)
-      } finally {
-        setLoading(false)
       }
     }
 
     getTaskForUser()
-  }, [])
+  }, [session])
 
   //Eğer kullanıcının görev aldığı bir task yok ise böyle bir mesaj gösterilir
-  if (tasks.length <= 0 && !loading) {
+  if (tasks.length <= 0) {
     return (
-      <div>
-        <p className="h-screen w-screen flex justify-center  mt-5 font-semibold text-2xl">
-          Herhangi bir göreviniz yok!
-        </p>
+      <div className="   mt-5 ">
+        <p className="font-semibold text-2xl">Herhangi bir göreviniz yok!</p>
       </div>
     )
   }

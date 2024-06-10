@@ -24,7 +24,12 @@ const handler = async (req, res) => {
     return res.status(200).json({
       status: 'success',
       message: 'Giriş İşlemi Başarılı',
-      data: { user, role: user.role },
+      data: {
+        role: user.role,
+        name: user.name,
+        email: user.email,
+        id: user.id,
+      },
     })
   } else {
     return res

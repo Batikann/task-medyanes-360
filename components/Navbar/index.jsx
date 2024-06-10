@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import getUser from '../../lib/utils/getUser'
 import { useState } from 'react'
 import MobileNav from '../MobileNav'
@@ -9,19 +9,19 @@ import BurgerMenu from '/public/burger-menu.svg'
 import Image from 'next/image'
 import { MdArrowDropUp, MdArrowDropDown } from 'react-icons/md'
 import { IoIosLogOut } from 'react-icons/io'
+import { signOut, useSession } from 'next-auth/react'
 
 const Navbar = ({ title, navLinks, route }) => {
   const [userMenu, setUserMenu] = useState(false)
   const [toggleMobileMenu, setToggleMobileMenu] = useState(false)
-  const user = getUser()
-  const router = useRouter()
+
+  const handleLogout = () => {
+    signOut()
+  }
+
   const pathName = usePathname()
 
-  //Logout işlemini gerçekleştiriyoru kullanıcıyı localstorage den siliyor
-  const handleLogout = () => {
-    localStorage.removeItem('currentUser')
-    router.push('/login')
-  }
+  const { data: session, status } = useSession()
 
   return (
     <div className="   border-b shadow-md p-7   w-full">
@@ -52,22 +52,22 @@ const Navbar = ({ title, navLinks, route }) => {
             ))}
           </ul>
           <div
-            className="relative flex flex-row-reverse gap-2 items-center cursor-pointer "
+            className="relative flex flex-row-reverse gap-2 ml-3 items-center cursor-pointer "
             onClick={() => setUserMenu(!userMenu)}
           >
             <div className="flex gap-1 group">
-              <p className="flex items-center gap-2 font-medium text-gray-600 ml-2 group-hover:text-blue-500 transition-all duration-500 ease-in-out">
-                {user?.username}
+              <p className="flex items-center gap-2 font-medium text-[#1572A1] hover:text-[#9AD0EC] transition-all duration-500 ease-in-out">
+                {session?.user?.name ?? ''}
               </p>
               {!userMenu ? (
                 <MdArrowDropDown
                   size={25}
-                  className="group-hover:text-blue-500 transition-all duration-500 ease-in-out"
+                  className="group-hover:text-[#9AD0EC] transition-all duration-500 ease-in-out text-[#1572A1]"
                 />
               ) : (
                 <MdArrowDropUp
                   size={25}
-                  className="group-hover:text-blue-500 transition-all duration-500 ease-in-out hover:scale-105"
+                  className="group-hover:text-[#9AD0EC] transition-all duration-500 ease-in-out hover:scale-105 text-[#1572A1]"
                 />
               )}
             </div>
@@ -75,15 +75,12 @@ const Navbar = ({ title, navLinks, route }) => {
               <div className="absolute bg-white shadow-xl w-36 p-4 -right-5 top-10 border  z-40">
                 <button
                   onClick={handleLogout}
-                  className="group relative flex gap-2 items-center text-sm z-50"
+                  className="group relative flex gap-2 items-center text-sm z-50 "
                 >
-                  <span className="font-medium text-gray-600 group-hover:text-red-500">
+                  <span className="font-semibold text-gray-600 group-hover:text-red-500 transition-all duration-500 ease-linear flex items-center gap-2">
                     Çıkış Yap
+                    <IoIosLogOut size={20} />
                   </span>
-                  <IoIosLogOut
-                    size={20}
-                    className="text-gray-600 font-medium group-hover:text-red-500"
-                  />
                 </button>
               </div>
             )}

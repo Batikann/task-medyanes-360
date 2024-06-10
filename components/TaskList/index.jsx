@@ -1,5 +1,4 @@
 import TaskCard from '../TaskCard/index'
-import Loading from '../loading'
 
 const TaskList = ({ tasks, loading, dashboard }) => {
   return (

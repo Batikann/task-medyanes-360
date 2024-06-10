@@ -1,16 +1,9 @@
 'use client'
 import Navbar from '../../components/Navbar'
 import { adminNavLinks } from '../../lib/constants/navLinks'
-import { useRoleRedirect } from '../../lib/utils/useRoleRedirect'
-import Loading from '../../components/loading/index'
 import Footer from '../../components/Footer'
 
 const AdminLayout = ({ children }) => {
-  const loading = useRoleRedirect('ADMIN', '/userdashboard')
-
-  if (loading) {
-    return <Loading />
-  }
   return (
     <div className="h-screen w-screen flex flex-col ">
       <Navbar

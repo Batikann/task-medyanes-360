@@ -17,7 +17,7 @@ const AddTaskPage = () => {
       const res = await postAPI('/tasks/create-task', values)
       if (res.status === 'success') {
         setTimeout(() => {
-          router.push('/admindashboard/task')
+          router.push('/admindashboard?task=all')
           showNotification('Gröev Başarıyla Eklendi')
         }, 3000)
       } else {

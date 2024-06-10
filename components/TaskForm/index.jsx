@@ -24,7 +24,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
     setMinDate(getDateNow())
   }, [])
 
-  if (users.length <= 1) {
+  if (users.length < 1) {
     return <Loading />
   }
 

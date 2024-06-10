@@ -13,6 +13,7 @@ const handler = async (req, res) => {
 
   if (req.method === 'POST' && req.body) {
     const { email, password, username } = req.body
+
     try {
       //Kullanıcının register olurken kullandıpı email adresi daha önce sisteme kayıtlı ise bir hata mesajı döndür.
       const existingUser = await getDataByUnique('User', { email: email })
@@ -29,7 +30,7 @@ const handler = async (req, res) => {
       const newData = {
         email,
         password: hashedPassword,
-        username,
+        name: username,
       }
       // Veriyi veritabanına kaydet
       const savedData = await createNewData('User', newData)

@@ -13,7 +13,7 @@ function getTaskCountByPriority(tasksData, priority) {
 }
 const TaskColumn = ({ priority, tasks, loading }) => {
   const filteredTasks = tasks?.filter(
-    (task) => task.priority === priority.priority
+    (task) => task?.priority === priority?.priority
   )
   return (
     <div>
@@ -23,7 +23,7 @@ const TaskColumn = ({ priority, tasks, loading }) => {
           style={{ borderBottomColor: priority.color }}
         >
           {priority.name}
-          <span className="border border-slate-500 py-1 px-3 rounded-full">
+          <span className="border border-slate-500 w-9 h-9 flex justify-center items-center rounded-full">
             {getTaskCountByPriority(tasks, priority.priority)}
           </span>
         </li>

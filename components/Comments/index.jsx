@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { getAPI } from '../../services/fetchAPI'
 import Loading from '../loading'
 import { formatDate } from '../../lib/utils/formatter'
-import getUser from '../../lib/utils/getUser'
 import { commentStatusLocalization } from '../../lib/utils/localizationText'
+import { useSession } from 'next-auth/react'
 
 //Gelen yorumunun tipine göre yanında ki icon belirleniyor.
 const getStatusIcon = (status) => {
@@ -126,7 +126,7 @@ const getStatusIcon = (status) => {
 const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
   const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
-  const user = getUser()
+  const { data: session, status } = useSession()
   const today = formatDate(new Date().toISOString())
 
   useEffect(() => {
@@ -158,7 +158,7 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
           {getStatusIcon(comment.status)}
           <div>
             <h3 className="font-semibold text-lg text-gray-600">
-              {comment.user.username}
+              {comment.user.name}
             </h3>
             <div className="flex gap-4 items-center my-1">
               <span className="text-gray-500 text-sm">
@@ -168,7 +168,7 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
             </div>
             <p className="text-lg">{comment.content}</p>
             {/* Kullanıcı sadece kendi yorumunu yazdığı gün içinde güncelleyebilir */}
-            {comment.userId === user.id &&
+            {comment.userId === session?.user.id &&
               formatDate(comment.createdAt) === today && (
                 <button
                   className="absolute right-0 top-0 bg-yellow-400 hover:bg-yellow-300 text-white font-semibold px-2 py-1 rounded transition-all ease-in-out duration-500 transform"

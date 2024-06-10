@@ -6,7 +6,7 @@ const handler = async (req, res) => {
       (users) => {
         return users.map((user) => ({
           id: user.id,
-          username: user.username,
+          username: user.name,
           email: user.email,
         }))
       }

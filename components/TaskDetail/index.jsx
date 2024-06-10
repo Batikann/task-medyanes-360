@@ -34,7 +34,7 @@ const taskStatusLocalization = (status) => {
       return (
         <p>
           <span className="font-bold mr-2">Durum:</span>Eksik bilgi olabilir
-          bilgi
+          bilgi bekliyor
         </p>
       )
     case 'CUSTOMER_WAITING':
@@ -151,11 +151,11 @@ const TaskDetail = ({
             <div className="flex items-center gap-3" key={teamMember.user.id}>
               <div className="w-10 h-10 rounded-full bg-blue-500 flex justify-center items-center">
                 <span className="text-white font-bold uppercase">
-                  {teamMember.user.username.slice(0, 1)}
+                  {teamMember.user.name.slice(0, 1)}
                 </span>
               </div>
               <div>
-                <p>{teamMember.user.username}</p>
+                <p>{teamMember.user.name}</p>
                 <p className="text-sm text-gray-500">{teamMember.user.email}</p>
               </div>
             </div>

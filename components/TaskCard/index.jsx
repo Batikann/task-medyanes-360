@@ -35,9 +35,7 @@ const TaskCard = ({ task, route }) => {
         >
           <span>{priorityLocalization(task.priority)}</span> ÖNCELİK
         </p>
-        <h2 className="text-2xl font-bold hover:text-blue-600 transition-all ease-in-out duration-500 transform">
-          {task.title}
-        </h2>
+        <h2 className="text-2xl text-[#374259] font-bold  ">{task.title}</h2>
       </div>
       <div>
         <p className="text-lg line-clamp-3">{task.description}</p>
@@ -48,15 +46,15 @@ const TaskCard = ({ task, route }) => {
       </p>
       <div className="flex gap-4 items-center">
         <div className="flex items-center gap-2 text-gray-500">
-          <FaCalendar />
+          <FaCalendar className="text-[#85586F]" />
           <p>{formatDate(task.createdAt)}</p>
         </div>
         <div className="flex items-center gap-2 text-gray-500">
-          <GrAttachment />
+          <GrAttachment className="text-[#7F669D]" />
           <p>{task.subtasks.length ?? 0}</p>
         </div>
         <div className="flex items-center gap-2 text-gray-500">
-          <BiSolidComment />
+          <BiSolidComment className="text-[#6096B4]" />
           <p>{task.comments.length ?? 0}</p>
         </div>
       </div>

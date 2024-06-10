@@ -11,16 +11,16 @@ import CommentForm from '../CommentForm'
 import Tab from '../Tab'
 import { useRouter } from 'next/navigation'
 import { useNotification } from '../../context/NotificationContext '
+import { useSession } from 'next-auth/react'
 
 const TaskDetailsContent = ({ role, taskID }) => {
   const router = useRouter()
   const [taskDetail, setTaskDetail] = useState([])
-
+  const { data: session, status } = useSession()
   const [page, setPage] = useState('Task Detail')
   const [refreshPage, setRefreshPage] = useState(false)
   const [editComment, setEditComment] = useState(null)
   const { showNotification } = useNotification()
-  const user = getUser()
 
   useEffect(() => {
     //gelen taskId ye göre geçerli taskı getiriyoruz
@@ -58,9 +58,9 @@ const TaskDetailsContent = ({ role, taskID }) => {
         setPage={setPage}
         page={page}
         taskDetail={taskDetail}
+        role={session?.user.role}
         setRefreshPage={setRefreshPage}
         refreshPage={refreshPage}
-        role={user.role}
         updateTaskHandler={() => updateTaskHandler(taskDetail.id)}
         deleteTaskHandler={() => deleteTaskHandler(taskDetail.id)}
       />

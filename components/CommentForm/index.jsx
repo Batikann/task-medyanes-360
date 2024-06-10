@@ -3,10 +3,10 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import commentSchemaValidation from './commentSchemaValidation'
 import { checkboxValues } from '../../lib/constants/commentFormValues'
-import getUser from '../../lib/utils/getUser'
 import { postAPI } from '../../services/fetchAPI'
 import { useEffect, useRef } from 'react'
 import { commentStatusLocalization } from '../../lib/utils/localizationText'
+import { useSession } from 'next-auth/react'
 
 const CommentForm = ({
   taskID,
@@ -15,8 +15,7 @@ const CommentForm = ({
   editComment,
   setEditComment,
 }) => {
-  const user = getUser()
-
+  const { data: session, status } = useSession()
   const formRef = useRef(null) // useRef ile form referansı oluşturduk
 
   useEffect(() => {
@@ -30,7 +29,7 @@ const CommentForm = ({
 
   //ekleme veya güncelleme işlemini yapan fonksiyon
   const formHandler = async (values, { setSubmitting }) => {
-    const newVal = { ...values, taskId: taskID, userId: user.id }
+    const newVal = { ...values, taskId: taskID, userId: session?.user.id }
 
     let res
     if (editComment) {

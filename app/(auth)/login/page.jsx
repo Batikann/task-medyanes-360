@@ -1,28 +1,21 @@
 'use client'
 
-import { postAPI } from '../../../services/fetchAPI'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-
+import { signIn } from 'next-auth/react'
 import { loginValidationSchema } from './loginValidationSchema'
-import { useRoleRedirect } from '../../../lib/utils/useRoleRedirect'
-import Loading from '../../../components/loading'
+
 import Input from '../_components/Input'
 import Button from '../_components/Button'
 import Link from 'next/link'
 import { useNotification } from '../../../context/NotificationContext '
 
 const LoginPage = () => {
-  const router = useRouter()
   const [error, setError] = useState('')
-  const loading = useRoleRedirect([''], '/userdashboard')
+  const router = useRouter()
   const { showNotification } = useNotification()
 
-  //kullanıcı bilgisi yüklenene kadar kullanıcı gittiği sayfayı göremesin diye bir loading gösteriyoruz.
-  if (loading) {
-    return <Loading />
-  }
   return (
     <>
       <h2 className="text-2xl font-semibold mb-4">Giriş Yap</h2>
@@ -31,38 +24,19 @@ const LoginPage = () => {
         initialValues={{ email: '', password: '' }}
         validationSchema={loginValidationSchema}
         onSubmit={async (values, { setSubmitting }) => {
-          try {
-            //kullanıcının göndermiş olduğu bilgilere göre veritabanına istek atıyoruz ve geri dönen responsa göre belirli işlemler yapıyoruz.
-            const res = await postAPI('/auth/login', values)
-            if (res && res.status == 'success') {
-              const userData = {
-                role: res.data.role,
-                username: res.data.user.username,
-                email: res.data.user.email,
-                id: res.data.user.id,
-              }
+          const result = await signIn('credentials', {
+            redirect: false,
+            email: values.email,
+            password: values.password,
+          })
 
-              // Kullanıcı verilerini localStorage'e kaydettik ve rolüne göre gerekli dashboard sayfasına yönlendirdik.
-              localStorage.setItem('currentUser', JSON.stringify(userData))
-              if (res.data.role === 'USER') {
-                setTimeout(() => {
-                  router.push('/userdashboard?taskStatus=all')
-                  showNotification(`Hoşgeldiniz  ${res.data.user?.username}`)
-                }, 3000)
-              } else if (res.data.role === 'ADMIN') {
-                setTimeout(() => {
-                  router.push('/admindashboard')
-                  showNotification(`Hoşgeldiniz  ${res.data.user?.username}`)
-                }, 3000)
-              }
-            } else {
-              // Giriş başarısız olduğunda kullanıcıya gösterilmek üzere hata mesajı kaydedilir.
-              setError(res.message)
-            }
-          } catch (error) {
-            console.error('API request failed:', error)
+          if (result?.ok) {
+            setTimeout(() => {
+              router.push(`/userdashboard`)
+            }, 3000)
+          } else {
+            setError(result?.error || 'Giriş işlemi başarısız oldu.')
           }
-          setSubmitting(false)
         }}
       >
         {(props) => (
