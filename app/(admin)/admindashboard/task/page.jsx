@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { getAPI } from '../../../../services/fetchAPI/index.js'
 import TaskList from '../../../../components/TaskList/index.jsx'
@@ -82,7 +82,13 @@ const TasksPage = () => {
     <div className="flex flex-col gap-5">
       <SearchBar inputValue={inputValue} setInputValue={setInputValue} />
       {/* TaskList bileşenini render ediyoruz */}
-      <TaskList tasks={tasks} loading={loading} dashboard={'admindashboard'} />
+      <Suspense fallback={<p>loading..</p>}>
+        <TaskList
+          tasks={tasks}
+          loading={loading}
+          dashboard={'admindashboard'}
+        />
+      </Suspense>
     </div>
   )
 }

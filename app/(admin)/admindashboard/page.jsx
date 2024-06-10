@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { getAPI } from '../../../services/fetchAPI'
-import DashboardCard from '../../../components/DashboardCard/index'
-import AdminDashboardTable from '../../../components/AdminDashboardTable/index'
+
 import { useRouter, useSearchParams } from 'next/navigation'
 import { normalizeInput } from '../../../lib/utils/formatter'
-import SearchBar from '../../../components/Searchbar/index'
+import DashboardPage from './_components/DashboardPage'
 
 const AdminDashboard = () => {
   const [completedTaskCount, setCompletedTaskCount] = useState()
@@ -95,35 +94,19 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <DashboardCard
-          bgColor={'bg-[#DBDFEA]'}
-          textColor={'text-[#8294C4]'}
-          title={'Toplam Görev'}
-          count={allTaskCount}
+      <Suspense fallback={<p>loading...</p>}>
+        <DashboardPage
+          allTaskCount={allTaskCount}
+          completedTaskCount={completedTaskCount}
+          inProgressTaskCount={inProgressTaskCount}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          tasks={tasks}
+          loading={loading}
+          setStatusType={setStatusType}
+          statusType={statusType}
         />
-        <DashboardCard
-          title={'Tamamlanan Görev'}
-          count={completedTaskCount}
-          bgColor={'bg-[#D0E7D2]'}
-          textColor={'text-[#618264]'}
-        />
-        <DashboardCard
-          title={'Devam Eden Görev'}
-          bgColor={'bg-[#FEECE2]'}
-          textColor={'text-[#FFBE98]'}
-          count={inProgressTaskCount}
-        />
-      </div>
-      <div className="mt-4">
-        <SearchBar inputValue={inputValue} setInputValue={setInputValue} />
-      </div>
-      <AdminDashboardTable
-        tasks={tasks}
-        loading={loading}
-        setStatusType={setStatusType}
-        statusType={statusType}
-      />
+      </Suspense>
     </div>
   )
 }
