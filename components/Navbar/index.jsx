@@ -21,7 +21,7 @@ const Navbar = ({ title, navLinks, route }) => {
 
   const pathName = usePathname()
 
-  const { data: session, status } = useSession()
+  const session = useSession()
 
   return (
     <div className="   border-b shadow-md p-7   w-full">
@@ -57,7 +57,7 @@ const Navbar = ({ title, navLinks, route }) => {
           >
             <div className="flex gap-1 group">
               <p className="flex items-center gap-2 font-medium text-[#1572A1] hover:text-[#9AD0EC] transition-all duration-500 ease-in-out">
-                {session?.user?.name ?? ''}
+                {session.data?.user.name ?? ''}
               </p>
               {!userMenu ? (
                 <MdArrowDropDown
@@ -77,7 +77,7 @@ const Navbar = ({ title, navLinks, route }) => {
                   onClick={handleLogout}
                   className="group relative flex gap-2 items-center text-sm z-50 "
                 >
-                  <span className="font-semibold text-gray-600 group-hover:text-red-500 transition-all duration-500 ease-linear flex items-center gap-2">
+                  <span className="font-semibold text-gray-600 group-hover:text-red-500 transition-all duration-500 ease-in-out flex items-center gap-2">
                     Çıkış Yap
                     <IoIosLogOut size={20} />
                   </span>

@@ -7,7 +7,7 @@ const AdminLayout = ({ children }) => {
   return (
     <div className="h-screen w-screen flex flex-col ">
       <Navbar
-        route={'/admindashboard'}
+        route={'/admindashboard?task=all'}
         title={'Admin Paneli'}
         navLinks={adminNavLinks}
       />
