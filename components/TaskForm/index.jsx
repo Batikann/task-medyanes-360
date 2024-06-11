@@ -61,7 +61,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
         const minCreatedAtDate = isUpdate ? initialValues.createdAt : minDate
 
         return (
-          <Form className="flex flex-col gap-5 max-w-xl mx-auto">
+          <Form className="flex flex-col gap-5 ">
             <TextInput label="Başlık" name="title" type="text" required />
             {formikProps.errors.title && formikProps.touched.title && (
               <div className="text-red-600 text-sm mt-1">

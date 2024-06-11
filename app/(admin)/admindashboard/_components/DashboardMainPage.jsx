@@ -97,8 +97,8 @@ const DashboardMainPage = () => {
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <DashboardCard
-          bgColor={'bg-[#DBDFEA]'}
-          textColor={'text-[#8294C4]'}
+          bgColor={'bg-[#FEECE2]'}
+          textColor={'text-[#FFBE98]'}
           title={'Toplam Görev'}
           count={allTaskCount}
         />
@@ -110,8 +110,8 @@ const DashboardMainPage = () => {
         />
         <DashboardCard
           title={'Devam Eden Görev'}
-          bgColor={'bg-[#FEECE2]'}
-          textColor={'text-[#FFBE98]'}
+          bgColor={'bg-[#A7E6FF]'}
+          textColor={'text-[#3572EF]'}
           count={inProgressTaskCount}
         />
       </div>

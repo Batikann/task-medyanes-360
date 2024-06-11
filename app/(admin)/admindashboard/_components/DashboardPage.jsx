@@ -1,3 +1,5 @@
+'use client'
+
 import SearchBar from '../../../../components/Searchbar/index'
 import DashboardCard from '../../../../components/DashboardCard/index'
 import AdminDashboardTable from '../../../../components/AdminDashboardTable/index'
@@ -16,8 +18,8 @@ const DashboardPage = ({
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <DashboardCard
-          bgColor={'bg-[#DBDFEA]'}
-          textColor={'text-[#8294C4]'}
+          bgColor={'bg-[#FEECE2]'}
+          textColor={'text-[#FFBE98]'}
           title={'Toplam Görev'}
           count={allTaskCount}
         />

@@ -33,7 +33,7 @@ const MainTaskPage = () => {
                 .includes(queryParam.toLowerCase()) || // Başlıkta arama yapar
               task.assignedUsers.some(
                 (user) =>
-                  normalizeInput(user.user?.username)
+                  normalizeInput(user.user?.name)
                     .toLowerCase()
                     .includes(queryParam.toLowerCase()) // Kullanıcı adında arama yapar
               )

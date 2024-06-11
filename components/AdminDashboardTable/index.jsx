@@ -64,7 +64,7 @@ const Table = ({ tasks, setStatusType, statusType, loading }) => {
                 tasks?.map((task, index) => (
                   <tr
                     key={index}
-                    className="bg-white even:bg-gray-50 cursor-pointer"
+                    className="bg-white even:bg-gray-50 text-center"
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {task.id}
