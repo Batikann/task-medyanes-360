@@ -5,6 +5,7 @@ import { getAPI } from '../../../services/fetchAPI'
 import { priorityTabForUser } from '../../../lib/constants/tabsValues'
 import TaskColumn from '../../../components/TaskColumn'
 import { useSession } from 'next-auth/react'
+import Loading from '../../../components/loading'
 
 function getTasksByPriority(allTasks, priority) {
   switch (priority) {
@@ -48,7 +49,7 @@ const UserDashboard = () => {
   if (tasks.length <= 0) {
     return (
       <div className="   mt-5 ">
-        <p className="font-semibold text-2xl">Herhangi bir göreviniz yok!</p>
+        <Loading />
       </div>
     )
   }

@@ -13,18 +13,20 @@ import { getAPI } from '../../services/fetchAPI/index.js'
 
 const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
   const [users, setUsers] = useState([{ id: '', username: '' }])
+  const [loading, setLoading] = useState(true)
   const [minDate, setMinDate] = useState('')
   useEffect(() => {
     const getUsers = async () => {
       const usersData = await getAPI('/user/get-users')
       setUsers(usersData.data.users)
+      setLoading(false)
     }
 
     getUsers()
     setMinDate(getDateNow())
   }, [])
 
-  if (users.length < 1) {
+  if (loading) {
     return <Loading />
   }
 
