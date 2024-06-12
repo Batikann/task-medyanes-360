@@ -3,10 +3,10 @@
 import checkPriority from '../../lib/utils/checkPriority'
 import { formatDate } from '../../lib/utils/formatter'
 import Button from '../Buttons/Button'
-import { useEffect, useState } from 'react'
-import { postAPI } from '../../services/fetchAPI'
+import { useState } from 'react'
 import Tab from '../Tab'
 import { priorityLocalization } from '../../lib/utils/localizationText'
+import SubtaskButton from '../SubtaskButton'
 
 const taskStatusLocalization = (status) => {
   switch (status) {
@@ -60,41 +60,6 @@ const TaskDetail = ({
   deleteTaskHandler,
 }) => {
   const [subtasks, setSubtasks] = useState(taskDetail.subtasks)
-
-  //subtaskimizin durumunu değiştirmek için kullandığımız fonksiyonumuz
-  const handleStatusToggle = async (subtaskId, currentStatus) => {
-    const newStatus = !currentStatus
-    const data = { subtaskId, status: newStatus }
-    try {
-      const res = await postAPI('/tasks/subtask/update-subtask-status', data)
-
-      if (res.status === 'success') {
-        setSubtasks((prevSubtasks) =>
-          prevSubtasks.map((subtask) =>
-            subtask.id === subtaskId
-              ? { ...subtask, status: newStatus }
-              : subtask
-          )
-        )
-        setRefreshPage(!refreshPage)
-      } else {
-        console.error('Failed to update subtask status')
-      }
-    } catch (error) {
-      console.error('An error occurred:', error)
-    }
-  }
-
-  //Kullanıcının role alanı user mı ve subtask için son güncelleme tarihini geçip geçmediğimizi kontrol ettiğimiz alanımız
-  useEffect(() => {
-    const today = new Date()
-    const showUpdateButton = subtasks.some(
-      (subtask) => new Date(subtask.createdAt) > today && role === 'USER'
-    )
-    setUpdateButtonVisible(showUpdateButton)
-  }, [subtasks, role])
-
-  const [updateButtonVisible, setUpdateButtonVisible] = useState(false)
 
   //Kullanıcı tarafında göstermek için tamamlanan ve tüm subtasklerin sayısını aldığımız yer
   const completedSubtasks = subtasks.filter((subtask) => subtask.status).length
@@ -186,20 +151,13 @@ const TaskDetail = ({
                 </p>
               </div>
               <p>{subtask.title}</p>
-              {/* Kullanıcının rolü 'USER' ise ve son tarih geçmediyse göster */}
-              {updateButtonVisible && (
-                <Button
-                  title={
-                    subtask.status
-                      ? 'Alt başlık tamamlanmadı'
-                      : 'Alt başlık tamamlandı'
-                  }
-                  className={`bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600  hover:text-white transition-all ease-in-out duration-500 transform ${
-                    subtask.status ? 'hover:bg-red-400 ' : 'hover:bg-green-400'
-                  }`}
-                  onClick={() => handleStatusToggle(subtask.id, subtask.status)}
-                />
-              )}
+              <SubtaskButton
+                role={role}
+                subtask={subtask}
+                setSubtasks={setSubtasks}
+                setRefreshPage={setRefreshPage}
+                refreshPage={refreshPage}
+              />
             </div>
           ))}
         </div>
