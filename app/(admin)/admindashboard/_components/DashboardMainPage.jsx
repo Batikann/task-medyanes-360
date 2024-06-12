@@ -97,8 +97,8 @@ const DashboardMainPage = () => {
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <DashboardCard
-          bgColor={'bg-[#FEECE2]'}
-          textColor={'text-[#FFBE98]'}
+          bgColor={'bg-[#FFBF78]'}
+          textColor={'text-[#FF7D29]'}
           title={'Toplam Görev'}
           count={allTaskCount}
         />

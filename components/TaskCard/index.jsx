@@ -41,7 +41,7 @@ const TaskCard = ({ task, route }) => {
         <p className="text-lg line-clamp-3">{task.description}</p>
       </div>
       <p className="flex items-center">
-        <span className="font-bold mr-2">Durum:</span>
+        <span className="font-bold mr-2 text-[#005C78] ">Durum:</span>
         {taskStatusLocalization(task.status)}
       </p>
       <div className="flex gap-4 items-center">
