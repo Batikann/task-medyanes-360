@@ -18,6 +18,8 @@ const DashboardMainPage = () => {
   const [inProgressTaskCount, setInProgressTaskCount] = useState()
   const [allTaskCount, setAllTaskCount] = useState()
   const [loading, setLoading] = useState(true)
+  const [loading2, setLoading2] = useState(true)
+
   const router = useRouter() // Router nesnesi
   const searchParams = useSearchParams()
 
@@ -42,7 +44,7 @@ const DashboardMainPage = () => {
       try {
         const taskParam = statusType || 'ALL' // task parametresini alır, yoksa 'ALL' kullanır
         const queryParam = searchParams.get('query') || '' // query parametresini alır, yoksa boş string kullanır
-        setLoading(true)
+        setLoading2(true)
 
         const normalizedQuery = queryParam.toLowerCase()
 
@@ -63,7 +65,7 @@ const DashboardMainPage = () => {
         })
 
         setFilteredTasks(filtered) // Filtered task listesini günceller
-        setLoading(false) // Yüklenme durumunu false yapar
+        setLoading2(false) // Yüklenme durumunu false yapar
       } catch (error) {
         console.error('Error while filtering tasks:', error)
         setLoading(false) // Yüklenme durumunu false yapar
@@ -135,6 +137,7 @@ const DashboardMainPage = () => {
         loading={loading}
         setStatusType={setStatusType}
         statusType={statusType}
+        loading2={loading2}
       />
     </div>
   )

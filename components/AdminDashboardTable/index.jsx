@@ -13,9 +13,8 @@ import {
 } from '../../lib/constants/tabsValues.js'
 import Link from 'next/link'
 import Loading from '../loading'
-import { useEffect } from 'react'
 
-const Table = ({ tasks, setStatusType, statusType, loading }) => {
+const Table = ({ tasks, setStatusType, statusType, loading, loading2 }) => {
   return (
     <div className="flex flex-col gap-8 mt-8">
       <div>
@@ -61,7 +60,7 @@ const Table = ({ tasks, setStatusType, statusType, loading }) => {
             </tbody>
           ) : (
             <tbody>
-              {tasks.length > 0 ? (
+              {!loading2 && tasks.length > 0 ? (
                 tasks?.map((task, index) => (
                   <tr
                     key={index}
