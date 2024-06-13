@@ -12,6 +12,7 @@ import AdminDashboardTable from '../../../../components/AdminDashboardTable/inde
 const DashboardMainPage = () => {
   const [completedTaskCount, setCompletedTaskCount] = useState()
   const [tasks, setTasks] = useState([])
+  const [filteredTasks, setFilteredTasks] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [statusType, setStatusType] = useState('ALL')
   const [inProgressTaskCount, setInProgressTaskCount] = useState()
@@ -21,45 +22,56 @@ const DashboardMainPage = () => {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    //Veritabanından tüm tasklerin geçerli durumlara göre sayısını getiren fonksiyon
     const getTasks = async () => {
+      const taskData = await getAPI(`/tasks/get-tasks`)
+      if (taskData.status === 'success') {
+        const { tasks } = taskData.data
+        setTasks(tasks)
+        setLoading(false)
+      } else {
+        // Hata varsa console ekranında göstericek
+        console.error('Failed to fetch task counts')
+      }
+    }
+    getTasks()
+  }, [])
+
+  useEffect(() => {
+    // Veritabanından tüm tasklerin geçerli durumlara göre sayısını getiren fonksiyon
+    const filterTasks = (tasks) => {
       try {
-        const taskParam = statusType // task parametresini alır, yoksa 'ALL' kullanır
+        const taskParam = statusType || 'ALL' // task parametresini alır, yoksa 'ALL' kullanır
         const queryParam = searchParams.get('query') || '' // query parametresini alır, yoksa boş string kullanır
         setLoading(true)
-        const taskData = await getAPI(`/tasks/${taskParam}/get-tasks`)
-        if (taskData.status === 'success') {
-          const { tasks } = taskData.data
 
-          const filteredTasks = queryParam
-            ? tasks.filter(
-                (task) =>
-                  normalizeInput(task?.title)
-                    .toLowerCase()
-                    .includes(queryParam.toLowerCase()) || // Başlıkta arama yapar
-                  task.assignedUsers.some(
-                    (user) =>
-                      normalizeInput(user.user?.name)
-                        .toLowerCase()
-                        .includes(queryParam.toLowerCase()) // Kullanıcı adında arama yapar
-                  )
+        const normalizedQuery = queryParam.toLowerCase()
+
+        const filtered = tasks.filter((task) => {
+          const matchesStatus = taskParam === 'ALL' || task.status === taskParam
+          const matchesQuery = normalizedQuery
+            ? normalizeInput(task?.title)
+                .toLowerCase()
+                .includes(normalizedQuery) ||
+              task.assignedUsers.some((user) =>
+                normalizeInput(user.user?.name)
+                  .toLowerCase()
+                  .includes(normalizedQuery)
               )
-            : tasks // Filtrelenmiş task listesini oluşturur
+            : true
 
-          setTasks(filteredTasks) // Task listesini günceller
-          setLoading(false) // Yüklenme durumunu false yapar
-        } else {
-          // Hata varsa console ekranında göstericek
-          console.error('Failed to fetch task counts')
-        }
+          return matchesStatus && matchesQuery
+        })
+
+        setFilteredTasks(filtered) // Filtered task listesini günceller
+        setLoading(false) // Yüklenme durumunu false yapar
       } catch (error) {
-        // Ağ hatasını kontrol etmek için
-        console.error('Error while fetching task counts:', error)
+        console.error('Error while filtering tasks:', error)
+        setLoading(false) // Yüklenme durumunu false yapar
       }
     }
 
-    getTasks()
-  }, [searchParams])
+    filterTasks(tasks)
+  }, [statusType, searchParams, tasks])
 
   useEffect(() => {
     const getDashboardCount = async () => {
@@ -119,7 +131,7 @@ const DashboardMainPage = () => {
         <SearchBar inputValue={inputValue} setInputValue={setInputValue} />
       </div>
       <AdminDashboardTable
-        tasks={tasks}
+        tasks={filteredTasks}
         loading={loading}
         setStatusType={setStatusType}
         statusType={statusType}

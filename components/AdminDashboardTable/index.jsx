@@ -13,6 +13,7 @@ import {
 } from '../../lib/constants/tabsValues.js'
 import Link from 'next/link'
 import Loading from '../loading'
+import { useEffect } from 'react'
 
 const Table = ({ tasks, setStatusType, statusType, loading }) => {
   return (
