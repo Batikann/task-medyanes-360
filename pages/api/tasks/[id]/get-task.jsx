@@ -7,7 +7,11 @@ const handler = async (req, res) => {
     try {
       const taskId = id
       const include = {
-        subtasks: true, // Task ile ilişkilendirilmiş subtasks verisini getirir.
+        subtasks: {
+          include: {
+            user: true,
+          },
+        }, // Task ile ilişkilendirilmiş subtasks verisini getirir.
         comments: true, // Task ile ilişkilendirilmiş comments verisini getirir.
         assignedUsers: {
           // assignedUsers ile ilişkilendirilmiş user verisini getirir.

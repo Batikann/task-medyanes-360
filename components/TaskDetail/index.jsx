@@ -129,7 +129,7 @@ const TaskDetail = ({
       </div>
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-bold uppercase">Alt Başlıklar</h2>
+          <h2 className="text-2xl font-bold uppercase">Görevler</h2>
           <span className="text-xl font-bold">
             {completedSubtasks}/{totalSubtasks}
           </span>
@@ -141,7 +141,10 @@ const TaskDetail = ({
               className="flex flex-col gap-2 items-start border-b pb-4"
             >
               <div className="flex items-center gap-4">
-                <p>Son Tarih: {formatDate(subtask.createdAt)}</p>
+                <p className="flex gap-2 text-base">
+                  <span className="font-bold ">Son Tarih:</span>{' '}
+                  {formatDate(subtask.createdAt)}
+                </p>
                 <p
                   className={` p-1 px-2 text-sm font-semibold text-white rounded-lg ${
                     subtask.status ? 'bg-green-400' : 'bg-orange-300'
@@ -151,6 +154,11 @@ const TaskDetail = ({
                 </p>
               </div>
               <p>{subtask.title}</p>
+              <p className="flex gap-2 text-base">
+                <span className="font-bold ">Görevi Oluşturan:</span>
+                {subtask.user.name}
+              </p>
+
               <SubtaskButton
                 role={role}
                 subtask={subtask}

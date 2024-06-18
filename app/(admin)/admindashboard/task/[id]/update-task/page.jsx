@@ -33,7 +33,7 @@ const UpdateTaskPage = ({ params }) => {
       const res = await postAPI(`/tasks/update-task`, newData)
       if (res.status === 'success') {
         router.push('/admindashboard?task=all')
-        showNotification('Görev Başarıyla Güncellendi')
+        showNotification('Proje Başarıyla Güncellendi')
       } else {
         console.log(res.message)
       }

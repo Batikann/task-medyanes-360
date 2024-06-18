@@ -11,11 +11,11 @@ import {
 export const checkPriority = (priority) => {
   switch (priority) {
     case 'LOW':
-      return ' bg-[#CDFAD5] text-[#799351]  '
+      return ' bg-[#41B06E] text-white  '
     case 'MEDIUM':
-      return ' bg-[#FFCF96] text-[#FF9A00]'
+      return ' bg-[#FFC100] text-white'
     case 'HIGH':
-      return ' bg-[#EF9595] text-[#FF0000] '
+      return ' bg-[#E72929] text-white '
     default:
       return ''
   }

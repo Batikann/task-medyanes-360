@@ -20,7 +20,7 @@ export const updateTaskValidationSchema = Yup.object().shape({
   assignedUsers: Yup.array().of(Yup.string()),
   subtasks: Yup.array().of(
     Yup.object().shape({
-      title: Yup.string().required('Alt görev başlığı gereklidir'),
+      title: Yup.string().required('Alt Proje başlığı gereklidir'),
       status: Yup.boolean(),
     })
   ),

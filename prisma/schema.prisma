@@ -26,6 +26,8 @@ model Subtask {
   status    Boolean  @default(false)
   task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    String   @db.ObjectId
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?  @db.ObjectId
 }
 
 model Comment {
@@ -40,20 +42,20 @@ model Comment {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
-  role          UserRole  @default(USER)
-  email         String?   @unique
+  role          UserRole     @default(USER)
+  email         String?      @unique
   emailVerified DateTime?
   password      String?
   image         String?
   accounts      Account[]
   sessions      Session[]
-
-  tasks     UserOnTask[]
-  comments  Comment[]
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  subtasks      Subtask[]
+  tasks         UserOnTask[]
+  comments      Comment[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 }
 
 model UserOnTask {

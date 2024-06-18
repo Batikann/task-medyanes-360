@@ -13,7 +13,7 @@ const SearchBar = ({ setInputValue, inputValue }) => {
         <input
           className="h-12 border w-96 md:w-[500px] pl-12 pr-4 rounded-full border-slate-500"
           type="text"
-          placeholder="Kullanıcı adını veya görev adını ara."
+          placeholder="Kullanıcı adını veya proje adını ara."
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />

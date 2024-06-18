@@ -113,17 +113,17 @@ const DashboardMainPage = () => {
         <DashboardCard
           bgColor={'bg-[#FFBF78]'}
           textColor={'text-[#FF7D29]'}
-          title={'Toplam Görev'}
+          title={'Toplam Proje'}
           count={allTaskCount}
         />
         <DashboardCard
-          title={'Tamamlanan Görev'}
+          title={'Tamamlanan Proje'}
           count={completedTaskCount}
           bgColor={'bg-[#D0E7D2]'}
           textColor={'text-[#618264]'}
         />
         <DashboardCard
-          title={'Devam Eden Görev'}
+          title={'Devam Eden Proje'}
           bgColor={'bg-[#A7E6FF]'}
           textColor={'text-[#3572EF]'}
           count={inProgressTaskCount}

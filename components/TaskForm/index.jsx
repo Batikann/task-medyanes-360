@@ -218,7 +218,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               className="bg-blue-600 text-white p-3 rounded-md hover:bg-blue-500 font-semibold transition-all ease-in-out duration-500 transform"
               type="submit"
             >
-              {initialValues.id ? 'Görev Güncelle' : 'Görev Ekle'}
+              {initialValues.id ? 'Proje Güncelle' : 'Proje Ekle'}
             </button>
           </Form>
         )

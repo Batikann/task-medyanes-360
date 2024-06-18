@@ -73,7 +73,7 @@ const MainTaskPage = () => {
     return (
       <div className="flex flex-col gap-5">
         <SearchBar inputValue={inputValue} setInputValue={setInputValue} />
-        <p>Geçerli bir görev bulunamadı.</p>
+        <p>Geçerli bir proje bulunamadı.</p>
       </div>
     )
   }
