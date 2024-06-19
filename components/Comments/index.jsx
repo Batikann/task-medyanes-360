@@ -142,7 +142,7 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
     getCommentForTask()
   }, [refreshPage])
   if (loading) {
-    return <Loading />
+    return <Loading width={'h-8'} height={'h-8'} />
   }
 
   //Geçerli taskın hiç yorumu yok ise bu kısım çalışıyor.

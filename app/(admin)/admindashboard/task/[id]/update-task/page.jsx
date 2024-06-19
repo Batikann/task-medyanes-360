@@ -29,6 +29,7 @@ const UpdateTaskPage = ({ params }) => {
   //Task güncelleme fonksiyonumuz
   const handleSubmit = async (values) => {
     const newData = { ...values, id: params.id }
+    console.log(newData)
     try {
       const res = await postAPI(`/tasks/update-task`, newData)
       if (res.status === 'success') {
@@ -44,7 +45,7 @@ const UpdateTaskPage = ({ params }) => {
 
   //Task yüklenene kadar kullanıcı deneyimi için bir loading gösteriyoruz.
   if (!task) {
-    return <Loading />
+    return <Loading width={'h-8'} height={'h-8'} />
   }
 
   return (

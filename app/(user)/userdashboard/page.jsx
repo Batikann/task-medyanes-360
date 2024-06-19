@@ -49,7 +49,7 @@ const UserDashboard = () => {
   if (tasks.length <= 0) {
     return (
       <div className="   mt-5 ">
-        <Loading />
+        <Loading width={'h-8'} height={'h-8'} />
       </div>
     )
   }

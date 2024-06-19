@@ -34,7 +34,7 @@ const TaskDetailsContent = ({ role, taskID }) => {
 
   //task detayları için kullanıcı deneyimini iyileştirmek adına veri gelene kadar sayfa da loading componentimiz gözükür
   if (taskDetail.length <= 0) {
-    return <Loading />
+    return <Loading width={'h-8'} height={'h-8'} />
   }
 
   //Task silme fonksiyonumuz (admin için)

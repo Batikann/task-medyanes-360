@@ -11,8 +11,12 @@ import Loading from '../loading/index.jsx'
 import { getDateNow } from '../../lib/utils/dateUtils.js'
 import { getAPI } from '../../services/fetchAPI/index.js'
 
+import { useSession } from 'next-auth/react'
+
 const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
   const [users, setUsers] = useState([{ id: '', username: '' }])
+  const { data: session, status } = useSession()
+
   const [loading, setLoading] = useState(true)
   const [minDate, setMinDate] = useState('')
   useEffect(() => {
@@ -27,7 +31,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
   }, [])
 
   if (loading) {
-    return <Loading />
+    return <Loading width={'h-8'} height={'h-8'} />
   }
 
   const initialValues = {
@@ -42,9 +46,11 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
       : [],
     subtasks: task
       ? task.subtasks.map((subtask) => ({
+          id: subtask.id,
           title: subtask.title,
           createdAt: new Date(subtask.createdAt).toISOString().slice(0, 10),
           status: subtask.status,
+          userId: subtask.userId || session.user.id,
         }))
       : [],
   }
@@ -185,6 +191,12 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                               {formikProps.errors.subtasks[index].createdAt}
                             </div>
                           )}
+
+                        <Field
+                          type="hidden"
+                          name={`subtasks[${index}].userId`}
+                          value={session.user.id}
+                        />
                         <div className="flex justify-center items-center ">
                           <button
                             type="button"
@@ -205,7 +217,12 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                       className="border p-2 w-full mt-2"
                       type="button"
                       onClick={() =>
-                        push({ title: '', createdAt: '', status: false })
+                        push({
+                          title: '',
+                          createdAt: '',
+                          status: false,
+                          userId: session.user.id,
+                        })
                       }
                     >
                       Alt Başlık Ekle

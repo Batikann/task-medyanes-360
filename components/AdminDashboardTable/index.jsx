@@ -4,7 +4,7 @@ import {
   priorityLocalization,
   taskStatusLocalization,
 } from '../../lib/utils/localizationText'
-import { formatDate } from '../../lib/utils/formatter'
+import { formatDate, truncateString } from '../../lib/utils/formatter'
 import { checkPriority } from '../TaskCard'
 import { IoMdArrowDropup, IoMdArrowDropdown } from 'react-icons/io'
 import { filteredTaskFunc } from '../../lib/utils/filterUtils.js'
@@ -88,7 +88,7 @@ const Table = ({ tasks, setStatusType, statusType, loading, loading2 }) => {
               <tr>
                 <td colSpan={adminTableValues.length} className="p-5">
                   <div className="flex justify-center items-center text-center">
-                    <Loading />
+                    <Loading width={'h-8'} height={'h-8'} />
                   </div>
                 </td>
               </tr>
@@ -105,7 +105,7 @@ const Table = ({ tasks, setStatusType, statusType, loading, loading2 }) => {
                       {task.title}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <p className="line-clamp-2">{task.description}</p>
+                      <p>{truncateString(task.description)}</p>
                     </td>
                     <td className={`px-6 py-4 whitespace-nowrap text-sm`}>
                       <p

@@ -2,17 +2,15 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import getUser from '../../lib/utils/getUser'
 import { useState } from 'react'
 import MobileNav from '../MobileNav'
 import BurgerMenu from '/public/burger-menu.svg'
 import Image from 'next/image'
-import { MdArrowDropUp, MdArrowDropDown } from 'react-icons/md'
-import { IoIosLogOut } from 'react-icons/io'
 import { signOut, useSession } from 'next-auth/react'
+import DropdownNavbar from '../../components/DropdownNavbar'
+import Loading from '../loading'
 
 const Navbar = ({ title, navLinks, route }) => {
-  const [userMenu, setUserMenu] = useState(false)
   const [toggleMobileMenu, setToggleMobileMenu] = useState(false)
 
   const handleLogout = () => {
@@ -21,7 +19,7 @@ const Navbar = ({ title, navLinks, route }) => {
 
   const pathName = usePathname()
 
-  const session = useSession()
+  const { data: session, status } = useSession()
 
   return (
     <div className="   border-b shadow-md p-7   w-full">
@@ -51,40 +49,14 @@ const Navbar = ({ title, navLinks, route }) => {
               </li>
             ))}
           </ul>
-          <div
-            className="relative flex flex-row-reverse gap-2 ml-3 items-center cursor-pointer "
-            onClick={() => setUserMenu(!userMenu)}
-          >
-            <div className="flex gap-1 group">
-              <p className="flex items-center gap-2 font-medium text-[#1572A1] hover:text-[#9AD0EC] transition-all duration-500 ease-in-out">
-                {session.data?.user.name ?? ''}
-              </p>
-              {!userMenu ? (
-                <MdArrowDropDown
-                  size={25}
-                  className="group-hover:text-[#9AD0EC] transition-all duration-500 ease-in-out text-[#1572A1]"
-                />
-              ) : (
-                <MdArrowDropUp
-                  size={25}
-                  className="group-hover:text-[#9AD0EC] transition-all duration-500 ease-in-out hover:scale-105 text-[#1572A1]"
-                />
-              )}
-            </div>
-            {userMenu && (
-              <div className="absolute bg-white shadow-xl w-36 p-4 -right-5 top-10 border  z-40">
-                <button
-                  onClick={handleLogout}
-                  className="group relative flex gap-2 items-center text-sm z-50 "
-                >
-                  <span className="font-semibold text-gray-600 group-hover:text-red-500 transition-all duration-500 ease-in-out flex items-center gap-2">
-                    Çıkış Yap
-                    <IoIosLogOut size={20} />
-                  </span>
-                </button>
-              </div>
-            )}
-          </div>
+          {status === 'authenticated' ? (
+            <DropdownNavbar
+              name={session.user.name}
+              logoutFunc={handleLogout}
+            />
+          ) : (
+            <Loading width={'h-6'} height={'h-6'} />
+          )}
           {navLinks.length > 0 && (
             <div className="md:hidden flex items-center gap-4">
               <button

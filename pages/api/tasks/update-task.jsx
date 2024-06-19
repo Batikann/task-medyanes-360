@@ -39,6 +39,7 @@ async function handler(req, res) {
           title: subtask.title,
           createdAt: new Date(subtask.createdAt), // subtask için createdAt alanını Date nesnesine çevirir.
           status: subtask.status,
+          userId: subtask.userId,
         })),
       },
       assignedUsers: {
