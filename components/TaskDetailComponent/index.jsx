@@ -59,6 +59,7 @@ const TaskDetailsContent = ({ role, taskID }) => {
         page={page}
         taskDetail={taskDetail}
         role={session?.user.role}
+        userId={session.user.id}
         setRefreshPage={setRefreshPage}
         refreshPage={refreshPage}
         updateTaskHandler={() => updateTaskHandler(taskDetail.id)}

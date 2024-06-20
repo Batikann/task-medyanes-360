@@ -16,6 +16,7 @@ import {
 import Link from 'next/link'
 import Loading from '../loading'
 import { useEffect, useState } from 'react'
+import { Tooltip } from '@mui/material'
 
 const Table = ({ tasks, setStatusType, statusType, loading, loading2 }) => {
   const [filteredTasks, setFilteredTasks] = useState(tasks)
@@ -105,7 +106,11 @@ const Table = ({ tasks, setStatusType, statusType, loading, loading2 }) => {
                       {task.title}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <p>{truncateString(task.description)}</p>
+                      <p>
+                        <Tooltip title={task.description} placement="top">
+                          {truncateString(task.description)}
+                        </Tooltip>
+                      </p>
                     </td>
                     <td className={`px-6 py-4 whitespace-nowrap text-sm`}>
                       <p
