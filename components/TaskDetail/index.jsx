@@ -83,6 +83,10 @@ const TaskDetail = ({
   const completedSubtasks = subtasks.filter((subtask) => subtask.status).length
   const totalSubtasks = subtasks.length
 
+  useEffect(() => {
+    setSubtasks(taskDetail.subtasks)
+  }, [taskDetail])
+
   const deleteSubtaskHandle = async (id) => {
     const query = { id: id }
     const res = await postAPI('/tasks/subtask/delete-subtask', query)

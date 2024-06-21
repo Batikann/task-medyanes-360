@@ -1,10 +1,10 @@
 import TaskCard from '../TaskCard/index'
 
-const TaskList = ({ tasks, loading, dashboard }) => {
+const TaskList = ({ tasks, dashboard }) => {
   return (
     <div className="grid grid-cols-1 gap-6">
       <div className="flex flex-col gap-5">
-        {tasks.length > 0 ? (
+        {tasks?.length > 0 ? (
           tasks?.map((task) => (
             <TaskCard
               key={task.id}

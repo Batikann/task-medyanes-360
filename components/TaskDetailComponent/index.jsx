@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Loading from '../../components/loading'
 import TaskDetail from '..//TaskDetail'
 import { getAPI, postAPI } from '../../services/fetchAPI'
-import getUser from '../../lib/utils/getUser'
+
 import Comments from '../Comments/'
 import CommentForm from '../CommentForm'
 import Tab from '../Tab'
@@ -30,7 +30,7 @@ const TaskDetailsContent = ({ role, taskID }) => {
     }
 
     getTaskDetail()
-  }, [refreshPage])
+  }, [refreshPage, taskID])
 
   //task detayları için kullanıcı deneyimini iyileştirmek adına veri gelene kadar sayfa da loading componentimiz gözükür
   if (taskDetail.length <= 0) {

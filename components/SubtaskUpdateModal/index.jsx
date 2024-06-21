@@ -22,15 +22,17 @@ const UpdateDialog = ({
   const minDateFormatter = new Date(minDate).toISOString().split('T')[0]
   useEffect(() => {
     const getSubtask = async (id) => {
-      const res = await getAPI(`/tasks/subtask/${id}/get-subtask`)
-      if (res.status === 'success') {
-        setTitle(res.task.title)
+      if (id) {
+        const res = await getAPI(`/tasks/subtask/${id}/get-subtask`)
+        if (res.status === 'success') {
+          setTitle(res.task.title)
 
-        // Format createdAt to YYYY-MM-DD for date input
-        const formattedDate = new Date(res.task.createdAt)
-          .toISOString()
-          .split('T')[0]
-        setCreatedAt(formattedDate)
+          // Format createdAt to YYYY-MM-DD for date input
+          const formattedDate = new Date(res.task.createdAt)
+            .toISOString()
+            .split('T')[0]
+          setCreatedAt(formattedDate)
+        }
       }
     }
     getSubtask(id)
