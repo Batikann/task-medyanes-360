@@ -31,7 +31,6 @@ const UserDashboard = () => {
   const [filteredTasks, setFilteredTasks] = useState([])
   const [projectName, setProjectName] = useState('')
   const [sortOrder, setSortOrder] = useState('')
-  const searchParams = useSearchParams()
   const router = useRouter()
   useEffect(() => {
     //Gelen kullanıcı bilgilerine göre o kullanıcının görev aldığı taskleri getiren fonksiyonumuz
