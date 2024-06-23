@@ -21,21 +21,21 @@
 
 <h3>Proje Görselleri</h3>
 
-<h4>Login/Register Sayfaları</h4>
+<h4>Login/Register Sayfaları / Login/Register Pages</h4>
 <img src="https://github.com/Batikann/task-medyanes-360/assets/71382413/f9461784-169e-44c5-a186-0b71c1daad4f"/>
 <img src="https://github.com/Batikann/task-medyanes-360/assets/71382413/39881957-5d6e-4b7d-ba56-127a5305be8d"/>
 
-<h4>Admin Paneli</h4>
+<h4>Admin Paneli / Admin Dashboard</h4>
 <img src="https://github.com/Batikann/task-medyanes-360/assets/71382413/5712a8b0-5418-47dd-8013-9af9f178b9d0" />
 
-<h4>İş, Proje Oluşturma Sayfası (Admin Tarafı)</h4>
+<h4>İş, Proje Oluşturma Sayfası (Admin Tarafı) / Task/Project Creation Page (Admin Side)</h4>
 <img src="https://github.com/Batikann/task-medyanes-360/assets/71382413/e0e274a3-5e6a-465c-84f6-c939305357ae"/>
 
-<h4>Çalışan Paneli</h4>
+<h4>Çalışan Paneli / Employee Dashboard</h4>
 <img src="https://github.com/Batikann/task-medyanes-360/assets/71382413/f162a656-7614-4df4-8697-68da53a03a87"/>
 
-<h4>İş,Proje Detay Sayfası</h4>
+<h4>İş,Proje Detay Sayfası / Task/Project Detail Page</h4>
 <img src="https://github.com/Batikann/task-medyanes-360/assets/71382413/f86b5074-08f0-426c-9577-cb69c20b5ddf"/>
 
-<h4>Faaliyet/Zaman Çizelgesi</h4>
+<h4>Faaliyet/Zaman Çizelgesi / Activity/Timeline</h4>
 <img src="https://github.com/Batikann/task-medyanes-360/assets/71382413/2e5419dd-865a-4555-a0c1-a39093f61c13"/>
