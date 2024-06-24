@@ -56,7 +56,7 @@ const SubtaskComponent = ({
           title={
             subtask.status ? 'Alt başlık tamamlanmadı' : 'Alt başlık tamamlandı'
           }
-          className={`bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600 hover:text-white transition-all ease-in-out duration-500 transform ${
+          className={`mt-3 bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600 hover:text-white transition-all ease-in-out duration-500 transform ${
             subtask.status ? 'hover:bg-red-400 ' : 'hover:bg-green-400'
           }`}
           onClick={() => handleStatusToggle(subtask.id, subtask.status)}

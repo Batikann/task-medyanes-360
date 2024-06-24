@@ -6,7 +6,7 @@ import Button from '../Buttons/Button'
 import { useEffect, useState } from 'react'
 import Tab from '../Tab'
 import { priorityLocalization } from '../../lib/utils/localizationText'
-import SubtaskButton from '../SubtaskButton'
+import SubtaskCard from '../SubtaskCard'
 import { FaPlus } from 'react-icons/fa'
 import SubtaskAddModal from '../../components/SubtaskAddModal'
 import { postAPI } from '../../services/fetchAPI'
@@ -96,12 +96,25 @@ const TaskDetail = ({
     }
   }
 
+  const checkPriority = (priority) => {
+    switch (priority) {
+      case 'LOW':
+        return ' bg-[#41B06E] text-white'
+      case 'MEDIUM':
+        return ' bg-[#FFC100] text-white'
+      case 'HIGH':
+        return ' bg-[#FF0000] text-white'
+      default:
+        return ''
+    }
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <Tab page={page} setPage={setPage} />
       <div className="border-b flex flex-col gap-4 pb-4">
         <div className="flex md:items-center flex-col md:flex-row gap-4 md:justify-between">
-          <div className="flex md:items-center gap-4 flex-col md:flex-row items-start">
+          <div className="flex gap-4 flex-col items-start ">
             <h1 className="text-4xl font-bold mt-4">{taskDetail.title}</h1>
             <p
               className={`${checkPriority(
@@ -134,7 +147,7 @@ const TaskDetail = ({
         </div>
         <div className="flex md:flex-row flex-col md:items-center gap-4 ">
           <p>
-            <span className="mr-2 font-bold">Oluşturma Tarihi :</span>{' '}
+            <span className="mr-2 font-bold">Oluşturulma Tarihi :</span>{' '}
             {formatDate(taskDetail.createdAt)}
           </p>
           <p>{taskStatusLocalization(taskDetail.status)}</p>
@@ -187,57 +200,18 @@ const TaskDetail = ({
             />
           </div>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="grid grid-cols 1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {taskDetail.subtasks.map((subtask) => (
-            <div className="border-b pb-4 flex mb-4 justify-between">
-              <div
-                key={subtask.id}
-                className="flex flex-col gap-2 items-start "
-              >
-                <div className="flex items-center gap-4">
-                  <p className="flex gap-2 text-base">
-                    <span className="font-bold ">Son Tarih:</span>{' '}
-                    {formatDate(subtask.createdAt)}
-                  </p>
-                  <p
-                    className={` p-1 px-2 text-sm font-semibold text-white rounded-lg ${
-                      subtask.status ? 'bg-green-400' : 'bg-orange-300'
-                    }`}
-                  >
-                    {subtask.status ? 'Bitti' : 'Devam Etmekte'}
-                  </p>
-                </div>
-                <p>{subtask.title}</p>
-                <p className="flex gap-2 text-base">
-                  <span className="font-bold ">Görevi Oluşturan:</span>
-                  {subtask.user.name}
-                </p>
-
-                <SubtaskButton
-                  role={role}
-                  subtask={subtask}
-                  setSubtasks={setSubtasks}
-                  setRefreshPage={setRefreshPage}
-                  refreshPage={refreshPage}
-                />
-              </div>
-              {subtask.userId === userId && (
-                <div className="space-x-4">
-                  <button
-                    onClick={() => deleteSubtaskHandle(subtask.id)}
-                    className="bg-red-600 hover:bg-red-400 cursor-pointer duration-500 ease-in-out transition-all px-4 rounded-md text-white py-2 font-semibold text-sm"
-                  >
-                    Sil
-                  </button>
-                  <button
-                    onClick={() => handleOpenUpdate(subtask.id)}
-                    className="bg-blue-600 hover:bg-blue-400 cursor-pointer duration-500 ease-in-out transition-all font-semibold text-sm px-4 rounded-md text-white py-2"
-                  >
-                    Güncelle
-                  </button>
-                </div>
-              )}
-            </div>
+            <SubtaskCard
+              subtask={subtask}
+              role={role}
+              setSubtasks={setSubtasks}
+              setRefreshPage={setRefreshPage}
+              deleteSubtaskHandle={deleteSubtaskHandle}
+              handleOpenUpdate={handleOpenUpdate}
+              userId={userId}
+              refreshPage={refreshPage}
+            />
           ))}
 
           <UpdateDialog

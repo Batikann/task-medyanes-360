@@ -31,9 +31,7 @@ const LoginPage = () => {
           })
 
           if (result?.ok) {
-            setTimeout(() => {
-              router.push(`/userdashboard`)
-            }, 3000)
+            router.push(`/userdashboard`)
           } else {
             setError(result?.error || 'Giriş işlemi başarısız oldu.')
           }
