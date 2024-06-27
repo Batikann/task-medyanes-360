@@ -1,4 +1,7 @@
-import { updateDataByAny } from '../../../../services/servicesOperations'
+import {
+  createNotifications,
+  updateDataByAny,
+} from '../../../../services/servicesOperations'
 
 const handler = async (req, res) => {
   // Eğer istek mevcut değilse hata döner.
@@ -36,6 +39,41 @@ const handler = async (req, res) => {
         })
       }
 
+      const subtask = await prisma.subtask.findUnique({
+        where: { id: id },
+        include: { task: { include: { assignedUsers: true } } },
+      })
+
+      if (!subtask || !subtask.task) {
+        return res
+          .status(404)
+          .json({ status: 'error', message: 'Task not found' })
+      }
+
+      const task = subtask.task
+      const notifications = task.assignedUsers.map((user) => ({
+        userId: user.userId,
+        taskId: task.id,
+        message: `${task.title} projesinde bir görev güncellendi.`,
+        createdAt: new Date(),
+        type: 'UPDATE',
+      }))
+
+      const notificationResult = await createNotifications(notifications)
+      if (notificationResult.error) {
+        return res.status(500).json({
+          status: 'error',
+          message: 'Bildirimler oluşturulurken bir hata oluştu!',
+          error: notificationResult.error,
+        })
+      }
+      // Bildirimleri gerçek zamanlı olarak gönderin (Socket.IO kullanarak)
+      const io = req.socket.server.io
+      task.assignedUsers.forEach((user) => {
+        io.to(user.userId).emit('new_notification', {
+          message: `${task.title} projesinde bir görev güncellendi.`,
+        })
+      })
       // Başarılı olursa 200 durum kodu ve güncellenmiş veriyi döner.
       return res.status(200).json({ status: 'success', data: result })
     } catch (error) {

@@ -133,6 +133,58 @@ export async function deleteDataAll(tableName) {
   }
 }
 
+export const createNotifications = async (notifications) => {
+  try {
+    const result = await prisma.notification.createMany({
+      data: notifications,
+    })
+    return { success: true, data: result }
+  } catch (error) {
+    return { success: false, error }
+  }
+}
+
+export const markNotificationsAsRead = async (userId) => {
+  try {
+    await prisma.notification.updateMany({
+      where: { userId, isRead: false },
+      data: { isRead: true },
+    })
+    return { status: 'success' }
+  } catch (error) {
+    return { status: 'error', message: error.message }
+  }
+}
+
+export const checkNotificationExists = async (userId, taskId, type) => {
+  try {
+    const notification = await prisma.notification.findFirst({
+      where: {
+        userId,
+        taskId,
+        type,
+      },
+    })
+    return notification !== null
+  } catch (error) {
+    return false
+  }
+}
+
+export const deleteNotifications = async (userId, taskId) => {
+  try {
+    await prisma.notification.deleteMany({
+      where: {
+        userId,
+        taskId,
+      },
+    })
+    return { status: 'success' }
+  } catch (error) {
+    return { status: 'error', message: error.message }
+  }
+}
+
 export default {
   getAllData,
 
@@ -152,4 +204,7 @@ export default {
   getDataByUniqueRelitionalTable,
 
   getDataByManyRelitionalTable,
+  createNotifications,
+  markNotificationsAsRead,
+  deleteNotifications,
 }

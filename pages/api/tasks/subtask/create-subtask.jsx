@@ -1,4 +1,8 @@
-import { createNewData } from '../../../../services/servicesOperations/index'
+import {
+  createNewData,
+  createNotifications,
+} from '../../../../services/servicesOperations/index'
+import prisma from '../../../../lib/prisma'
 
 const handler = async (req, res) => {
   if (!req) {
@@ -29,6 +33,46 @@ const handler = async (req, res) => {
           error: result.error,
         })
       }
+
+      // TaskId ile ilişkili görevi bulun ve atanan kullanıcıları alın
+      const task = await prisma.task.findUnique({
+        where: { id: taskId },
+        include: { assignedUsers: true },
+      })
+
+      if (!task) {
+        return res
+          .status(404)
+          .json({ status: 'error', message: 'Task not found' })
+      }
+
+      const notifications = task.assignedUsers.map((user) => ({
+        userId: user.userId,
+        taskId,
+        message: `${task.title} Porjesinde Yeni bir görev "${title}" eklendi.`,
+        createdAt: new Date(),
+        type: 'CREATE',
+      }))
+
+      // Bildirimleri kaydedin
+      const notificationResult = await createNotifications(notifications)
+
+      if (notificationResult.error) {
+        return res.status(500).json({
+          status: 'error',
+          message: 'Bildirimler oluşturulurken bir hata oluştu!',
+          error: notificationResult.error,
+        })
+      }
+
+      // Bildirimleri gerçek zamanlı olarak gönderin (Socket.IO kullanarak)
+      const io = req.socket.server.io
+      task.assignedUsers.forEach((user) => {
+        io.to(user.userId).emit('new_notification', {
+          message: `${task.title} Porjesinde Yeni bir görev "${title}" eklendi.`,
+        })
+      })
+
       return res.status(200).json({ status: 'success', data: result })
     } catch (error) {
       return res.status(500).json({ status: 'error', message: error.message })

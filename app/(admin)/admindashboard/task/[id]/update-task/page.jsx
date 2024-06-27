@@ -7,11 +7,12 @@ import Loading from '../../../../../../components/loading'
 import TaskForm from '../../../../../../components/TaskForm'
 import { updateTaskValidationSchema } from './updateTaskValidationSchema'
 import { useNotification } from '../../../../../../context/NotificationContext '
+import { useSession } from 'next-auth/react'
 const UpdateTaskPage = ({ params }) => {
   const [task, setTask] = useState(null)
   const { showNotification } = useNotification()
   const router = useRouter()
-
+  const { data: session, status } = useSession()
   //Kullanıcı sayfaya girerken gelen id ye göre geçerli taskı getiriyoruz.
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +29,7 @@ const UpdateTaskPage = ({ params }) => {
 
   //Task güncelleme fonksiyonumuz
   const handleSubmit = async (values) => {
-    const newData = { ...values, id: params.id }
+    const newData = { ...values, id: params.id, userId: session.user.id }
     console.log(newData)
     try {
       const res = await postAPI(`/tasks/update-task`, newData)

@@ -6,11 +6,10 @@ import { postAPI } from '../../../../services/fetchAPI'
 import { useRouter } from 'next/navigation'
 
 import TaskForm from '../../../../components/TaskForm/index.jsx'
-import { useNotification } from '../../../../context/NotificationContext .jsx'
 
 const AddTaskPage = () => {
   const router = useRouter()
-  const { showNotification } = useNotification()
+
   //ADD işlemini gerçekleştiren fonksiyonumuz
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
@@ -18,7 +17,6 @@ const AddTaskPage = () => {
       if (res.status === 'success') {
         setTimeout(() => {
           router.push('/admindashboard?task=all')
-          showNotification('Gröev Başarıyla Eklendi')
         }, 3000)
       } else {
         console.log(res.message)
