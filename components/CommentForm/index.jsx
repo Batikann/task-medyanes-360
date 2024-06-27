@@ -1,6 +1,6 @@
 'use client'
 
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { ErrorMessage, Field, Form, Formik, useField } from 'formik'
 import commentSchemaValidation from './commentSchemaValidation'
 import { checkboxValues } from '../../lib/constants/commentFormValues'
 import { postAPI } from '../../services/fetchAPI'
@@ -48,7 +48,7 @@ const CommentForm = ({
 
   return (
     <div>
-      <h1 className="text-xl font-bold border-b pb-2 uppercase">
+      <h1 className="text-xl font-bold border-b pb-2 uppercase text-[#01204E]">
         {editComment ? 'Yorum Güncelle' : 'Yorum Ekle'}
       </h1>
       <Formik
@@ -63,25 +63,23 @@ const CommentForm = ({
         {({ isSubmitting }) => (
           <Form className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 mt-4">
-              <label className="text-lg font-semibold">Durum</label>
               <div
                 role="group"
                 aria-labelledby="status"
                 className="flex flex-wrap gap-4"
               >
                 {checkboxValues.map((val) => (
-                  <label key={val.id}>
-                    <Field type="radio" name="status" value={val.name} />
-                    {commentStatusLocalization(val.name)}
-                  </label>
+                  <RadioButtonWithLabel
+                    key={val.id}
+                    name="status"
+                    value={val.name}
+                    label={commentStatusLocalization(val.name)}
+                  />
                 ))}
               </div>
               <ErrorMessage name="status" component="div" />
             </div>
             <div className="flex flex-col gap-4">
-              <label className="text-lg font-semibold" htmlFor="content">
-                İçerik
-              </label>
               <Field
                 as="textarea"
                 name="content"
@@ -103,7 +101,7 @@ const CommentForm = ({
               disabled={isSubmitting}
               className="flex items-center justify-center bg-blue-600 text-white p-3 text-lg font-semibold rounded-lg hover:bg-blue-500 cursor-pointer transition-all ease-in-out duration-500 transform"
             >
-              {editComment ? 'Güncelle' : 'Ekle'}
+              {editComment ? 'Ekle' : 'Ekle'}
             </button>
           </Form>
         )}
@@ -112,3 +110,17 @@ const CommentForm = ({
   )
 }
 export default CommentForm
+
+const RadioButtonWithLabel = ({ name, value, label }) => {
+  const [field] = useField({ name, type: 'radio', value })
+  const isSelected = field.checked
+
+  return (
+    <label className="flex gap-2">
+      <Field type="radio" name={name} value={value} />
+      <p className={`${isSelected ? 'text-blue-700' : 'text-black'}`}>
+        {label}
+      </p>
+    </label>
+  )
+}

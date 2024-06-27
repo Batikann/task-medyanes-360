@@ -83,10 +83,11 @@ const LoginPage = () => {
           </Form>
         )}
       </Formik>
-      <div className="mt-4">
+      <div className="mt-6 text-center">
+        <span className="mr-2">Hesabınız yok mu ?</span>
         <Link
           href={'/register'}
-          className="text-blue-400 text-base hover:underline-offset-2 hover:underline transition-all ease-in-out duration-500 transform"
+          className="text-blue-400 text-base hover:underline-offset-2 hover:underline transition-all ease-in-out duration-500 transform "
         >
           Buradan Kaydolun!
         </Link>

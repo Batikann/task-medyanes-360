@@ -98,13 +98,16 @@ const RegisterPage = () => {
           </Form>
         )}
       </Formik>
-      <div className="mt-4">
-        <Link
-          href={'/login'}
-          className="text-blue-400 text-base hover:underline-offset-2 hover:underline transition-all ease-in-out duration-500 transform"
-        >
-          Buradan Giriş Yap!
-        </Link>
+      <div className="mt-6 text-center">
+        <p>
+          <span className="mr-2 text-base">Zaten Hesabın var mı ?</span>
+          <Link
+            href={'/login'}
+            className="text-blue-400 text-base hover:underline-offset-2 hover:underline transition-all ease-in-out duration-500 transform "
+          >
+            Buradan Giriş Yap!
+          </Link>
+        </p>
       </div>
     </>
   )

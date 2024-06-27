@@ -1,8 +1,12 @@
+'use client'
+
 import { formatDate } from '../../lib/utils/formatter'
 import SubtaskButton from '../SubtaskButton'
 import { FaCheck, FaUser, FaCalendar } from 'react-icons/fa'
 import { CgSandClock } from 'react-icons/cg'
 import { Tooltip } from '@mui/material'
+import DeleteModal from '../DeleteModal'
+import { useState } from 'react'
 const SubtaskCard = ({
   subtask,
   role,
@@ -13,8 +17,20 @@ const SubtaskCard = ({
   handleOpenUpdate,
   userId,
 }) => {
+  const [open, setOpen] = useState(false)
   const isPastDueDate = new Date(subtask.createdAt) < new Date()
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
 
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleDelete = () => {
+    deleteSubtaskHandle(subtask.id)
+    handleClose()
+  }
   return (
     <div className="border p-4 py-8 flex justify-between rounded-lg shadow-md">
       <div key={subtask.id} className="flex flex-col gap-2 items-start ">
@@ -74,13 +90,18 @@ const SubtaskCard = ({
             Güncelle
           </button>
           <button
-            onClick={() => deleteSubtaskHandle(subtask.id)}
+            onClick={handleClickOpen}
             className="bg-red-600 hover:bg-red-400 cursor-pointer duration-500 ease-in-out transition-all px-4 rounded-md text-white py-2 font-semibold text-sm"
           >
             Sil
           </button>
         </div>
       )}
+      <DeleteModal
+        open={open}
+        handleClose={handleClose}
+        handleDelete={handleDelete}
+      />
     </div>
   )
 }

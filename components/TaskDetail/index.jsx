@@ -11,6 +11,7 @@ import { FaPlus } from 'react-icons/fa'
 import SubtaskAddModal from '../../components/SubtaskAddModal'
 import { postAPI } from '../../services/fetchAPI'
 import UpdateDialog from '../../components/SubtaskUpdateModal/index'
+import DeleteModal from '../DeleteModal'
 
 const taskStatusLocalization = (status) => {
   switch (status) {
@@ -65,7 +66,7 @@ const TaskDetail = ({
   deleteTaskHandler,
 }) => {
   const [subtasks, setSubtasks] = useState(taskDetail.subtasks)
-
+  const [openDelete, setOpenDelete] = useState(false)
   const [open, setOpen] = useState(false)
   const [openUpdate, setOpenUpdate] = useState(false)
   const [selectedId, setSelectedId] = useState(null)
@@ -78,6 +79,19 @@ const TaskDetail = ({
 
   const handleCloseUpdate = () => {
     setOpenUpdate(false)
+  }
+
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true)
+  }
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false)
+  }
+
+  const handleDelete = () => {
+    deleteTaskHandler()
+    handleCloseDelete()
   }
   //Kullanıcı tarafında göstermek için tamamlanan ve tüm subtasklerin sayısını aldığımız yer
   const completedSubtasks = subtasks.filter((subtask) => subtask.status).length
@@ -140,7 +154,7 @@ const TaskDetail = ({
                 className={
                   'bg-red-500 text-white p-2 px-4 text-sm rounded-lg hover:bg-red-400 font-semibold transition-all ease-in-out duration-500 transform'
                 }
-                onClick={deleteTaskHandler}
+                onClick={handleClickOpenDelete}
               />
             </div>
           )}
@@ -224,6 +238,11 @@ const TaskDetail = ({
           />
         </div>
       </div>
+      <DeleteModal
+        open={openDelete}
+        handleClose={handleCloseDelete}
+        handleDelete={handleDelete}
+      />
     </div>
   )
 }

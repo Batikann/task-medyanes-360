@@ -4,14 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { signOut, useSession } from 'next-auth/react'
-import {
-  Menu,
-  MenuItem,
-  IconButton,
-  Badge,
-  Typography,
-  Tooltip,
-} from '@mui/material'
+import { Menu, MenuItem, IconButton, Badge } from '@mui/material'
 
 import { FiBell } from 'react-icons/fi'
 import MobileNav from '../MobileNav'
@@ -64,7 +57,12 @@ const Navbar = ({ title, navLinks, route }) => {
 
       fetchNotifications()
 
+      // const intervalId = setInterval(() => {
+      //   fetchNotifications()
+      // }, 30000)
+
       return () => {
+        // clearInterval(intervalId)
         socket.emit('leave', session.user.id)
         socket.off('new_notification')
       }

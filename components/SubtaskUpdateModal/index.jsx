@@ -19,19 +19,25 @@ const UpdateDialog = ({
 }) => {
   const [title, setTitle] = useState('')
   const [createdAt, setCreatedAt] = useState('')
+  const [originalTitle, setOriginalTitle] = useState('')
+  const [originalCreatedAt, setOriginalCreatedAt] = useState('')
   const minDateFormatter = new Date(minDate).toISOString().split('T')[0]
+
   useEffect(() => {
     const getSubtask = async (id) => {
       if (id) {
         const res = await getAPI(`/tasks/subtask/${id}/get-subtask`)
         if (res.status === 'success') {
-          setTitle(res.task.title)
+          const task = res.task
+          setTitle(task.title)
+          setOriginalTitle(task.title)
 
           // Format createdAt to YYYY-MM-DD for date input
-          const formattedDate = new Date(res.task.createdAt)
+          const formattedDate = new Date(task.createdAt)
             .toISOString()
             .split('T')[0]
           setCreatedAt(formattedDate)
+          setOriginalCreatedAt(formattedDate)
         }
       }
     }
@@ -39,7 +45,6 @@ const UpdateDialog = ({
   }, [id])
 
   const handleSave = async () => {
-    // Güncelleme işlemi burada yapılacak
     const subtask = { id, title, createdAt }
     const res = await postAPI('/tasks/subtask/update-subtask', subtask)
     if (res.status === 'success') {
@@ -47,6 +52,9 @@ const UpdateDialog = ({
     }
     handleClose()
   }
+
+  const isSaveDisabled =
+    title === originalTitle && createdAt === originalCreatedAt
 
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
@@ -83,7 +91,9 @@ const UpdateDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>İptal Et</Button>
-        <Button onClick={handleSave}>Kaydet</Button>
+        <Button onClick={handleSave} disabled={isSaveDisabled}>
+          Kaydet
+        </Button>
       </DialogActions>
     </Dialog>
   )

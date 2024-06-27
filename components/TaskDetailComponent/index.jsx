@@ -42,7 +42,7 @@ const TaskDetailsContent = ({ role, taskID }) => {
   const deleteTaskHandler = async (id) => {
     const res = await postAPI(`/tasks/delete-task`, { id })
     if (res.status === 'success') {
-      router.push('/admindashboard/task')
+      router.push('/admindashboard?task=all')
       showNotification('Task Başarıyla Silindi')
     }
   }
