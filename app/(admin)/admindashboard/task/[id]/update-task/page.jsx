@@ -6,11 +6,10 @@ import { useRouter } from 'next/navigation'
 import Loading from '../../../../../../components/loading'
 import TaskForm from '../../../../../../components/TaskForm'
 import { updateTaskValidationSchema } from './updateTaskValidationSchema'
-import { useNotification } from '../../../../../../context/NotificationContext '
 import { useSession } from 'next-auth/react'
+import { toast } from 'react-toastify'
 const UpdateTaskPage = ({ params }) => {
   const [task, setTask] = useState(null)
-  const { showNotification } = useNotification()
   const router = useRouter()
   const { data: session, status } = useSession()
   //Kullanıcı sayfaya girerken gelen id ye göre geçerli taskı getiriyoruz.
@@ -35,7 +34,7 @@ const UpdateTaskPage = ({ params }) => {
       const res = await postAPI(`/tasks/update-task`, newData)
       if (res.status === 'success') {
         router.push('/admindashboard?task=all')
-        showNotification('Proje Başarıyla Güncellendi')
+        toast.success('Task Başarıyla Güncellendi')
       } else {
         console.log(res.message)
       }

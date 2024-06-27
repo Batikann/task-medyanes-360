@@ -2,6 +2,7 @@
 import Navbar from '../../components/Navbar'
 import { adminNavLinks } from '../../lib/constants/navLinks'
 import Footer from '../../components/Footer'
+import { ToastContainer } from 'react-toastify'
 
 const AdminLayout = ({ children }) => {
   return (
@@ -15,6 +16,7 @@ const AdminLayout = ({ children }) => {
         {children}
       </div>
       <Footer />
+      <ToastContainer />
     </div>
   )
 }

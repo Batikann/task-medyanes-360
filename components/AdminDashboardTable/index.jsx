@@ -17,6 +17,7 @@ import Link from 'next/link'
 import Loading from '../loading'
 import { useEffect, useState } from 'react'
 import { Tooltip } from '@mui/material'
+import { calculateDuration } from '../../lib/utils/dateUtils'
 
 const Table = ({ tasks, setStatusType, statusType, loading, loading2 }) => {
   const [filteredTasks, setFilteredTasks] = useState(tasks)
@@ -126,6 +127,9 @@ const Table = ({ tasks, setStatusType, statusType, loading, loading2 }) => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {formatDate(task.createdAt)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                      {calculateDuration(task.createdAt)} Gün
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <ul className="flex gap-1 flex-col">

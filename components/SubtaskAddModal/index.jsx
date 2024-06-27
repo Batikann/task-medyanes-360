@@ -8,6 +8,7 @@ import {
   TextField,
 } from '@mui/material'
 import { postAPI } from '../../services/fetchAPI'
+import { toast } from 'react-toastify'
 
 const SubtaskAddModal = ({
   open,
@@ -28,6 +29,7 @@ const SubtaskAddModal = ({
     const subtask = { title, createdAt, taskId, userId }
     const res = await postAPI('/tasks/subtask/create-subtask', subtask)
     if (res.status === 'success') {
+      toast.success('Görev Başarıyla Eklendi')
       setRefreshPage(!refreshPage)
     }
     handleClose()

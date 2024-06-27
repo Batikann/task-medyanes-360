@@ -6,6 +6,7 @@ import { postAPI } from '../../../../services/fetchAPI'
 import { useRouter } from 'next/navigation'
 
 import TaskForm from '../../../../components/TaskForm/index.jsx'
+import { toast } from 'react-toastify'
 
 const AddTaskPage = () => {
   const router = useRouter()
@@ -15,9 +16,8 @@ const AddTaskPage = () => {
     try {
       const res = await postAPI('/tasks/create-task', values)
       if (res.status === 'success') {
-        setTimeout(() => {
-          router.push('/admindashboard?task=all')
-        }, 3000)
+        toast.success('Task Başarıyla Eklendi')
+        router.push('/admindashboard?task=all')
       } else {
         console.log(res.message)
       }

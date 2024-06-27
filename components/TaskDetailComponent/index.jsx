@@ -12,6 +12,7 @@ import Tab from '../Tab'
 import { useRouter } from 'next/navigation'
 import { useNotification } from '../../context/NotificationContext '
 import { useSession } from 'next-auth/react'
+import { toast } from 'react-toastify'
 
 const TaskDetailsContent = ({ role, taskID }) => {
   const router = useRouter()
@@ -20,7 +21,6 @@ const TaskDetailsContent = ({ role, taskID }) => {
   const [page, setPage] = useState('Task Detail')
   const [refreshPage, setRefreshPage] = useState(false)
   const [editComment, setEditComment] = useState(null)
-  const { showNotification } = useNotification()
 
   useEffect(() => {
     //gelen taskId ye göre geçerli taskı getiriyoruz
@@ -43,7 +43,7 @@ const TaskDetailsContent = ({ role, taskID }) => {
     const res = await postAPI(`/tasks/delete-task`, { id })
     if (res.status === 'success') {
       router.push('/admindashboard?task=all')
-      showNotification('Task Başarıyla Silindi')
+      toast.success('Task Başarıyla Silindi')
     }
   }
 

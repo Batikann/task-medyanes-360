@@ -1,5 +1,4 @@
 'use client'
-
 import { Formik, FieldArray, Form, Field } from 'formik'
 import TextInput from '../Inputs/TextInput.jsx'
 import SelectInput from '../Inputs/SelectInput.jsx'
@@ -10,7 +9,6 @@ import { useEffect, useState } from 'react'
 import Loading from '../loading/index.jsx'
 import { getDateNow } from '../../lib/utils/dateUtils.js'
 import { getAPI } from '../../services/fetchAPI/index.js'
-
 import { useSession } from 'next-auth/react'
 
 const TaskForm = ({ task = null, validationSchema, onSubmit }) => {

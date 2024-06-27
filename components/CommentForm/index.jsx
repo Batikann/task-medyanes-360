@@ -7,6 +7,7 @@ import { postAPI } from '../../services/fetchAPI'
 import { useEffect, useRef } from 'react'
 import { commentStatusLocalization } from '../../lib/utils/localizationText'
 import { useSession } from 'next-auth/react'
+import { toast } from 'react-toastify'
 
 const CommentForm = ({
   taskID,
@@ -39,6 +40,7 @@ const CommentForm = ({
     }
 
     if (res.status === 'success') {
+      toast.success('Yorumunuz başarıyla eklendi/güncellendi')
       setRefreshPage(!refreshPage)
       formRef.current.resetForm()
       setEditComment(null)

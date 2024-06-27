@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify'
 import { postAPI } from '../../services/fetchAPI'
 import Button from '../Buttons/Button'
 
@@ -17,6 +18,11 @@ const SubtaskComponent = ({
       const res = await postAPI('/tasks/subtask/update-subtask-status', data)
 
       if (res.status === 'success') {
+        {
+          newStatus
+            ? toast.success('Görev Tamamlandı')
+            : toast.info('Görev Devam Etmekte')
+        }
         setSubtasks((prevSubtasks) =>
           prevSubtasks.map((subtask) =>
             subtask.id === subtaskId

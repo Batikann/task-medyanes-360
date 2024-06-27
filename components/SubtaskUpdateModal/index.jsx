@@ -8,6 +8,7 @@ import {
 } from '@mui/material'
 import { getAPI, postAPI } from '../../services/fetchAPI/index.js'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 const UpdateDialog = ({
   open,
@@ -48,6 +49,7 @@ const UpdateDialog = ({
     const subtask = { id, title, createdAt }
     const res = await postAPI('/tasks/subtask/update-subtask', subtask)
     if (res.status === 'success') {
+      toast.success('Görev Başarıyla Güncellendi')
       setRefreshPage(!refreshPage)
     }
     handleClose()

@@ -12,6 +12,7 @@ import SubtaskAddModal from '../../components/SubtaskAddModal'
 import { postAPI } from '../../services/fetchAPI'
 import UpdateDialog from '../../components/SubtaskUpdateModal/index'
 import DeleteModal from '../DeleteModal'
+import { toast } from 'react-toastify'
 
 const taskStatusLocalization = (status) => {
   switch (status) {
@@ -105,6 +106,7 @@ const TaskDetail = ({
     const query = { id: id }
     const res = await postAPI('/tasks/subtask/delete-subtask', query)
     if (res.status === 'success') {
+      toast.success('Görev Başarıyla Silindi')
       setRefreshPage(!refreshPage)
       setSubtasks(taskDetail.subtasks)
     }
