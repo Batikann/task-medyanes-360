@@ -111,8 +111,8 @@ const Navbar = ({ title, navLinks, route }) => {
                 }`}
               >
                 <Link href={navLink.route} className="flex items-center gap-3">
-                  {navLink.title}
                   <navLink.icon size={20} />
+                  {navLink.title}
                 </Link>
               </li>
             ))}
