@@ -14,7 +14,6 @@ const UpdateDialog = ({
   open,
   handleClose,
   id,
-  minDate,
   refreshPage,
   setRefreshPage,
 }) => {
@@ -22,7 +21,10 @@ const UpdateDialog = ({
   const [createdAt, setCreatedAt] = useState('')
   const [originalTitle, setOriginalTitle] = useState('')
   const [originalCreatedAt, setOriginalCreatedAt] = useState('')
-  const minDateFormatter = new Date(minDate).toISOString().split('T')[0]
+
+  // Get today's date in YYYY-MM-DD format
+  const minDate = new Date()
+  const minDateFormatter = minDate.toISOString().split('T')[0]
 
   useEffect(() => {
     const getSubtask = async (id) => {

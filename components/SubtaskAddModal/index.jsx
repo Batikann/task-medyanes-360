@@ -13,7 +13,6 @@ import { toast } from 'react-toastify'
 const SubtaskAddModal = ({
   open,
   handleClose,
-  minDate,
   taskId,
   userId,
   setRefreshPage,
@@ -35,7 +34,9 @@ const SubtaskAddModal = ({
     handleClose()
   }
 
-  const minDateFormatter = new Date(minDate).toISOString().split('T')[0]
+  // Get today's date in YYYY-MM-DD format
+  const minDate = new Date()
+  const minDateFormatter = minDate.toISOString().split('T')[0]
 
   return (
     <Dialog

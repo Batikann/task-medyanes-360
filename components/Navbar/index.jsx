@@ -57,9 +57,9 @@ const Navbar = ({ title, navLinks, route }) => {
 
       fetchNotifications()
 
-      // const intervalId = setInterval(() => {
-      //   fetchNotifications()
-      // }, 30000)
+      const intervalId = setInterval(() => {
+        fetchNotifications()
+      }, 30000)
 
       return () => {
         // clearInterval(intervalId)

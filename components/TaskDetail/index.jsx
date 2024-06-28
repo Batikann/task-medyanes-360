@@ -1,18 +1,18 @@
 'use client'
 
-import checkPriority from '../../lib/utils/checkPriority'
 import { formatDate } from '../../lib/utils/formatter'
 import Button from '../Buttons/Button'
 import { useEffect, useState } from 'react'
 import Tab from '../Tab'
 import { priorityLocalization } from '../../lib/utils/localizationText'
 import SubtaskCard from '../SubtaskCard'
-import { FaPlus } from 'react-icons/fa'
+import { FaPlus, FaLongArrowAltLeft } from 'react-icons/fa'
 import SubtaskAddModal from '../../components/SubtaskAddModal'
 import { postAPI } from '../../services/fetchAPI'
 import UpdateDialog from '../../components/SubtaskUpdateModal/index'
 import DeleteModal from '../DeleteModal'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 const taskStatusLocalization = (status) => {
   switch (status) {
@@ -66,6 +66,7 @@ const TaskDetail = ({
   updateTaskHandler,
   deleteTaskHandler,
 }) => {
+  const route = useRouter()
   const [subtasks, setSubtasks] = useState(taskDetail.subtasks)
   const [openDelete, setOpenDelete] = useState(false)
   const [open, setOpen] = useState(false)
@@ -127,6 +128,11 @@ const TaskDetail = ({
 
   return (
     <div className="flex flex-col gap-4">
+      <FaLongArrowAltLeft
+        size={35}
+        className="border w-20 text-blue-700 bg-slate-100 hover:scale-110 cursor-pointer hover:text-blue-500 duration-500 transition-all ease-out rounded-lg"
+        onClick={() => route.back()}
+      />
       <Tab page={page} setPage={setPage} />
       <div className="border-b flex flex-col gap-4 pb-4">
         <div className="flex md:items-center flex-col md:flex-row gap-4 md:justify-between">
@@ -208,7 +214,6 @@ const TaskDetail = ({
             <SubtaskAddModal
               open={open}
               handleClose={handleClose}
-              minDate={taskDetail.createdAt}
               taskId={taskDetail.id}
               userId={userId}
               setRefreshPage={setRefreshPage}
@@ -234,7 +239,6 @@ const TaskDetail = ({
             open={openUpdate}
             handleClose={handleCloseUpdate}
             id={selectedId}
-            minDate={taskDetail.createdAt}
             refreshPage={refreshPage}
             setRefreshPage={setRefreshPage}
           />
