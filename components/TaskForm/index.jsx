@@ -1,5 +1,5 @@
 'use client'
-import { Formik, FieldArray, Form, Field } from 'formik'
+import { Formik, FieldArray, Form, Field, useFormikContext } from 'formik'
 import TextInput from '../Inputs/TextInput.jsx'
 import SelectInput from '../Inputs/SelectInput.jsx'
 import DateInput from '../Inputs/DateInput.jsx'
@@ -10,11 +10,15 @@ import Loading from '../loading/index.jsx'
 import { getDateNow } from '../../lib/utils/dateUtils.js'
 import { getAPI } from '../../services/fetchAPI/index.js'
 import { useSession } from 'next-auth/react'
+import { FaCalendar, FaPlus } from 'react-icons/fa'
+import { TbSubtask, TbFileDescription, TbStatusChange } from 'react-icons/tb'
+import { MdTitle, MdLowPriority } from 'react-icons/md'
+import UserSelect from '../UserSelect'
 
 const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
   const [users, setUsers] = useState([{ id: '', username: '' }])
-  const { data: session, status } = useSession()
-
+  const { data: session } = useSession()
+  console.log(task)
   const [loading, setLoading] = useState(true)
   const [minDate, setMinDate] = useState('')
   useEffect(() => {
@@ -66,13 +70,32 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
 
         return (
           <Form className="flex flex-col gap-5 ">
-            <TextInput label="Başlık" name="title" type="text" required />
+            <TextInput
+              label={
+                <span className="flex items-center gap-3">
+                  <MdTitle size={23} />
+                  Başlık
+                </span>
+              }
+              name="title"
+              type="text"
+              required
+            />
             {formikProps.errors.title && formikProps.touched.title && (
               <div className="text-red-600 text-sm mt-1">
                 {formikProps.errors.title}
               </div>
             )}
-            <TextInput label="Açıklama" name="description" as="textarea" />
+            <TextInput
+              label={
+                <span className="flex items-center gap-3">
+                  <TbFileDescription size={20} />
+                  Açıklama
+                </span>
+              }
+              name="description"
+              as="textarea"
+            />
             {formikProps.errors.description &&
               formikProps.touched.description && (
                 <div className="text-red-600 text-sm mt-1">
@@ -80,7 +103,12 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                 </div>
               )}
             <SelectInput
-              label="Öncelik"
+              label={
+                <span className="flex items-center gap-3">
+                  <MdLowPriority size={23} />
+                  Öncelik
+                </span>
+              }
               name="priority"
               options={[
                 { value: 'LOW', label: 'Low' },
@@ -94,7 +122,12 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               </div>
             )}
             <DateInput
-              label="Oluşturma Tarihi"
+              label={
+                <span className="flex items-center gap-3">
+                  <FaCalendar />
+                  Oluşturma Tarihi
+                </span>
+              }
               name="createdAt"
               min={minCreatedAtDate}
             />
@@ -104,7 +137,12 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               </div>
             )}
             <SelectInput
-              label="Durum"
+              label={
+                <span className="flex items-center gap-3">
+                  <TbStatusChange size={23} />
+                  Durum
+                </span>
+              }
               name="status"
               options={[
                 {
@@ -125,33 +163,12 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                 {formikProps.errors.status}
               </div>
             )}
-            <div className="flex flex-col gap-4">
-              <label>Atanan Kullanıcılar</label>
-              <div className="flex flex-col gap-2">
-                {users.map((user) => (
-                  <div key={user.id}>
-                    <Field
-                      id={`assignedUsers-${user.id}`}
-                      name={`assignedUsers`}
-                      type="checkbox"
-                      value={user.id}
-                      className="mr-2"
-                    />
-                    <label htmlFor={`assignedUsers-${user.id}`}>
-                      {user.username}
-                    </label>
-                  </div>
-                ))}
-              </div>
-              {formikProps.errors.assignedUsers &&
-                formikProps.touched.assignedUsers && (
-                  <div className="text-red-600 text-sm mt-1">
-                    {formikProps.errors.assignedUsers}
-                  </div>
-                )}
-            </div>
+            <UserSelect users={users} />
             <div className="flex flex-col gap-2">
-              <label>Alt Başlıklar</label>
+              <label className="flex gap-3 items-center">
+                <TbSubtask size={23} />
+                <span>Alt Başlıklar</span>
+              </label>
               <FieldArray name="subtasks">
                 {({ push, remove }) => (
                   <div className="flex flex-col gap-3">
@@ -212,7 +229,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                       </div>
                     ))}
                     <button
-                      className="border p-2 w-full mt-2"
+                      className="border p-2 w-full mt-2 flex items-center gap-3 justify-center"
                       type="button"
                       onClick={() =>
                         push({
@@ -223,7 +240,8 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                         })
                       }
                     >
-                      Alt Başlık Ekle
+                      <FaPlus />
+                      <span> Alt Başlık Ekle</span>
                     </button>
                   </div>
                 )}
