@@ -5,19 +5,15 @@ const handler = async (req, res) => {
     const { id } = req.query
 
     try {
-      // Veritabanı sorgusu ile okunmamış tüm bildirimleri ve okunmuşlardan sadece 5 tanesini getirir
-      const unreadNotifications = await prisma.notification.findMany({
+      // Veritabanı sorgusu ile tüm bildirimleri tarihe göre sıralar
+      const notifications = await prisma.notification.findMany({
         where: {
           userId: id,
-          isRead: false,
         },
         orderBy: {
           createdAt: 'desc',
         },
       })
-
-      // Okunmamış ve okunmuş bildirimleri birleştirir
-      const notifications = [...unreadNotifications]
 
       res.status(200).json({ status: 'success', data: notifications })
     } catch (error) {

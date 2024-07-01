@@ -156,6 +156,21 @@ export const markNotificationsAsRead = async (userId) => {
   }
 }
 
+export const markSpecificNotificationAsRead = async (
+  userId,
+  notificationId
+) => {
+  try {
+    const notification = await prisma.notification.updateMany({
+      where: { id: notificationId, userId: userId, isRead: false },
+      data: { isRead: true },
+    })
+    return { status: 'success', data: notification }
+  } catch (error) {
+    return { status: 'error', message: error.message }
+  }
+}
+
 export const checkNotificationExists = async (userId, taskId, type) => {
   try {
     const notification = await prisma.notification.findFirst({
@@ -202,7 +217,7 @@ export default {
   deleteDataAll,
 
   getDataByUniqueRelitionalTable,
-
+  markSpecificNotificationAsRead,
   getDataByManyRelitionalTable,
   createNotifications,
   markNotificationsAsRead,

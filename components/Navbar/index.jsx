@@ -62,7 +62,7 @@ const Navbar = ({ title, navLinks, route }) => {
       }, 30000)
 
       return () => {
-        // clearInterval(intervalId)
+        clearInterval(intervalId)
         socket.emit('leave', session.user.id)
         socket.off('new_notification')
       }
@@ -71,15 +71,6 @@ const Navbar = ({ title, navLinks, route }) => {
 
   const handleNotificationClick = async (event) => {
     setAnchorEl(event.currentTarget)
-    if (notifications.some((notification) => !notification.isRead)) {
-      try {
-        const response = await postAPI('/notifications/read', {
-          userId: session.user.id,
-        })
-      } catch (error) {
-        console.error('Failed to mark notifications as read:', error)
-      }
-    }
   }
 
   const handleNotificationClose = () => {
@@ -141,24 +132,37 @@ const Navbar = ({ title, navLinks, route }) => {
             }}
           >
             {notifications.length > 0 ? (
-              notifications.map((notification, index) => (
-                <MenuItem
-                  key={index}
-                  onClick={handleNotificationClose}
-                  className="break-words whitespace-normal max-w-lg"
-                >
-                  <div
-                    className={`p-2 px-4 w-full text-sm   ${
-                      !notification.isRead &&
-                      'bg-blue-200 animate-pulse duration-200 flex items-center justify-between rounded-md'
-                    }`}
+              <div>
+                {notifications.map((notification, index) => (
+                  <MenuItem
+                    key={index}
+                    onClick={handleNotificationClose}
+                    className="break-words whitespace-normal max-w-lg"
                   >
-                    <p className="break-words whitespace-normal ">
-                      {notification.message}
-                    </p>
-                  </div>
-                </MenuItem>
-              ))
+                    <Link
+                      href="/notification"
+                      className={`p-2 px-4 w-full text-sm   ${
+                        !notification.isRead &&
+                        'bg-blue-200 animate-pulse duration-200 flex items-center justify-between rounded-md'
+                      }`}
+                    >
+                      <p className="break-words whitespace-normal ">
+                        {notification.message}
+                      </p>
+                    </Link>
+                  </MenuItem>
+                ))}
+                <div className="text-center px-4 rounded-lg mt-2 w-full">
+                  {notifications.length > 0 && (
+                    <Link
+                      href="/notification"
+                      className="p-2 text-sm bg-blue-700 text-white rounded-lg duration-500 hover:bg-blue-500 hover:ease-in-out transition-all cursor-pointer w-full"
+                    >
+                      Tümünü Görüntüle
+                    </Link>
+                  )}
+                </div>
+              </div>
             ) : (
               <MenuItem onClick={handleNotificationClose}>
                 No notifications

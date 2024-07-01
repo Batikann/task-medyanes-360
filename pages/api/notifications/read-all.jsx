@@ -1,18 +1,18 @@
 // handler.js
 
-import { markSpecificNotificationAsRead } from '../../../services/servicesOperations'
+import { markNotificationsAsRead } from '../../../services/servicesOperations'
 
 const handler = async (req, res) => {
   if (req.method === 'POST') {
-    const { userId, notificationId } = req.body
+    const { userId } = req.body
 
-    if (!userId || !notificationId) {
+    if (!userId) {
       return res
         .status(400)
         .json({ status: 'error', message: 'Invalid request' })
     }
 
-    const result = await markSpecificNotificationAsRead(userId, notificationId)
+    const result = await markNotificationsAsRead(userId)
 
     if (result.status === 'success') {
       res.status(200).json({ status: 'success', result })
