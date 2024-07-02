@@ -127,7 +127,6 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
   const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
   const { data: session, status } = useSession()
-  const today = formatDate(new Date().toISOString())
 
   useEffect(() => {
     const getCommentForTask = async () => {
@@ -151,10 +150,13 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
   }
 
   return (
-    <div className="flex flex-col gap-4 border w-full p-4">
+    <div className="flex flex-col gap-4 border w-full p-4 ">
       <h2 className="text-xl font-semibold text-gray-500">Faaliyetler</h2>
       {comments.map((comment) => (
-        <div key={comment.id} className="flex gap-4 border-b pb-3 relative ">
+        <div
+          key={comment.id}
+          className="flex gap-4 border-b pb-3 relative  group cursor-pointer"
+        >
           {getStatusIcon(comment.status)}
           <div>
             <h3 className="font-semibold text-lg text-gray-600">
@@ -168,15 +170,14 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
             </div>
             <p className="text-lg">{comment.content}</p>
             {/* Kullanıcı sadece kendi yorumunu yazdığı gün içinde güncelleyebilir */}
-            {comment.userId === session?.user.id &&
-              formatDate(comment.createdAt) === today && (
-                <button
-                  className="absolute right-0 top-0 bg-yellow-400 hover:bg-yellow-300 text-white font-semibold px-2 py-1 rounded transition-all ease-in-out duration-500 transform"
-                  onClick={() => setEditComment(comment)}
-                >
-                  Güncelle
-                </button>
-              )}
+            {comment.userId === session?.user.id && (
+              <button
+                className="absolute right-0 top-0 bg-yellow-400 hover:bg-yellow-300 text-white font-semibold px-2 py-1 rounded transition-all ease-in-out duration-500 transform opacity-0 group-hover:opacity-100"
+                onClick={() => setEditComment(comment)}
+              >
+                Güncelle
+              </button>
+            )}
           </div>
         </div>
       ))}

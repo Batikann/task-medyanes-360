@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import { BsCheckAll } from 'react-icons/bs'
+import { Button } from '@mui/material'
 
 const AllNotification = () => {
   const { data: session, status } = useSession()
@@ -103,14 +104,20 @@ const AllNotification = () => {
     page * itemsPerPage
   )
 
+  const allRead = notifications.every((notification) => notification.isRead)
+  console.log(allRead)
   return (
     <div className="pt-7 px-6 flex-1 w-full max-w-[1540px] mx-auto 2xl:px-0 mb-6">
       <div>
-        <p className="flex items-center gap-3" onClick={() => router.back()}>
+        <p
+          className="flex items-center gap-3 hover:animate-bounce cursor-pointer hover:text-blue-600 duration-500 ease-in-out transition-all"
+          onClick={() => router.back()}
+        >
           <FaLongArrowAltLeft
             size={30}
             className="hover:text-blue-700 duration-500 transition-all ease-in-out hover:scale-105 cursor-pointer"
           />
+          <span>Ana Sayfaya Git</span>
         </p>
       </div>
       <div className="flex flex-col gap-4 items-center">
@@ -131,15 +138,16 @@ const AllNotification = () => {
               <MenuItem value="unread">Okunmamış Bildirimler</MenuItem>
             </Select>
           </FormControl>
-          <button
-            className="bg-blue-700 text-white p-3 px-5 rounded-lg text-sm hover:bg-blue-500 duration-500 transition-all ease-in-out flex items-center gap-3"
+          <Button
+            className="!bg-blue-700 !text-white !font-medium p-3 px-5 rounded-lg text-sm hover:!bg-blue-500 duration-500 transition-all ease-in-out flex items-center gap-3 disabled:!bg-blue-300 disabled:!text-white disabled:font-semibold disabled:text-sm disabled:p-3 disabled:px-5"
             onClick={markAllAsRead}
+            disabled={allRead}
           >
             <BsCheckAll size={20} />
             Tümünü Okundu Olarak İşaretle
-          </button>
+          </Button>
         </div>
-        <div className="mt-6 w-full max-w-[800px]">
+        <div className="mt-6 w-full max-w-[800px] h-[600px] overflow-y-auto">
           {paginatedNotifications.length > 0 ? (
             paginatedNotifications.map((notification) => (
               <div
@@ -173,7 +181,7 @@ const AllNotification = () => {
               </div>
             ))
           ) : (
-            <p>Not found any message</p>
+            <p>Aradığınız Özellikte Bir Mesaj Bulunamadı.</p>
           )}
         </div>
         <Box mt={4}>

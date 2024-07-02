@@ -14,7 +14,8 @@ import DropdownNavbar from '../../components/DropdownNavbar'
 import Loading from '../loading'
 import socket from '../../lib/utils/socket'
 import { getAPI, postAPI } from '../../services/fetchAPI'
-
+import { FaLongArrowAltDown } from 'react-icons/fa'
+import { TbMessageCircleOff } from 'react-icons/tb'
 const Navbar = ({ title, navLinks, route }) => {
   const [toggleMobileMenu, setToggleMobileMenu] = useState(false)
   const [notifications, setNotifications] = useState([])
@@ -152,7 +153,7 @@ const Navbar = ({ title, navLinks, route }) => {
                     </Link>
                   </MenuItem>
                 ))}
-                <div className="text-center px-4 rounded-lg mt-2 w-full">
+                <div className="text-center px-4 rounded-lg my-2 w-full">
                   {notifications.length > 0 && (
                     <Link
                       href="/notification"
@@ -164,9 +165,21 @@ const Navbar = ({ title, navLinks, route }) => {
                 </div>
               </div>
             ) : (
-              <MenuItem onClick={handleNotificationClose}>
-                No notifications
-              </MenuItem>
+              <>
+                <MenuItem onClick={handleNotificationClose}>
+                  <p className=" font-bold text-gray-600 flex justify-center flex-col items-center text-center w-full">
+                    <TbMessageCircleOff size={30} />
+                  </p>
+                </MenuItem>
+                <div className="flex  px-4 rounded-lg  w-full">
+                  <Link
+                    href="/notification"
+                    className="p-2 text-sm  text-gray-500 font-semibold hover:text-gray-400 hover:underline rounded-lg duration-500  hover:ease-in-out transition-all cursor-pointer w-full flex items-center gap-1 hover:animate-bounce"
+                  >
+                    <span>Tümünü Görüntüle</span> <FaLongArrowAltDown />
+                  </Link>
+                </div>
+              </>
             )}
           </Menu>
           {navLinks.length > 0 && (
