@@ -10,7 +10,6 @@ import Comments from '../Comments/'
 import CommentForm from '../CommentForm'
 import Tab from '../Tab'
 import { useRouter } from 'next/navigation'
-import { useNotification } from '../../context/NotificationContext '
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
 
@@ -20,7 +19,6 @@ const TaskDetailsContent = ({ role, taskID }) => {
   const { data: session, status } = useSession()
   const [page, setPage] = useState('Task Detail')
   const [refreshPage, setRefreshPage] = useState(false)
-  const [editComment, setEditComment] = useState(null)
 
   useEffect(() => {
     //gelen taskId ye göre geçerli taskı getiriyoruz
@@ -74,7 +72,7 @@ const TaskDetailsContent = ({ role, taskID }) => {
           <Comments
             taskId={taskDetail.id}
             refreshPage={refreshPage}
-            setEditComment={setEditComment}
+            setRefreshPage={setRefreshPage}
           />
           {/* role alanı user olan kullanıcılar sadece bu alanı görebilir */}
           {role === 'USER' && (
@@ -82,8 +80,6 @@ const TaskDetailsContent = ({ role, taskID }) => {
               taskID={taskDetail.id}
               setRefreshPage={setRefreshPage}
               refreshPage={refreshPage}
-              editComment={editComment}
-              setEditComment={setEditComment}
             />
           )}
         </div>

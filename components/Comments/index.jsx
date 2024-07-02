@@ -6,6 +6,7 @@ import Loading from '../loading'
 import { formatDate } from '../../lib/utils/formatter'
 import { commentStatusLocalization } from '../../lib/utils/localizationText'
 import { useSession } from 'next-auth/react'
+import UpdateMessageModal from '../UpdateMessageModal'
 
 //Gelen yorumunun tipine göre yanında ki icon belirleniyor.
 const getStatusIcon = (status) => {
@@ -123,11 +124,21 @@ const getStatusIcon = (status) => {
   }
 }
 
-const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
+const Comments = ({ taskId, refreshPage = false, setRefreshPage }) => {
   const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
+  const [commentId, setCommentId] = useState('')
   const { data: session, status } = useSession()
+  const [open, setOpen] = useState(false)
 
+  const handleClickOpen = (id) => {
+    setOpen(true)
+    setCommentId(id)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
   useEffect(() => {
     const getCommentForTask = async () => {
       //taskId il eşleşen o taska ait commentsleri getiriyoruz.
@@ -155,7 +166,7 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
       {comments.map((comment) => (
         <div
           key={comment.id}
-          className="flex gap-4 border-b pb-3 relative  group cursor-pointer"
+          className="flex gap-4 border-b pb-3 relative  group"
         >
           {getStatusIcon(comment.status)}
           <div>
@@ -172,8 +183,8 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
             {/* Kullanıcı sadece kendi yorumunu yazdığı gün içinde güncelleyebilir */}
             {comment.userId === session?.user.id && (
               <button
-                className="absolute right-0 top-0 bg-yellow-400 hover:bg-yellow-300 text-white font-semibold px-2 py-1 rounded transition-all ease-in-out duration-500 transform opacity-0 group-hover:opacity-100"
-                onClick={() => setEditComment(comment)}
+                className="absolute right-0 top-0  bg-yellow-400 hover:bg-yellow-300 text-white font-semibold px-2 py-1 rounded transition-all ease-in-out duration-500 transform opacity-0 group-hover:opacity-100"
+                onClick={() => handleClickOpen(comment.id)}
               >
                 Güncelle
               </button>
@@ -181,6 +192,14 @@ const Comments = ({ taskId, refreshPage = false, setEditComment = '' }) => {
           </div>
         </div>
       ))}
+      <UpdateMessageModal
+        open={open}
+        handleClose={handleClose}
+        taskID={taskId}
+        commentID={commentId}
+        setRefreshPage={setRefreshPage}
+        refreshPage={refreshPage}
+      />
     </div>
   )
 }

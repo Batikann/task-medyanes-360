@@ -9,41 +9,20 @@ import { commentStatusLocalization } from '../../lib/utils/localizationText'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
 
-const CommentForm = ({
-  taskID,
-  setRefreshPage,
-  refreshPage,
-  editComment,
-  setEditComment,
-}) => {
+const CommentForm = ({ taskID, setRefreshPage, refreshPage }) => {
   const { data: session, status } = useSession()
   const formRef = useRef(null) // useRef ile form referansı oluşturduk
-
-  useEffect(() => {
-    if (editComment && formRef.current) {
-      formRef.current.setValues({
-        content: editComment.content,
-        status: editComment.status,
-      })
-    }
-  }, [editComment])
 
   //ekleme veya güncelleme işlemini yapan fonksiyon
   const formHandler = async (values, { setSubmitting }) => {
     const newVal = { ...values, taskId: taskID, userId: session?.user.id }
 
-    let res
-    if (editComment) {
-      res = await postAPI(`/comment/${editComment.id}/update-comment`, newVal)
-    } else {
-      res = await postAPI('/comment/add-comment', newVal)
-    }
+    const res = await postAPI('/comment/add-comment', newVal)
 
     if (res.status === 'success') {
-      toast.success('Yorumunuz başarıyla eklendi/güncellendi')
+      toast.success('Yorumunuz başarıyla eklendi!')
       setRefreshPage(!refreshPage)
       formRef.current.resetForm()
-      setEditComment(null)
     }
     setSubmitting(false)
   }
@@ -51,7 +30,7 @@ const CommentForm = ({
   return (
     <div>
       <h1 className="text-xl font-bold border-b pb-2 uppercase text-[#01204E]">
-        {editComment ? 'Yorum Güncelle' : 'Yorum Ekle'}
+        Yorum Ekle
       </h1>
       <Formik
         innerRef={formRef} // ref'i Formik bileşenine ekledik
@@ -103,7 +82,7 @@ const CommentForm = ({
               disabled={isSubmitting}
               className="flex items-center justify-center bg-blue-600 text-white p-3 text-lg font-semibold rounded-lg hover:bg-blue-500 cursor-pointer transition-all ease-in-out duration-500 transform"
             >
-              {editComment ? 'Ekle' : 'Ekle'}
+              Ekle
             </button>
           </Form>
         )}
@@ -111,6 +90,7 @@ const CommentForm = ({
     </div>
   )
 }
+
 export default CommentForm
 
 const RadioButtonWithLabel = ({ name, value, label }) => {
