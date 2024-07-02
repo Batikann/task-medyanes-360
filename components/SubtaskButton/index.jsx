@@ -1,6 +1,8 @@
 import { toast } from 'react-toastify'
 import { postAPI } from '../../services/fetchAPI'
-import Button from '../Buttons/Button'
+import { useState } from 'react'
+import { IconButton, Menu, MenuItem } from '@mui/material'
+import { FaEllipsisH, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'
 
 const SubtaskComponent = ({
   role,
@@ -10,26 +12,35 @@ const SubtaskComponent = ({
   refreshPage,
 }) => {
   const today = new Date()
-  //subtaskimizin durumunu değiştirmek için kullandığımız fonksiyonumuz
-  const handleStatusToggle = async (subtaskId, currentStatus) => {
-    const newStatus = !currentStatus
-    const data = { subtaskId, status: newStatus }
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
+  const [selectedStatus, setSelectedStatus] = useState(subtask.status)
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleStatusToggle = async (subtaskId, newStatus) => {
+    let completedDate = newStatus ? new Date() : null
+    const data = { subtaskId, status: newStatus, completedDate }
     try {
       const res = await postAPI('/tasks/subtask/update-subtask-status', data)
 
       if (res.status === 'success') {
-        {
-          newStatus
-            ? toast.success('Görev Tamamlandı')
-            : toast.info('Görev Devam Etmekte')
-        }
+        const message = newStatus ? 'Görev Tamamlandı' : 'Görev Devam Etmekte'
+        toast.success(message)
         setSubtasks((prevSubtasks) =>
           prevSubtasks.map((subtask) =>
             subtask.id === subtaskId
-              ? { ...subtask, status: newStatus }
+              ? { ...subtask, status: newStatus, completedDate }
               : subtask
           )
         )
+        setSelectedStatus(newStatus)
         setRefreshPage(!refreshPage)
       } else {
         console.error('Failed to update subtask status')
@@ -37,13 +48,12 @@ const SubtaskComponent = ({
     } catch (error) {
       console.error('An error occurred:', error)
     }
+    handleClose()
   }
 
   const isTodayOrLater = (dateString) => {
     const subtaskDate = new Date(dateString)
     const currentDate = new Date(today)
-
-    // Sadece tarih kısmını karşılaştır
     return (
       subtaskDate.getFullYear() > currentDate.getFullYear() ||
       (subtaskDate.getFullYear() === currentDate.getFullYear() &&
@@ -57,16 +67,54 @@ const SubtaskComponent = ({
   return (
     <div>
       {role === 'USER' && isTodayOrLater(subtask.createdAt) && (
-        <Button
-          key={subtask.id}
-          title={
-            subtask.status ? 'Alt başlık tamamlanmadı' : 'Alt başlık tamamlandı'
-          }
-          className={`mt-3 bg-gray-200 p-2 px-4 rounded-lg font-semibold text-sm text-gray-600 hover:text-white transition-all ease-in-out duration-500 transform ${
-            subtask.status ? 'hover:bg-red-400 ' : 'hover:bg-green-400'
-          }`}
-          onClick={() => handleStatusToggle(subtask.id, subtask.status)}
-        />
+        <>
+          <div>
+            <IconButton
+              aria-label="more"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <FaEllipsisH />
+            </IconButton>
+          </div>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                maxHeight: 48 * 4.5,
+                width: '250px',
+              },
+            }}
+          >
+            <MenuItem
+              onClick={() => handleStatusToggle(subtask.id, true)}
+              selected={selectedStatus === true}
+            >
+              <FaCheckCircle
+                style={{
+                  marginRight: '8px',
+                  color: selectedStatus === true ? 'green' : 'inherit',
+                }}
+              />
+              Alt başlık tamamlandı
+            </MenuItem>
+            <MenuItem
+              onClick={() => handleStatusToggle(subtask.id, false)}
+              selected={selectedStatus === false}
+            >
+              <FaTimesCircle
+                style={{
+                  marginRight: '8px',
+                  color: selectedStatus === false ? 'red' : 'inherit',
+                }}
+              />
+              Alt başlık tamamlanmadı
+            </MenuItem>
+          </Menu>
+        </>
       )}
     </div>
   )

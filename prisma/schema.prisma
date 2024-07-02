@@ -21,14 +21,15 @@ model Task {
 }
 
 model Subtask {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  createdAt DateTime @default(now())
-  status    Boolean  @default(false)
-  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId    String   @db.ObjectId
-  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String?  @db.ObjectId
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  createdAt     DateTime  @default(now())
+  status        Boolean   @default(false)
+  task          Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId        String    @db.ObjectId
+  user          User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String?   @db.ObjectId
+  completedDate DateTime?
 }
 
 model Comment {

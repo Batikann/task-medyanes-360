@@ -7,6 +7,7 @@ import { CgSandClock } from 'react-icons/cg'
 import { Tooltip } from '@mui/material'
 import DeleteModal from '../DeleteModal'
 import { useState } from 'react'
+
 const SubtaskCard = ({
   subtask,
   role,
@@ -31,8 +32,9 @@ const SubtaskCard = ({
     deleteSubtaskHandle(subtask.id)
     handleClose()
   }
+
   return (
-    <div className="border p-4 py-8 flex justify-between rounded-lg shadow-md">
+    <div className="border p-4 py-8 flex justify-between rounded-lg shadow-md relative">
       <div key={subtask.id} className="flex flex-col gap-2 items-start ">
         <div className="flex flex-col items-start gap-5">
           <p
@@ -41,17 +43,13 @@ const SubtaskCard = ({
             }`}
           >
             {subtask.status ? (
-              <>
-                <p className="flex items-center gap-3">
-                  Tamamlandı <FaCheck />
-                </p>
-              </>
+              <p className="flex items-center gap-3">
+                Tamamlandı <FaCheck />
+              </p>
             ) : (
-              <>
-                <p className="flex gap-3 items-center">
-                  Devam Etmekte <CgSandClock />
-                </p>
-              </>
+              <p className="flex gap-3 items-center">
+                Devam Etmekte <CgSandClock />
+              </p>
             )}
           </p>
           <Tooltip
@@ -59,8 +57,10 @@ const SubtaskCard = ({
             className="flex gap-3 text-sm font-semibold items-center"
             placement="top-start"
           >
-            <FaCalendar size={18} className="text-gray-500" />
-            {formatDate(subtask.createdAt)}
+            <div className="flex items-center gap-3">
+              <FaCalendar size={18} className="text-gray-500" />
+              {formatDate(subtask.createdAt)}
+            </div>
           </Tooltip>
         </div>
         <p className="text-lg  mt-2">{subtask.title}</p>
@@ -72,17 +72,24 @@ const SubtaskCard = ({
           <FaUser className="text-blue-500" size={18} />
           {subtask.user.name}
         </Tooltip>
-
-        <SubtaskButton
-          role={role}
-          subtask={subtask}
-          setSubtasks={setSubtasks}
-          setRefreshPage={setRefreshPage}
-          refreshPage={refreshPage}
-        />
+        {subtask.completedDate != null && (
+          <p className="w-full mt-2 text-base">
+            <span className="font-bold mr-2">
+              {formatDate(subtask.completedDate)}
+            </span>
+            tarihinde görev tamamlanmıştır.
+          </p>
+        )}
       </div>
       {subtask.userId === userId && !isPastDueDate && (
         <div className=" flex xl:flex-row items-start gap-3 md:flex-col">
+          <SubtaskButton
+            role={role}
+            subtask={subtask}
+            setSubtasks={setSubtasks}
+            setRefreshPage={setRefreshPage}
+            refreshPage={refreshPage}
+          />
           <button
             onClick={() => handleOpenUpdate(subtask.id)}
             className="bg-blue-600 hover:bg-blue-400 cursor-pointer duration-500 ease-in-out transition-all font-semibold text-sm px-4 rounded-md text-white py-2"

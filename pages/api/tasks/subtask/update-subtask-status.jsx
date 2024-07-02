@@ -19,11 +19,12 @@ export default async function handler(req, res) {
   }
 
   try {
+    const completedDate = status ? new Date() : null
     // updateDataByAny fonksiyonunu kullanarak Subtask tablosunda id ile eşleşen kaydı günceller.
     const result = await updateDataByAny(
       'Subtask',
       { id: subtaskId },
-      { status }
+      { status, completedDate }
     )
 
     // güncelleşme işlemi yaparken herhangi bir hata alırsak bunu döndür.
