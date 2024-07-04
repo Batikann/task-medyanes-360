@@ -29,10 +29,12 @@ const AddTaskPage = () => {
 
   return (
     //Genel Task Formumumuz ADD/UPDATE işlemlerimiz için
-    <TaskForm
-      validationSchema={addTaskValidationSchemma}
-      onSubmit={handleSubmit}
-    />
+    <div className="relative">
+      <TaskForm
+        validationSchema={addTaskValidationSchemma}
+        onSubmit={handleSubmit}
+      />
+    </div>
   )
 }
 export default AddTaskPage

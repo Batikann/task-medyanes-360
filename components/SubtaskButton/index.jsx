@@ -99,7 +99,7 @@ const SubtaskComponent = ({
                   color: selectedStatus === true ? 'green' : 'inherit',
                 }}
               />
-              Alt başlık tamamlandı
+              Tamamlandı
             </MenuItem>
             <MenuItem
               onClick={() => handleStatusToggle(subtask.id, false)}
@@ -111,7 +111,7 @@ const SubtaskComponent = ({
                   color: selectedStatus === false ? 'red' : 'inherit',
                 }}
               />
-              Alt başlık tamamlanmadı
+              Devam Ediyor
             </MenuItem>
           </Menu>
         </>

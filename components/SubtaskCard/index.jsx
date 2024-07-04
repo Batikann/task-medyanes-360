@@ -2,7 +2,7 @@
 
 import { formatDate } from '../../lib/utils/formatter'
 import SubtaskButton from '../SubtaskButton'
-import { FaCheck, FaUser, FaCalendar } from 'react-icons/fa'
+import { FaCheck, FaUser, FaCalendar, FaCalendarCheck } from 'react-icons/fa'
 import { CgSandClock } from 'react-icons/cg'
 import { Tooltip } from '@mui/material'
 import DeleteModal from '../DeleteModal'
@@ -73,37 +73,43 @@ const SubtaskCard = ({
           {subtask.user.name}
         </Tooltip>
         {subtask.completedDate != null && (
-          <p className="w-full mt-2 text-base">
-            <span className="font-bold mr-2">
-              {formatDate(subtask.completedDate)}
-            </span>
-            tarihinde görev tamamlanmıştır.
-          </p>
+          <div className="w-full mt-2 text-base flex items-center gap-2">
+            <FaCalendarCheck size={20} className="text-green-400" />
+            <p>
+              <span className="font-bold mr-2">
+                {formatDate(subtask.completedDate)}
+              </span>
+              tarihinde görev tamamlanmıştır.
+            </p>
+          </div>
         )}
       </div>
-      {subtask.userId === userId && !isPastDueDate && (
-        <div className=" flex xl:flex-row items-start gap-3 md:flex-col">
-          <SubtaskButton
-            role={role}
-            subtask={subtask}
-            setSubtasks={setSubtasks}
-            setRefreshPage={setRefreshPage}
-            refreshPage={refreshPage}
-          />
-          <button
-            onClick={() => handleOpenUpdate(subtask.id)}
-            className="bg-blue-600 hover:bg-blue-400 cursor-pointer duration-500 ease-in-out transition-all font-semibold text-sm px-4 rounded-md text-white py-2"
-          >
-            Güncelle
-          </button>
-          <button
-            onClick={handleClickOpen}
-            className="bg-red-600 hover:bg-red-400 cursor-pointer duration-500 ease-in-out transition-all px-4 rounded-md text-white py-2 font-semibold text-sm"
-          >
-            Sil
-          </button>
-        </div>
-      )}
+      <div className=" flex xl:flex-row items-start gap-3 md:flex-col">
+        <SubtaskButton
+          role={role}
+          subtask={subtask}
+          setSubtasks={setSubtasks}
+          setRefreshPage={setRefreshPage}
+          refreshPage={refreshPage}
+        />
+        {subtask.userId === userId && !isPastDueDate && (
+          <>
+            <button
+              onClick={() => handleOpenUpdate(subtask.id)}
+              className="bg-blue-600 hover:bg-blue-400 cursor-pointer duration-500 ease-in-out transition-all font-semibold text-sm px-4 rounded-md text-white py-2"
+            >
+              Güncelle
+            </button>
+            <button
+              onClick={handleClickOpen}
+              className="bg-red-600 hover:bg-red-400 cursor-pointer duration-500 ease-in-out transition-all px-4 rounded-md text-white py-2 font-semibold text-sm"
+            >
+              Sil
+            </button>
+          </>
+        )}
+      </div>
+
       <DeleteModal
         open={open}
         handleClose={handleClose}

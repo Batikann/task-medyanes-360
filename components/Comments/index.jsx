@@ -161,7 +161,7 @@ const Comments = ({ taskId, refreshPage = false, setRefreshPage }) => {
   }
 
   return (
-    <div className="flex flex-col gap-4 border  p-4 ">
+    <div className="flex flex-col gap-4 border  p-4  w-full mb-4">
       <h2 className="text-xl font-semibold text-gray-500">Faaliyetler</h2>
       {comments.map((comment) => (
         <div

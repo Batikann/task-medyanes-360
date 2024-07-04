@@ -15,7 +15,7 @@ import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import { BsCheckAll } from 'react-icons/bs'
 import { Button } from '@mui/material'
-
+import { TiHome } from 'react-icons/ti'
 const AllNotification = () => {
   const { data: session, status } = useSession()
   const [notifications, setNotifications] = useState([])
@@ -105,23 +105,22 @@ const AllNotification = () => {
   )
 
   const allRead = notifications.every((notification) => notification.isRead)
-  console.log(allRead)
+
   return (
     <div className="pt-7 px-6 flex-1 w-full max-w-[1540px] mx-auto 2xl:px-0 mb-6">
-      <div>
-        <p
-          className="flex items-center gap-3 hover:animate-bounce cursor-pointer hover:text-blue-600 duration-500 ease-in-out transition-all"
-          onClick={() => router.back()}
-        >
-          <FaLongArrowAltLeft
-            size={30}
-            className="hover:text-blue-700 duration-500 transition-all ease-in-out hover:scale-105 cursor-pointer"
-          />
-          <span>Ana Sayfaya Git</span>
-        </p>
-      </div>
+      <p
+        className="flex items-center gap-3  cursor-pointer hover:text-blue-600 duration-500 ease-in-out transition-all hover:scale-105"
+        onClick={() => router.back()}
+      >
+        <TiHome
+          size={25}
+          className="hover:text-blue-700 duration-500 transition-all ease-in-out  cursor-pointer"
+        />
+        <p className="font-semibold">Ana Sayfa</p>
+      </p>
+
       <div className="flex flex-col gap-4 items-center">
-        <h1 className="flex items-center gap-3 text-4xl uppercase font-bold mt-4 hover:animate-bounce cursor-pointer relative">
+        <h1 className="flex items-center gap-3 text-4xl uppercase font-bold mt-4 hover:scale-105 cursor-pointer relative">
           <IoMdNotifications className="text-5xl text-blue-500" />
           <span className="text-2xl">Bildirimler</span>
         </h1>

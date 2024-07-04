@@ -109,6 +109,11 @@ const Navbar = ({ title, navLinks, route }) => {
               </li>
             ))}
           </ul>
+          <IconButton color="inherit" onClick={handleNotificationClick}>
+            <Badge badgeContent={unreadCount} color="error">
+              <FiBell />
+            </Badge>
+          </IconButton>
           {status === 'authenticated' ? (
             <DropdownNavbar
               name={session.user.name}
@@ -117,11 +122,7 @@ const Navbar = ({ title, navLinks, route }) => {
           ) : (
             <Loading width={'h-6'} height={'h-6'} />
           )}
-          <IconButton color="inherit" onClick={handleNotificationClick}>
-            <Badge badgeContent={unreadCount} color="error">
-              <FiBell />
-            </Badge>
-          </IconButton>
+
           <Menu
             anchorEl={anchorEl}
             open={open}
@@ -174,7 +175,7 @@ const Navbar = ({ title, navLinks, route }) => {
                 <div className="flex  px-4 rounded-lg  w-full">
                   <Link
                     href="/notification"
-                    className="p-2 text-sm  text-gray-500 font-semibold hover:text-gray-400 hover:underline rounded-lg duration-500  hover:ease-in-out transition-all cursor-pointer w-full flex items-center gap-1 hover:animate-bounce"
+                    className="p-2 text-sm  text-gray-500 font-semibold hover:text-gray-400 hover:underline rounded-lg duration-500  hover:ease-in-out transition-all cursor-pointer w-full flex items-center gap-1 hover:scale-105"
                   >
                     <span>Tümünü Görüntüle</span> <FaLongArrowAltDown />
                   </Link>
