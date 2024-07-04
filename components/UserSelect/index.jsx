@@ -18,7 +18,7 @@ const UserSelect = ({ users }) => {
   return (
     <div className="flex flex-col gap-4 mt-2">
       <label className="flex items-center gap-3">
-        <FaUsers size={23} />
+        <FaUsers size={23} className="text-indigo-400" />
         <span>Atanan Kullanıcılar</span>
       </label>
       <Autocomplete

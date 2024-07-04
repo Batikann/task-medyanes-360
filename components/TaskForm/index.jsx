@@ -84,7 +84,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               <TextInput
                 label={
                   <span className="flex items-center gap-3">
-                    <MdTitle size={23} />
+                    <MdTitle size={23} className="text-slate-500" />
                     Başlık
                   </span>
                 }
@@ -100,7 +100,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               <TextInput
                 label={
                   <span className="flex items-center gap-3">
-                    <TbFileDescription size={20} />
+                    <TbFileDescription size={20} className="text-blue-400" />
                     Açıklama
                   </span>
                 }
@@ -116,15 +116,15 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               <SelectInput
                 label={
                   <span className="flex items-center gap-3">
-                    <MdLowPriority size={23} />
+                    <MdLowPriority size={23} className="text-green-400" />
                     Öncelik
                   </span>
                 }
                 name="priority"
                 options={[
-                  { value: 'LOW', label: 'Low' },
-                  { value: 'MEDIUM', label: 'Medium' },
-                  { value: 'HIGH', label: 'High' },
+                  { value: 'LOW', label: 'Düşük' },
+                  { value: 'MEDIUM', label: 'Orta' },
+                  { value: 'HIGH', label: 'Yüksek' },
                 ]}
               />
               {formikProps.errors.priority && formikProps.touched.priority && (
@@ -135,7 +135,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               <DateInput
                 label={
                   <span className="flex items-center gap-3">
-                    <FaCalendar />
+                    <FaCalendar className="text-amber-400" />
                     Oluşturma Tarihi
                   </span>
                 }
@@ -151,7 +151,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               <SelectInput
                 label={
                   <span className="flex items-center gap-3">
-                    <TbStatusChange size={23} />
+                    <TbStatusChange size={23} className="text-rose-400" />
                     Durum
                   </span>
                 }
@@ -159,20 +159,20 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                 options={[
                   {
                     value: 'COMPLETED_CHECK_PENDING',
-                    label: 'Tamamlanan Projeler',
+                    label: 'Tamamlanan Proje',
                   },
-                  { value: 'IN_PROGRESS', label: 'Devam Eden Projeler' },
+                  { value: 'IN_PROGRESS', label: 'Devam Eden Proje' },
                   {
                     value: 'UPDATE_PENDING',
-                    label: 'Güncelleme Bekleyen Projeler',
+                    label: 'Güncelleme Bekleyen Proje',
                   },
                   {
                     value: 'INFO_REQUEST_PENDING',
-                    label: 'Bilgi Talebi Beklenen Projeler',
+                    label: 'Bilgi Talebi Beklenen Proje',
                   },
                   {
                     value: 'CUSTOMER_WAITING',
-                    label: 'Müşteri Beklenen Projeler',
+                    label: 'Müşteri Beklenen Proje',
                   },
                 ]}
               />
@@ -184,7 +184,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
               <UserSelect users={users} />
               <div className="flex flex-col gap-2">
                 <label className="flex gap-3 items-center">
-                  <TbSubtask size={23} />
+                  <TbSubtask size={23} className="text-lime-400" />
                   <span>Alt Başlıklar</span>
                 </label>
                 <FieldArray name="subtasks">
@@ -233,13 +233,17 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                             name={`subtasks[${index}].userId`}
                             value={session.user.id}
                           />
-                          <div className="flex justify-center items-center">
+
+                          <div className="relative">
                             <button
                               type="button"
                               onClick={() => remove(index)}
-                              className="flex justify-center items-center w-8 h-8"
+                              className="flex justify-center items-center text-center absolute -top-1 translate-y-1/2 -right-3 "
                             >
-                              <IoTrashBin size={20} />
+                              <IoTrashBin
+                                size={20}
+                                className="text-red-600 hover:text-red-400 duration-500 transition-all ease-in-out"
+                              />
                             </button>
                           </div>
                         </div>
