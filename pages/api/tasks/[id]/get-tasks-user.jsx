@@ -67,6 +67,7 @@ const handler = async (req, res) => {
           lowPriorityTasks: lowPriorityTasks,
           mediumPriorityTasks: mediumPriorityTasks,
           highPriorityTasks: highPriorityTasks,
+          tasks: tasks,
         },
       })
     } catch (error) {

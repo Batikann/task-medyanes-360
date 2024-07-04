@@ -68,7 +68,7 @@ const TaskDetailsContent = ({ role, taskID }) => {
     return (
       <div className="flex flex-col gap-4">
         <Tab page={page} setPage={setPage} />
-        <div className="flex  md:justify-between gap-12 flex-col-reverse md:flex-row ">
+        <div className="flex md:justify-between gap-12 flex-col-reverse md:flex-row ">
           <Comments
             taskId={taskDetail.id}
             refreshPage={refreshPage}
