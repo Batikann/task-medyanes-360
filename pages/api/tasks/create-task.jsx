@@ -33,6 +33,7 @@ const handler = async (req, res) => {
         createdAt: new Date(subtask.createdAt),
         status: subtask.status,
         userId: subtask.userId,
+        description: subtask.description,
       })),
     },
     assignedUsers: {

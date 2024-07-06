@@ -15,6 +15,7 @@ import { MdTitle, MdLowPriority } from 'react-icons/md'
 import UserSelect from '../UserSelect'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 import { useRouter } from 'next/navigation'
+import { TextField } from '@mui/material'
 const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
   const [users, setUsers] = useState([{ id: '', username: '' }])
   const { data: session } = useSession()
@@ -54,6 +55,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
           createdAt: new Date(subtask.createdAt).toISOString().slice(0, 10),
           status: subtask.status,
           userId: subtask.userId || session.user.id,
+          description: subtask.description,
         }))
       : [],
   }
@@ -189,17 +191,17 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                 </label>
                 <FieldArray name="subtasks">
                   {({ push, remove }) => (
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3 mt-2">
                       {formikProps.values.subtasks.map((subtask, index) => (
                         <div
                           key={index}
-                          className="flex gap-4 items-center justify-center w-full h-full"
+                          className="flex flex-col gap-4 w-full h-full border py-3 px-4 border-gray-700 rounded-lg"
                         >
                           <div className="flex-1">
                             <TextInput
                               label="Başlık"
                               name={`subtasks[${index}].title`}
-                              placeholder="Subtask Title"
+                              placeholder="Başlık"
                             />
                             {formikProps.errors.subtasks &&
                               formikProps.errors.subtasks[index] &&
@@ -212,6 +214,37 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                                 </div>
                               )}
                           </div>
+
+                          <div className="flex-1">
+                            <TextField
+                              label="Açıklama"
+                              name={`subtasks[${index}].description`}
+                              multiline
+                              rows={4}
+                              variant="outlined"
+                              fullWidth
+                              onChange={formikProps.handleChange}
+                              onBlur={formikProps.handleBlur}
+                              value={
+                                formikProps.values.subtasks[index].description
+                              }
+                            />
+                            {formikProps.errors.subtasks &&
+                              formikProps.errors.subtasks[index] &&
+                              formikProps.errors.subtasks[index].description &&
+                              formikProps.touched.subtasks &&
+                              formikProps.touched.subtasks[index] &&
+                              formikProps.touched.subtasks[index]
+                                .description && (
+                                <div className="text-red-600 text-sm mt-1">
+                                  {
+                                    formikProps.errors.subtasks[index]
+                                      .description
+                                  }
+                                </div>
+                              )}
+                          </div>
+
                           <DateInput
                             label="Oluşturma Tarihi"
                             name={`subtasks[${index}].createdAt`}
@@ -234,17 +267,18 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                             value={session.user.id}
                           />
 
-                          <div className="relative">
-                            <button
-                              type="button"
+                          <div className="flex justify-end w-full">
+                            <div
+                              className="bg-red-600 hover:bg-red-400 duration-500 transition-all ease-in-out flex items-center text-white text-center  justify-center py-2 px-8 gap-3 rounded-md hover:scale-100 cursor-pointer"
                               onClick={() => remove(index)}
-                              className="flex justify-center items-center text-center absolute -top-1 translate-y-1/2 -right-3 "
                             >
-                              <IoTrashBin
-                                size={20}
-                                className="text-red-600 hover:text-red-400 duration-500 transition-all ease-in-out"
-                              />
-                            </button>
+                              <button
+                                type="button"
+                                className="flex justify-center items-center text-center  "
+                              >
+                                <IoTrashBin size={20} className=" " />
+                              </button>
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -254,6 +288,7 @@ const TaskForm = ({ task = null, validationSchema, onSubmit }) => {
                         onClick={() =>
                           push({
                             title: '',
+                            description: '',
                             createdAt: '',
                             status: false,
                             userId: session.user.id,

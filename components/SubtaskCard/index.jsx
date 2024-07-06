@@ -63,7 +63,10 @@ const SubtaskCard = ({
             </div>
           </Tooltip>
         </div>
-        <p className="text-lg  mt-2">{subtask.title}</p>
+        <div className="my-2">
+          <h2 className="text-lg font-semibold mb-2">{subtask.title}</h2>
+          <p>{subtask.description}</p>
+        </div>
         <Tooltip
           title="Görevi Oluşturan"
           placement="bottom"

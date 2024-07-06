@@ -19,8 +19,10 @@ const UpdateDialog = ({
 }) => {
   const [title, setTitle] = useState('')
   const [createdAt, setCreatedAt] = useState('')
+  const [description, setDescription] = useState('')
   const [originalTitle, setOriginalTitle] = useState('')
   const [originalCreatedAt, setOriginalCreatedAt] = useState('')
+  const [originalDescription, setOriginalDescription] = useState('')
 
   // Get today's date in YYYY-MM-DD format
   const minDate = new Date()
@@ -30,10 +32,13 @@ const UpdateDialog = ({
     const getSubtask = async (id) => {
       if (id) {
         const res = await getAPI(`/tasks/subtask/${id}/get-subtask`)
+        console.log(res)
         if (res.status === 'success') {
           const task = res.task
           setTitle(task.title)
           setOriginalTitle(task.title)
+          setDescription(task.description)
+          setOriginalDescription(task.description)
 
           // Format createdAt to YYYY-MM-DD for date input
           const formattedDate = new Date(task.createdAt)
@@ -48,7 +53,7 @@ const UpdateDialog = ({
   }, [id])
 
   const handleSave = async () => {
-    const subtask = { id, title, createdAt }
+    const subtask = { id, title, createdAt, description }
     const res = await postAPI('/tasks/subtask/update-subtask', subtask)
     if (res.status === 'success') {
       toast.success('Görev Başarıyla Güncellendi')
@@ -58,7 +63,9 @@ const UpdateDialog = ({
   }
 
   const isSaveDisabled =
-    title === originalTitle && createdAt === originalCreatedAt
+    title === originalTitle &&
+    createdAt === originalCreatedAt &&
+    description === originalDescription
 
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
@@ -73,6 +80,20 @@ const UpdateDialog = ({
           fullWidth
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+        />
+        <TextField
+          id="description"
+          name="description"
+          label="Açıklama"
+          multiline
+          rows={3}
+          type="text"
+          margin="dense"
+          variant="outlined"
+          fullWidth
+          required
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
         <TextField
           id="date"

@@ -12,13 +12,14 @@ const handler = async (req, res) => {
   }
 
   if (req.method === 'POST' && req.body) {
-    const { title, createdAt, taskId, userId } = req.body
+    const { title, createdAt, taskId, userId, description } = req.body
 
     const subtask = {
       title,
       createdAt: new Date(createdAt),
       taskId,
       userId,
+      description,
     }
 
     try {

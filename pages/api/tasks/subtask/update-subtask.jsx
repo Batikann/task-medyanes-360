@@ -14,12 +14,13 @@ const handler = async (req, res) => {
   // Eğer istek 'POST' türünde ve istek gövdesi varsa bu bloğa girer.
   if (req.method === 'POST' && req.body) {
     // bodyden content ve status değerlerini alır.
-    const { title, createdAt, id } = req.body
+    const { title, createdAt, id, description } = req.body
 
     // Güncellenecek veri objesini oluşturur.
     const data = {
       title,
       createdAt: new Date(createdAt),
+      description,
     }
 
     try {
@@ -54,7 +55,7 @@ const handler = async (req, res) => {
       const notifications = task.assignedUsers.map((user) => ({
         userId: user.userId,
         taskId: task.id,
-        message: `${task.title} projesinde bir görev güncellendi.`,
+        message: `${task.title} projesinde ${title} isimli  görev güncellendi.`,
         createdAt: new Date(),
         type: 'UPDATE',
       }))
@@ -71,7 +72,7 @@ const handler = async (req, res) => {
       const io = req.socket.server.io
       task.assignedUsers.forEach((user) => {
         io.to(user.userId).emit('new_notification', {
-          message: `${task.title} projesinde bir görev güncellendi.`,
+          message: `${task.title} projesinde ${title} isimli  görev güncellendi.`,
         })
       })
       // Başarılı olursa 200 durum kodu ve güncellenmiş veriyi döner.

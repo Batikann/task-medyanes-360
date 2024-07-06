@@ -25,7 +25,8 @@ const SubtaskAddModal = ({
     const formData = new FormData(event.currentTarget)
     const formJson = Object.fromEntries(formData.entries())
     const title = formJson.title
-    const subtask = { title, createdAt, taskId, userId }
+    const description = formJson.description
+    const subtask = { title, createdAt, taskId, userId, description }
     const res = await postAPI('/tasks/subtask/create-subtask', subtask)
     if (res.status === 'success') {
       toast.success('Görev Başarıyla Eklendi')
@@ -49,11 +50,11 @@ const SubtaskAddModal = ({
       }}
     >
       <DialogTitle>Yeni Görev Ekle</DialogTitle>
-      <DialogContent>
+      <DialogContent className="flex flex-col gap-4">
         <TextField
           id="title"
           name="title"
-          label="İçerik"
+          label="Başlık"
           multiline
           type="text"
           margin="dense"
@@ -61,6 +62,18 @@ const SubtaskAddModal = ({
           autoFocus
           required
           fullWidth
+        />
+        <TextField
+          id="description"
+          name="description"
+          label="Açıklama"
+          multiline
+          rows={3}
+          type="text"
+          margin="dense"
+          variant="outlined"
+          fullWidth
+          required
         />
         <TextField
           id="date"
