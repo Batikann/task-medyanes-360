@@ -3,19 +3,26 @@
 import { ErrorMessage, Field, Form, Formik, useField } from 'formik'
 import commentSchemaValidation from './commentSchemaValidation'
 import { checkboxValues } from '../../lib/constants/commentFormValues'
-import { postAPI } from '../../services/fetchAPI'
-import { useEffect, useRef } from 'react'
+import { getAPI, postAPI } from '../../services/fetchAPI'
+import { useEffect, useRef, useState } from 'react'
 import { commentStatusLocalization } from '../../lib/utils/localizationText'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
+import { MenuItem, Select, InputLabel, FormControl } from '@mui/material'
 
 const CommentForm = ({ taskID, setRefreshPage, refreshPage }) => {
   const { data: session, status } = useSession()
-  const formRef = useRef(null) // useRef ile form referansı oluşturduk
+  const formRef = useRef(null)
+  const [subtasks, setSubtasks] = useState([])
+  const [selectedSubtask, setSelectedSubtask] = useState('')
 
-  //ekleme veya güncelleme işlemini yapan fonksiyon
   const formHandler = async (values, { setSubmitting }) => {
-    const newVal = { ...values, taskId: taskID, userId: session?.user.id }
+    const newVal = {
+      ...values,
+      taskId: taskID,
+      userId: session?.user.id,
+      subtaskId: selectedSubtask,
+    }
 
     const res = await postAPI('/comment/add-comment', newVal)
 
@@ -23,9 +30,20 @@ const CommentForm = ({ taskID, setRefreshPage, refreshPage }) => {
       toast.success('Yorumunuz başarıyla eklendi!')
       setRefreshPage(!refreshPage)
       formRef.current.resetForm()
+      setSelectedSubtask('')
     }
     setSubmitting(false)
   }
+
+  useEffect(() => {
+    const getSubtaskOnlyTrue = async () => {
+      const res2 = await getAPI(`/tasks/${taskID}/get-subtasks`)
+      if (res2.status === 'success') {
+        setSubtasks(res2.task.subtasks)
+      }
+    }
+    getSubtaskOnlyTrue()
+  }, [taskID])
 
   return (
     <div>
@@ -33,7 +51,7 @@ const CommentForm = ({ taskID, setRefreshPage, refreshPage }) => {
         Yorum Ekle
       </h1>
       <Formik
-        innerRef={formRef} // ref'i Formik bileşenine ekledik
+        innerRef={formRef}
         initialValues={{
           content: '',
           status: 'STARTED',
@@ -60,6 +78,26 @@ const CommentForm = ({ taskID, setRefreshPage, refreshPage }) => {
               </div>
               <ErrorMessage name="status" component="div" />
             </div>
+
+            <div className="my-4">
+              <FormControl fullWidth>
+                <InputLabel id="subtask-select-label">Alt Görev Seç</InputLabel>
+                <Select
+                  labelId="subtask-select-label"
+                  id="subtask-select"
+                  value={selectedSubtask}
+                  label="Alt Görev Seç"
+                  onChange={(e) => setSelectedSubtask(e.target.value)}
+                >
+                  {subtasks.map((subtask) => (
+                    <MenuItem key={subtask.id} value={subtask.id}>
+                      {subtask.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+
             <div className="flex flex-col gap-4">
               <Field
                 as="textarea"

@@ -173,6 +173,7 @@ const Comments = ({ taskId, refreshPage = false, setRefreshPage }) => {
             <h3 className="font-semibold text-lg text-gray-600">
               {comment.user.name}
             </h3>
+            <p>Görev:{comment.subtask?.title ? comment.subtask?.title : ''}</p>
             <div className="flex gap-4 items-center my-1">
               <span className="text-gray-500 text-sm">
                 {commentStatusLocalization(comment.status)}

@@ -12,6 +12,8 @@ import {
   FormControl,
   FormLabel,
   CircularProgress,
+  Select,
+  MenuItem,
 } from '@mui/material'
 import { getAPI, postAPI } from '../../services/fetchAPI'
 import { toast } from 'react-toastify'
@@ -25,23 +27,28 @@ const UpdateMessageModal = ({
   commentID,
   setRefreshPage,
   refreshPage,
+  taskID,
 }) => {
   const [content, setContent] = useState('')
   const [status, setStatus] = useState('STARTED')
   const [originalContent, setOriginalContent] = useState('')
   const [originalStatus, setOriginalStatus] = useState('STARTED')
+  const [subtasks, setSubtasks] = useState([])
+  const [selectedSubtaskId, setSelectedSubtaskId] = useState('')
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const getComment = async (id) => {
       if (id) {
         const res = await getAPI(`/comment/${id}/get-comment`)
-        console.log(res)
-        if (res) {
+        const res2 = await getAPI(`/tasks/${taskID}/get-subtasks`)
+        if (res && res2) {
           setContent(res.comment[0].content)
           setStatus(res.comment[0].status)
           setOriginalContent(res.comment[0].content)
           setOriginalStatus(res.comment[0].status)
+          setSubtasks(res2.task.subtasks)
+          setSelectedSubtaskId(res.comment[0].subtaskId)
           setIsLoading(false)
         }
       }
@@ -50,13 +57,14 @@ const UpdateMessageModal = ({
       setIsLoading(true)
       getComment(commentID)
     }
-  }, [commentID, open])
+  }, [commentID, open, taskID])
 
   const handleSave = async (values) => {
     const updatedComment = {
       id: commentID,
       content: values.content,
       status: values.status,
+      subtaskId: values.subtaskId,
     }
     const res = await postAPI(
       `/comment/${commentID}/update-comment`,
@@ -77,7 +85,7 @@ const UpdateMessageModal = ({
           <CircularProgress />
         ) : (
           <Formik
-            initialValues={{ content, status }}
+            initialValues={{ content, status, subtaskId: selectedSubtaskId }}
             enableReinitialize
             onSubmit={handleSave}
           >
@@ -96,6 +104,21 @@ const UpdateMessageModal = ({
                   value={values.content}
                   onChange={handleChange}
                 />
+                <FormControl fullWidth margin="normal">
+                  <FormLabel component="legend">Alt Görev</FormLabel>
+                  <Select
+                    id="subtaskId"
+                    name="subtaskId"
+                    value={values.subtaskId}
+                    onChange={handleChange}
+                  >
+                    {subtasks.map((subtask) => (
+                      <MenuItem key={subtask.id} value={subtask.id}>
+                        {subtask.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <FormControl component="fieldset" margin="normal">
                   <FormLabel component="legend">Durum</FormLabel>
                   <RadioGroup

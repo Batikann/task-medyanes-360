@@ -8,7 +8,7 @@ const handler = async (req, res) => {
   }
 
   if (req.method === 'POST' && req.body) {
-    const { content, status, taskId, userId } = req.body
+    const { content, status, taskId, userId, subtaskId } = req.body
 
     // Oluşturulacak comment objesi hazırlarnır.
     const data = {
@@ -16,6 +16,7 @@ const handler = async (req, res) => {
       status,
       taskId,
       userId,
+      subtaskId,
     }
 
     try {

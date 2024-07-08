@@ -15,6 +15,12 @@ const handler = async (req, res) => {
             name: true,
             id: true,
           },
+        },
+        subtask: {
+          select: {
+            title: true,
+            id: true,
+          },
         }, // Yorumlarla ilişkilendirilmiş kullanıcı bilgilerini de (email, username, id) getirir.
       }
 

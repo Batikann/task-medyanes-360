@@ -31,6 +31,7 @@ model Subtask {
   user          User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String?   @db.ObjectId
   completedDate DateTime?
+  comments      Comment[] @relation("SubtaskComments")
 }
 
 model Comment {
@@ -42,6 +43,8 @@ model Comment {
   taskId    String        @db.ObjectId
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String        @db.ObjectId
+  subtask   Subtask?      @relation(fields: [subtaskId], references: [id], onDelete: Cascade, name: "SubtaskComments")
+  subtaskId String?       @db.ObjectId
 }
 
 model User {

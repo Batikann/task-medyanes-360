@@ -11,12 +11,13 @@ const handler = async (req, res) => {
   // Eğer istek 'POST' türünde ve istek gövdesi varsa bu bloğa girer.
   if (req.method === 'POST' && req.body) {
     // bodyden content ve status değerlerini alır.
-    const { content, status } = req.body
+    const { content, status, subtaskId } = req.body
 
     // Güncellenecek veri objesini oluşturur.
     const data = {
       content,
       status,
+      subtaskId,
     }
 
     try {
